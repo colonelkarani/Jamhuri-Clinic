@@ -1,0 +1,25 @@
+{
+  "name": "jamhuri_afya",
+  "version": "1.0.0",
+  "description": "A clinic website",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/colonelkarani/Jamhuri-Clinic.git"
+  },
+  "author": "Victor Karani",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/colonelkarani/Jamhuri-Clinic/issues"
+  },
+  "homepage": "https://github.com/colonelkarani/Jamhuri-Clinic#readme",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "mongoose": "^8.16.1",
+    "nodemon": "^3.1.10"
+  }
+}

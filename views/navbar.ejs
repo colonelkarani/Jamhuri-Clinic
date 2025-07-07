@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jamuhuri CLinic Navbar</title>
+    <!-- NavBar Styles -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>    
+    <style>
+        :root {
+            --primary: #1a2639;
+            --secondary: #d4b483;
+            --light: #f8f4e3;
+            --dark: #102030;
+            --accent: #a76571;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--light);
+            color: var(--primary);
+            overflow-x: hidden;
+            /* Added a background image to demonstrate the navbar transparency */
+            background: linear-gradient(rgba(26, 38, 57, 0.7), rgba(26, 38, 57, 0.4)), url('/api/placeholder/1920/1080') center/cover;
+            background-attachment: fixed;
+            height: 200vh; /* Making the page scrollable for demo */
+        }
+        
+        /* Navbar Styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1.5rem 2rem;
+            transition: all 0.4s ease;
+            will-change: transform; /* Optimization for animations */
+        }
+        
+        .navbar.scrolled {
+            background-color: var(--primary);
+            padding: 1rem 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            max-width: 100%;
+            max-height: 100%;
+            font-size: 1.8rem;
+            color: var(--secondary);
+            margin-right: 0.8rem;
+        }
+        
+        .logo-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .nav-item {
+            position: relative;
+        }
+        
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            padding: 0 0;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--secondary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+        
+        .dropdown {
+            position: relative;
+        }
+        
+        .dropdown-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        
+        .dropdown-toggle i {
+            font-size: 0.8rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 1rem);
+            left: 50%;
+            transform: translateX(-50%) scaleY(0.8);
+            min-width: 200px;
+            background-color: var(--primary);
+            border-radius: 5px;
+            padding: 1rem 0;
+            opacity: 0;
+            visibility: hidden;
+            transform-origin: top center;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .dropdown-menu::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: 50%;
+            transform: translateX(-50%) rotate(45deg);
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary);
+        }
+        
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) scaleY(1);
+        }
+        
+        .dropdown:hover .dropdown-toggle i {
+            transform: rotate(180deg);
+        }
+        
+        .dropdown-item {
+            display: block;
+            padding: 0.7rem 1.5rem;
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--secondary);
+            padding-left: 1.8rem;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Added overlay for mobile menu */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 998;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .close-menu{
+            visibility:hidden ;
+        }
+        
+        @media (max-width: 1100px) {
+            .mobile-menu-btn {
+                display: block;
+                z-index: 1001;
+            }
+            .dropdown-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--secondary);
+            padding-left: 0.1rem;
+        }
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0%) scaleY(1);
+        }
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -280px; /* Changed from -100% to exact pixels */
+                width: 280px;
+                height: 100vh;
+                background-color: var(--primary);
+                flex-direction: column;
+                padding: 6rem 2rem 2rem;
+                gap: 1.5rem;
+                transition: right 0.4s ease;
+                z-index: 999;
+                box-shadow: -5px 0 30px rgba(0, 0, 0, 0.1);
+                overflow-y: auto; /* Added scroll for tall menus */
+            }
+            
+            .nav-links.active {
+                right: 0;
+            }
+            
+            .dropdown-menu {
+                position: static;
+                transform: none;
+                background-color: rgba(255, 255, 255, 0.05);
+                box-shadow: none;
+                padding: 0;
+                margin-top: 0.5rem;
+                max-height: 0;
+                overflow: hidden;
+                opacity: 1;
+                visibility: visible;
+                border-radius: 5px;
+                transition: max-height 0.4s ease, padding 0.4s ease;
+            }
+            
+            .dropdown-menu::before {
+                display: none;
+            }
+            
+            .dropdown.active .dropdown-menu {
+                max-height: 500px;
+                padding: 0.5rem 0;
+            }
+            
+            .dropdown-toggle {
+
+                justify-content: space-between;
+                width: 100%;
+            }
+            
+            .close-menu {
+                position: absolute;
+                top: 1.5rem;
+                right: 1.5rem;
+                background: none;
+                border: none;
+                color: white;
+                font-size: 1.2rem;
+                cursor: pointer;
+                z-index: 1001;
+                visibility: visible;
+            }
+            
+            /* Fix for dropdown link click area */
+            .dropdown-toggle {
+                pointer-events: auto;
+            }
+            
+            /* Make the chevron container clickable separately */
+            .dropdown-chevron {
+                padding: 10px;
+                margin: -10px;
+                cursor: pointer;
+            }
+        }
+
+        /* Demo content to show scrolling effect */
+        .demo-content {
+            height: 150vh;
+            padding-top: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+        
+        .demo-content h1 {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+        }
+        
+        .demo-content p {
+            max-width: 600px;
+            line-height: 1.6;
+        }
+        
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="/index" class="logo">
+                <img src="/images/hospital.png" class="logo-icon" alt="clinic icon">
+                <span class="logo-text">Jamuhuri Afya and Orthopaedics</span>
+            </a>
+            
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <ul class="nav-links">
+                <button class="close-menu">
+                    <i class="fas fa-times"></i>
+                </button>
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link active">Home</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle">
+                        Visit <span class="dropdown-chevron"><i class="fas fa-chevron-down"></i></span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="contact.html" class="dropdown-item">Contact</a>
+                        <a href="aboutus.html" class="dropdown-item">About Us</a>
+                        <a href="join.html" class="dropdown-item">Join</a>
+                        <a href="prayerrequest.html" class="dropdown-item">Prayer Request</a>
+                        <a href="history.html" class="dropdown-item">History</a>
+                        <a href="#" class="dropdown-item">Get Updates</a>
+
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="events.html" class="nav-link active">Events</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="communities.html" class="nav-link dropdown-toggle">
+                        Communities<span class="dropdown-chevron"><i class="fas fa-chevron-down"></i></span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item">Jumuiyas</a>
+                        <a href="#" class="dropdown-item">P.M.C</a>
+                        <a href="youth.html" class="dropdown-item">Youth</a>
+                        <a href="#" class="dropdown-item">CWA</a>
+                        <a href="#" class="dropdown-item">CMA</a>
+                        <a href="#" class="dropdown-item">Choir</a>
+
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="sacrament.html" class="nav-link dropdown-toggle">
+                        Sacraments <span class="dropdown-chevron"><i class="fas fa-chevron-down"></i></span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="baptism.html" class="dropdown-item">Baptism</a>
+                        <a href="#" class="dropdown-item">Holy Ministry</a>
+                        <a href="#" class="dropdown-item">Confirmation</a>
+                        <a href="#" class="dropdown-item">Anointing Of The Sick</a>
+                        <a href="#" class="dropdown-item">Reconciliation</a>
+                        <a href="#" class="dropdown-item">Matrimony</a>
+                        <a href="#" class="dropdown-item">Funeral Planning</a>
+                        <a href="#" class="dropdown-item">OCIA Program</a>
+                        <a href="#" class="dropdown-item">Holy Orders</a>
+
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="serve.html" class="nav-link">Serve</a>
+                </li>
+                <li class="nav-item">
+                    <a href="reflect.html" class="nav-link">Reflect</a>
+                </li>
+                <li class="nav-item">
+                    <a href="contribute.html" class="nav-link">Contribute</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- Overlay for mobile menu -->
+    <div class="menu-overlay"></div>
+
+    <!-- Demo content to show scrolling effect -->
+    <div class="demo-content">
+        <h1>Navbar Demo</h1>
+        <p>Scroll down to see how the navbar changes from transparent to solid background.</p>
+    </div>
+    <!-- NavBar Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Register ScrollTrigger plugin
+            gsap.registerPlugin(ScrollTrigger);
+            
+            // Navbar scroll effect with debouncing
+            const navbar = document.querySelector('.navbar');
+            let scrollTimer;
+            
+            // Initial check on page load
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            }
+            
+            window.addEventListener('scroll', () => {
+                // Clear the previous timer
+                clearTimeout(scrollTimer);
+                
+                // Set a new timer
+                scrollTimer = setTimeout(() => {
+                    if (window.scrollY > 50) {
+                        navbar.classList.add('scrolled');
+                    } else {
+                        navbar.classList.remove('scrolled');
+                    }
+                }, 10); // Small delay for better performance
+            });
+            
+            // Navbar animations with GSAP
+            gsap.from('.navbar', {
+                y: -100,
+                opacity: 0,
+                duration: 1,
+                ease: 'power3.out',
+                delay: 0.2,
+                clearProps: 'all' // Clean up after animation
+            });
+            
+            // Mobile menu elements
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const closeMenuBtn = document.querySelector('.close-menu');
+            const navLinks = document.querySelector('.nav-links');
+            const overlay = document.querySelector('.menu-overlay');
+            const dropdowns = document.querySelectorAll('.dropdown');
+            
+            // Open mobile menu
+            mobileMenuBtn.addEventListener('click', () => {
+                navLinks.classList.add('active');
+                overlay.classList.add('active');
+                document.querySelector('.mobile-menu-btn').style.visibility = 'hidden';
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            });
+            
+            // Close mobile menu function
+            const closeMenu = () => {
+                navLinks.classList.remove('active');
+                overlay.classList.remove('active');
+                document.querySelector('.mobile-menu-btn').style.visibility = 'visible';
+                document.body.style.overflow = ''; // Re-enable scrolling
+            };
+            
+            // Close menu events
+            closeMenuBtn.addEventListener('click', closeMenu);
+            overlay.addEventListener('click', closeMenu);
+            
+            // Handle dropdowns
+            dropdowns.forEach(dropdown => {
+                const dropdownToggle = dropdown.querySelector('.dropdown-toggle');
+                const dropdownChevron = dropdown.querySelector('.dropdown-chevron');
+                
+                // Only for mobile
+                if (window.innerWidth <= 768) {
+                    // Make the main link navigate and chevron toggle dropdown
+                    dropdownChevron.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        // Close other open dropdowns
+                        dropdowns.forEach(otherDropdown => {
+                            if (otherDropdown !== dropdown && otherDropdown.classList.contains('active')) {
+                                otherDropdown.classList.remove('active');
+                            }
+                        });
+                        
+                        // Toggle current dropdown
+                        dropdown.classList.toggle('active');
+                        
+                        // Rotate chevron
+                        const icon = dropdownChevron.querySelector('i');
+                        if (dropdown.classList.contains('active')) {
+                            icon.style.transform = 'rotate(180deg)';
+                        } else {
+                            icon.style.transform = 'rotate(0)';
+                        }
+                    });
+                }
+            });
+            
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768) {
+                    // Reset mobile menu state when switching to desktop
+                    navLinks.classList.remove('active');
+                    overlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                    
+                    // Reset all dropdowns
+                    dropdowns.forEach(dropdown => {
+                        dropdown.classList.remove('active');
+                        const icon = dropdown.querySelector('.dropdown-chevron i');
+                        if (icon) icon.style.transform = 'rotate(0)';
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
