@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OrthoCare | Book Appointment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            light: '#3B82F6',
+                            dark: '#1D4ED8'
+                        },
+                        secondary: {
+                            light: '#10B981',
+                            dark: '#059669'
+                        },
+                        accent: {
+                            light: '#F59E0B',
+                            dark: '#D97706'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Montserrat', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@500;600;700;800&display=swap');
+        
+        :root {
+            --transition-all: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        body {
+            transition: var(--transition-all);
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+        }
+        
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        
+        .btn-gradient {
+            background: linear-gradient(135deg, #3B82F6 0%, #10B981 100%);
+            transition: var(--transition-all);
+        }
+        
+        .btn-gradient:hover {
+            background: linear-gradient(135deg, #1D4ED8 0%, #059669 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-input {
+            transition: var(--transition-all);
+        }
+        
+        .form-input:focus {
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+        }
+        
+        .doctor-card {
+            transition: var(--transition-all);
+        }
+        
+        .doctor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .service-card {
+            transition: var(--transition-all);
+            cursor: pointer;
+        }
+        
+        .service-card:hover {
+            transform: scale(1.03);
+        }
+        
+        .service-card.selected {
+            border-color: #3B82F6;
+            background-color: rgba(59, 130, 246, 0.05);
+        }
+        
+        .appointment-confirm {
+            transition: var(--transition-all);
+            opacity: 0;
+            height: 0;
+            overflow: hidden;
+        }
+        
+        .appointment-confirm.active {
+            opacity: 1;
+            height: auto;
+        }
+        
+        .section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: var(--transition-all);
+        }
+        
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            body, .btn-gradient, .form-input, .doctor-card, .service-card, .appointment-confirm, .section {
+                transition: none !important;
+                animation: none !important;
+            }
+        }
+        
+        ::-webkit-calendar-picker-indicator {
+            filter: invert(48%) sepia(13%) saturate(3207%) hue-rotate(190deg) brightness(95%) contrast(80%);
+        }
+        
+        .dark ::-webkit-calendar-picker-indicator {
+            filter: invert(100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 font-sans antialiased">
+    <!-- Theme Toggle -->
+    <div class="fixed top-6 right-6 z-50">
+        <button id="theme-toggle" type="button" class="p-2 rounded-lg bg-white dark:bg-gray-700 shadow-md">
+            <i id="theme-icon" class="fas fa-moon text-gray-800 dark:text-yellow-300"></i>
+        </button>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="relative pt-24 pb-16 md:pt-32 md:pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        <div class="max-w-7xl mx-auto">
+            <div class="relative z-10 text-center">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-heading font-bold tracking-tight mb-4">
+                    Orthopaedic <span class="text-primary-light dark:text-primary-dark">Care</span> With Excellence
+                </h1>
+                <p class="max-w-2xl mx-auto text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8">
+                    Book your appointment with our board-certified orthopaedic specialists and begin your journey to better mobility.
+                </p>
+                <div class="mt-10 flex justify-center">
+                    <div class="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 dark:text-gray-300 ring-1 ring-gray-600/10 dark:ring-gray-400/30 hover:ring-gray-600/20 dark:hover:ring-gray-400/50 mb-8 animate-pulse">
+                        Appointments available within 48 hours <span class="font-semibold text-primary-light dark:text-primary-dark"><span class="absolute inset-0" aria-hidden="true"></span></span>
+                    </div>
+                </div>
+                <div class="flex flex-col md:flex-row justify-center gap-4">
+                    <a href="#book-appointment" class="btn-gradient text-white px-8 py-4 rounded-full font-medium text-lg shadow-lg hover:shadow-xl">
+                        Book Now
+                    </a>
+                    <a href="#our-specialists" class="bg-white dark:bg-gray-800 text-gray-800 dark:text-white px-8 py-4 rounded-full font-medium text-lg border border-gray-200 dark:border-gray-700 shadow hover:shadow-md">
+                        Meet Our Doctors
+                    </a>
+                </div>
+            </div>
+            
+            <div class="mt-16 md:mt-24 relative">
+                <div class="absolute -z-10 w-full h-full">
+                    <div class="absolute inset-0 bg-gradient-to-b from-transparent to-white dark:to-gray-900"></div>
+                    <img src="https://placehold.co/1600x900" alt="Modern orthopaedic clinic interior with clean lines and medical equipment" class="w-full h-full object-cover rounded-xl shadow-2xl" />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Appointment Form Section -->
+    <section id="book-appointment" class="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-800 section">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-heading font-bold mb-4">Book Your <span class="text-primary-light dark:text-primary-dark">Appointment</span></h2>
+                <p class="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                    Complete the form below to schedule your visit with our orthopaedic specialists.
+                </p>
+            </div>
+            
+            <div class="bg-white dark:bg-gray-900 rounded-xl shadow-lg overflow-hidden border border-gray-100 dark:border-gray-700 mt-10">
+                <div class="p-6 md:p-8">
+                    <form id="appointment-form">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Personal Information -->
+                            <div class="space-y-6">
+                                <div>
+                                    <label for="full-name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Full Name</label>
+                                    <input type="text" id="full-name" name="full-name" required class="form-input w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:border-transparent bg-gray-50 dark:bg-gray-800">
+                                </div>
+                                <div>
+                                    <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+                                    <input type="email" id="email" name="email" required class="form-input w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:border-transparent bg-gray-50 dark:bg-gray-800">
+                                </div>
+                                <div>
+                                    <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Phone Number</label>
+                                    <input type="tel" id="phone" name="phone" required class="form-input w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:border-transparent bg-gray-50 dark:bg-gray-800">
+                                </div>
+                            </div>
+                            
+                            <!-- Appointment Details -->
+                            <div class="space-y-6">
+                                <div>
+                                    <label for="appointment-date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Date</label>
+                                    <input type="date" id="appointment-date" name="appointment-date" required min="" class="form-input w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:border-transparent bg-gray-50 dark:bg-gray-800">
+                                </div>
+                                <div>
+                                    <label for="appointment-time" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Time</label>
+                                    <select id="appointment-time" name="appointment-time" required class="form-input w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:border-transparent bg-gray-50 dark:bg-gray-800">
+                                        <option value="" disabled selected>Select a time</option>
+                                        <option value="08:00">8:00 AM</option>
+                                        <option value="09:00">9:00 AM</option>
+                                        <option value="10:00">10:00 AM</option>
+                                        <option value="11:00">11:00 AM</option>
+                                        <option value="13:00">1:00 PM</option>
+                                        <option value="14:00">2:00 PM</option>
+                                        <option value="15:00">3:00 PM</option>
+                                        <option value="16:00">4:00 PM</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="reason" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Reason for Visit</label>
+                                    <select id="reason" name="reason" class="form-input w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:border-transparent bg-gray-50 dark:bg-gray-800">
+                                        <option value="" disabled selected>Select a reason</option>
+                                        <option value="consultation">Initial Consultation</option>
+                                        <option value="follow-up">Follow-up Visit</option>
+                                        <option value="pain">Joint Pain</option>
+                                        <option value="injury">Sports Injury</option>
+                                        <option value="surgery">Pre-Surgical Evaluation</option>
+                                        <option value="post-op">Post-Operative Care</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Services Section -->
+                        <div class="mt-8">
+                            <h3 class="text-xl font-heading font-semibold mb-4">Select Services</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                <!-- Service Card 1 -->
+                                <div class="service-card group p-4 border border-gray-200 dark:border-gray-700 rounded-xl hover:border-primary-light dark:hover:border-primary-dark">
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0 h-10 w-10 rounded-lg bg-primary-light/10 dark:bg-primary-dark/10 flex items-center justify-center">
+                                            <i class="fas fa-bone text-primary-light dark:text-primary-dark"></i>
+                                        </div>
+                                        <div class="ml-4">
+                                            <label class="block">
+                                                <input type="checkbox" name="service" value="fracture-care" class="sr-only peer">
+                                                <span class="font-medium text-gray-900 dark:text-white">Fracture Care</span>
+                                                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Evaluation and treatment of bone fractures</p>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Service Card 2 -->
+                                <div class="service-card group p-4 border border-gray-200 dark:border-gray-700 rounded-xl hover:border-primary-light dark:hover:border-primary-dark">
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0 h-10 w-10 rounded-lg bg-primary-light/10 dark:bg-primary-dark/10 flex items-center justify-center">
+                                            <i class="fas fa-running text-primary-light dark:text-primary-dark"></i>
+                                        </div>
+                                        <div class="ml-4">
+                                            <label class="block">
+                                                <input type="checkbox" name="service" value="sports-medicine" class="sr-only peer">
+                                                <span class="font-medium text-gray-900 dark:text-white">Sports Medicine</span>
+                                                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Injury prevention and treatment for athletes</p>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Service Card 3 -->
+                                <div class="service-card group p-4 border border-gray-200 dark:border-gray-700 rounded-xl hover:border-primary-light dark:hover:border-primary-dark">
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0 h-10 w-10 rounded-lg bg-primary-light/10 dark:bg-primary-dark/10 flex items-center justify-center">
+                                            <i class="fas fa-wheelchair text-primary-light dark:text-primary-dark"></i>
+                                        </div>
+                                        <div class="ml-4">
+                                            <label class="block">
+                                                <input type="checkbox" name="service" value="joint-replacement" class="sr-only peer">
+                                                <span class="font-medium text-gray-900 dark:text-white">Joint Replacement</span>
+                                                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Hip, knee, and shoulder replacement options</p>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Additional Notes -->
+                        <div class="mt-8">
+                            <label for="notes" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Additional Notes</label>
+                            <textarea id="notes" name="notes" rows="3" class="form-input w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:border-transparent bg-gray-50 dark:bg-gray-800"></textarea>
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <div class="mt-10">
+                            <button type="submit" class="btn-gradient w-full text-white py-4 rounded-lg font-medium text-lg shadow-lg hover:shadow-xl transition-all duration-300">
+                                Book Appointment
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <!-- Confirmation Message (Hidden Initially) -->
+                    <div id="confirmation-message" class="appointment-confirm mt-8 p-6 rounded-lg bg-gradient-to-br from-green-50 to-blue-50 dark:from-gray-800 dark:to-gray-700 border border-green-200 dark:border-gray-600">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <div class="h-12 w-12 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                                    <i class="fas fa-check text-green-600 dark:text-green-400 text-xl"></i>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-xl font-heading font-semibold text-gray-900 dark:text-white">Appointment Confirmed!</h3>
+                                <div class="mt-2 text-gray-600 dark:text-gray-300">
+                                    <p>Thank you for booking your appointment. We've sent a confirmation to your email with all the details.</p>
+                                    <p class="mt-2 font-medium">Looking forward to seeing you!</p>
+                                </div>
+                                <div class="mt-4">
+                                    <button id="new-appointment" class="text-primary-light dark:text-primary-dark font-medium hover:underline">
+                                        Book another appointment
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Specialists Section -->
+    <section id="our-specialists" class="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-800/50 section">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-heading font-bold mb-4">Meet Our <span class="text-primary-light dark:text-primary-dark">Specialists</span></h2>
+                <p class="text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Our board-certified orthopaedic surgeons bring decades of combined experience in treating musculoskeletal conditions.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Doctor 1 -->
+                <div class="doctor-card bg-white dark:bg-gray-900 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:shadow-xl">
+                    <div class="relative h-64 bg-gray-100 dark:bg-gray-700 overflow-hidden">
+                        <img src="https://placehold.co/600x600" alt="Dr. Sarah Chen, orthopaedic surgeon with short brown hair wearing a white coat and smiling" class="absolute inset-0 w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900/70 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <h3 class="text-xl font-heading font-semibold">Dr. Sarah Chen</h3>
+                            <p class="text-sm opacity-90">Orthopaedic Surgeon</p>
+                        </div>
+                        <div class="absolute top-4 right-4">
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary-light/90 text-white">
+                                <i class="fas fa-star mr-1"></i> 4.9
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-3">
+                            <div class="flex items-center text-yellow-500 mr-2">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="text-sm text-gray-500 dark:text-gray-400">127 reviews</span>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">
+                            Specializes in minimally invasive joint replacement and sports injuries. Board certified with 15+ years of experience.
+                        </p>
+                        <div class="flex justify-between items-center">
+                            <button onclick="bookWithDoctor('Dr. Sarah Chen')" class="text-primary-light dark:text-primary-dark font-medium hover:underline">
+                                Book with Dr. Chen
+                            </button>
+                            <div class="flex space-x-2">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200">
+                                    <i class="fas fa-calendar-check mr-1"></i> Next: Tomorrow
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Doctor 2 -->
+                <div class="doctor-card bg-white dark:bg-gray-900 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:shadow-xl">
+                    <div class="relative h-64 bg-gray-100 dark:bg-gray-700 overflow-hidden">
+                        <img src="https://placehold.co/600x600" alt="Dr. Michael Rodriguez, experienced orthopaedic specialist with glasses and a confident expression" class="absolute inset-0 w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900/70 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <h3 class="text-xl font-heading font-semibold">Dr. Michael Rodriguez</h3>
+                            <p class="text-sm opacity-90">Spinal Specialist</p>
+                        </div>
+                        <div class="absolute top-4 right-4">
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary-light/90 text-white">
+                                <i class="fas fa-star mr-1"></i> 4.8
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-3">
+                            <div class="flex items-center text-yellow-500 mr-2">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="text-sm text-gray-500 dark:text-gray-400">94 reviews</span>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">
+                            Expert in spinal disorders, degenerative conditions, and innovative non-surgical treatments.
+                        </p>
+                        <div class="flex justify-between items-center">
+                            <button onclick="bookWithDoctor('Dr. Michael Rodriguez')" class="text-primary-light dark:text-primary-dark font-medium hover:underline">
+                                Book with Dr. Rodriguez
+                            </button>
+                            <div class="flex space-x-2">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200">
+                                    <i class="fas fa-calendar-check mr-1"></i> Next: Today
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Doctor 3 -->
+                <div class="doctor-card bg-white dark:bg-gray-900 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:shadow-xl">
+                    <div class="relative h-64 bg-gray-100 dark:bg-gray-700 overflow-hidden">
+                        <img src="https://placehold.co/600x600" alt="Dr. Aisha Johnson, young talented orthopaedic surgeon with curly hair and warm smile" class="absolute inset-0 w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900/70 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <h3 class="text-xl font-heading font-semibold">Dr. Aisha Johnson</h3>
+                            <p class="text-sm opacity-90">Pediatric Orthopedics</p>
+                        </div>
+                        <div class="absolute top-4 right-4">
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary-light/90 text-white">
+                                <i class="fas fa-star mr-1"></i> 5.0
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-3">
+                            <div class="flex items-center text-yellow-500 mr-2">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="text-sm text-gray-500 dark:text-gray-400">142 reviews</span>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">
+                            Specializes in congenital and developmental orthopaedic conditions in children and adolescents.
+                        </p>
+                        <div class="flex justify-between items-center">
+                            <button onclick="bookWithDoctor('Dr. Aisha Johnson')" class="text-primary-light dark:text-primary-dark font-medium hover:underline">
+                                Book with Dr. Johnson
+                            </button>
+                            <div class="flex space-x-2">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200">
+                                    <i class="fas fa-calendar-check mr-1"></i> Next: Tomorrow
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 section">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-heading font-bold mb-4">Why Choose <span class="text-primary-light dark:text-primary-dark">Our Clinic</span></h2>
+                <p class="text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    We combine cutting-edge technology with compassionate care to deliver exceptional orthopaedic outcomes.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center p-6 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-300">
+                    <div class="flex justify-center mb-4">
+                        <div class="h-16 w-16 rounded-full bg-primary-light/10 dark:bg-primary-dark/10 flex items-center justify-center">
+                            <i class="fas fa-microscope text-2xl text-primary-light dark:text-primary-dark"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-heading font-semibold mb-2">Advanced Diagnostics</h3>
+                    <p class="text-gray-600 dark:text-gray-400">
+                        State-of-the-art imaging and diagnostic tools for precise assessments.
+                    </p>
+                </div>
+                
+                <div class="text-center p-6 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-300">
+                    <div class="flex justify-center mb-4">
+                        <div class="h-16 w-16 rounded-full bg-primary-light/10 dark:bg-primary-dark/10 flex items-center justify-center">
+                            <i class="fas fa-user-md text-2xl text-primary-light dark:text-primary-dark"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-heading font-semibold mb-2">Expert Surgeons</h3>
+                    <p class="text-gray-600 dark:text-gray-400">
+                        Board-certified specialists with fellowship training in orthopaedic subspecialties.
+                    </p>
+                </div>
+                
+                <div class="text-center p-6 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-300">
+                    <div class="flex justify-center mb-4">
+                        <div class="h-16 w-16 rounded-full bg-primary-light/10 dark:bg-primary-dark/10 flex items-center justify-center">
+                            <i class="fas fa-procedures text-2xl text-primary-light dark:text-primary-dark"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-heading font-semibold mb-2">Minimally Invasive</h3>
+                    <p class="text-gray-600 dark:text-gray-400">
+                        Smaller incisions, less pain, and faster recovery times with robotic-assisted techniques.
+                    </p>
+                </div>
+                
+                <div class="text-center p-6 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-300">
+                    <div class="flex justify-center mb-4">
+                        <div class="h-16 w-16 rounded-full bg-primary-light/10 dark:bg-primary-dark/10 flex items-center justify-center">
+                            <i class="fas fa-heartbeat text-2xl text-primary-light dark:text-primary-dark"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-heading font-semibold mb-2">Personalized Care</h3>
+                    <p class="text-gray-600 dark:text-gray-400">
+                        Custom treatment plans tailored to your specific condition and lifestyle.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-800/50 section">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-heading font-bold mb-4">Patient <span class="text-primary-light dark:text-primary-dark">Testimonials</span></h2>
+                <p class="text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Hear from patients who've regained their mobility and quality of life through our care.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-white dark:bg-gray-900 p-8 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+                    <div class="flex items-center mb-4">
+                        <div class="flex items-center text-yellow-500 mr-2">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span class="text-sm text-gray-500 dark:text-gray-400">2 weeks ago</span>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 italic mb-6">
+                        "After my knee replacement, I was walking within 24 hours. Dr. Chen's surgical skill and the team's rehabilitation guidance got me back to hiking in 8 weeks. Life-changing experience!"
+                    </p>
+                    <div class="flex items-center">
+                        <img src="https://placehold.co/80x80" alt="Marcus Thompson, middle-aged man smiling after successful knee surgery" class="h-12 w-12 rounded-full object-cover">
+                        <div class="ml-4">
+                            <h4 class="font-medium text-gray-900 dark:text-white">Marcus Thompson</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Knee Replacement Patient</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="bg-white dark:bg-gray-900 p-8 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+                    <div class="flex items-center mb-4">
+                        <div class="flex items-center text-yellow-500 mr-2">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span class="text-sm text-gray-500 dark:text-gray-400">1 month ago</span>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 italic mb-6">
+                        "As a college athlete, my shoulder injury threatened my career. The sports medicine team created a rehabilitation program that had me back on the field stronger than before."
+                    </p>
+                    <div class="flex items-center">
+                        <img src="https://placehold.co/80x80" alt="Sophia Martinez, young female athlete in sports clothing" class="h-12 w-12 rounded-full object-cover">
+                        <div class="ml-4">
+                            <h4 class="font-medium text-gray-900 dark:text-white">Sophia Martinez</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">College Athlete</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="bg-white dark:bg-gray-900 p-8 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+                    <div class="flex items-center mb-4">
+                        <div class="flex items-center text-yellow-500 mr-2">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <span class="text-sm text-gray-500 dark:text-gray-400">3 months ago</span>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 italic mb-6">
+                        "Living with scoliosis was painful until I met Dr. Rodriguez. His non-surgical approach to spinal alignment has given me my life back. The staff makes every visit comfortable."
+                    </p>
+                    <div class="flex items-center">
+                        <img src="https://placehold.co/80x80" alt="Elena Petrova, mature woman standing straight after spinal treatment" class="h-12 w-12 rounded-full object-cover">
+                        <div class="ml-4">
+                            <h4 class="font-medium text-gray-900 dark:text-white">Elena Petrova</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Spinal Care Patient</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 section">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-heading font-bold mb-4">Frequently Asked <span class="text-primary-light dark:text-primary-dark">Questions</span></h2>
+                <p class="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                    Quick answers to common questions about our orthopaedic services and appointment process.
+                </p>
+            </div>
+            
+            <div class="space-y-6">
+                <!-- FAQ Item 1 -->
+                <div x-data="{ open: false }" class="border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden">
+                    <button @click="open = !open" class="w-full px-6 py-5 text-left flex justify-between items-center bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
+                        <h3 class="font-heading font-semibold text-lg">What should I bring to my first appointment?</h3>
+                        <span x-text="open ? '−' : '+'"></span>
+                    </button>
+                    <div x-show="open" x-collapse class="px-6 py-4 bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-300 border-t border-gray-200 dark:border-gray-700">
+                        <p class="mb-3">Please bring:</p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Your insurance card and photo ID</li>
+                            <li>Completed intake forms (if not submitted online)</li>
+                            <li>Medical records related to your condition</li>
+                            <li>List of current medications and supplements</li>
+                            <li>Recent imaging studies (X-rays, MRIs) on CD or USB</li>
+                            <li>Comfortable clothing to allow examination of affected area</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 2 -->
+                <div x-data="{ open: false }" class="border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden">
+                    <button @click="open = !open" class="w-full px-6 py-5 text-left flex justify-between items-center bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
+                        <h3 class="font-heading font-semibold text-lg">How soon can I get an appointment?</h3>
+                        <span x-text="open ? '−' : '+'"></span>
+                    </button>
+                    <div x-show="open" x-collapse class="px-6 py-4 bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-300 border-t border-gray-200 dark:border-gray-700">
+                        <p>We prioritize urgent cases and typically offer appointments within 48 hours for acute injuries or pain. Routine consultations are usually scheduled within 5-7 days. Check our online booking system for real-time availability across all providers.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 3 -->
+                <div x-data="{ open: false }" class="border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden">
+                    <button @click="open = !open" class="w-full px-6 py-5 text-left flex justify-between items-center bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
+                        <h3 class="font-heading font-semibold text-lg">Do you accept my insurance?</h3>
+                        <span x-text="open ? '−' : '+'"></span>
+                    </button>
+                    <div x-show="open" x-collapse class="px-6 py-4 bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-300 border-t border-gray-200 dark:border-gray-700">
+                        <p>We participate with most major insurance plans including Medicare, Blue Cross Blue Shield, Aetna, Cigna, UnitedHealthcare, and Tricare. Our team will verify your benefits prior to your visit and explain any out-of-pocket costs. We also offer self-pay options and payment plans for patients without insurance coverage.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 4 -->
+                <div x-data="{ open: false }" class="border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden">
+                    <button @click="open = !open" class="w-full px-6 py-5 text-left flex justify-between items-center bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
+                        <h3 class="font-heading font-semibold text-lg">What COVID-19 safety measures are in place?</h3>
+                        <span x-text="open ? '−' : '+'"></span>
+                    </button>
+                    <div x-show="open" x-collapse class="px-6 py-4 bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-300 border-t border-gray-200 dark:border-gray-700">
+                        <p>We maintain strict infection control protocols including:</p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>HEPA air filtration in all clinical areas</li>
+                            <li>Enhanced cleaning between patients</li>
+                            <li>Optional telehealth appointments</li>
+                            <li>Screening for symptoms upon arrival</li>
+                            <li>Masking requirements aligned with CDC guidelines</li>
+                            <li>Vaccinated clinical staff</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 5 -->
+                <div x-data="{ open: false }" class="border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden">
+                    <button @click="open = !open" class="w-full px-6 py-5 text-left flex justify-between items-center bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
+                        <h3 class="font-heading font-semibold text-lg">What's the recovery time after arthroscopic surgery?</h3>
+                        <span x-text="open ? '−' : '+'"></span>
+                    </button>
+                    <div x-show="open" x-collapse class="px-6 py-4 bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-300 border-t border-gray-200 dark:border-gray-700">
+                        <p>Recovery varies by procedure and individual factors:</p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li><strong>Knee arthroscopy:</strong> 4-6 weeks for full recovery</li>
+                            <li><strong>Shoulder arthroscopy:</strong> 6-8 weeks typically</li>
+                            <li><strong>Wrist/hand procedures:</strong> 3-4 weeks usually</li>
+                            <li><strong>Small joint procedures:</strong> 2-3 weeks commonly</li>
+                        </ul>
+                        <p class="mt-3">Most patients resume light activities within 2-3 days and office work within a week. Your surgeon will provide a personalized recovery plan.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary-light to-primary-dark text-white section">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-heading font-bold mb-6">{ Living Without Pain Starts Here }</h2>
+            <p class="text-lg opacity-90 max-w-2xl mx-auto mb-8">
+                Don't let joint pain limit your life. Schedule your consultation today and take the first step toward better mobility.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#book-appointment" class="bg-white text-primary-light px-8 py-4 rounded-full font-medium text-lg shadow-lg hover:shadow-xl transition-all duration-300">
+                    Book Online Now
+                </a>
+                <a href="tel:+18005551234" class="bg-white/10 hover:bg-white/20 border border-white px-8 py-4 rounded-full font-medium text-lg transition-all duration-300 backdrop-blur-sm">
+                    <i class="fas fa-phone mr-2"></i> Call Us: (800) 555-1234
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Set minimum date to today
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set min date for appointment
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('appointment-date').min = today;
+            
+            // Scroll animation
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            document.querySelectorAll('.section').forEach(section => {
+                observer.observe(section);
+            });
+            
+            // Form submission
+            const form = document.getElementById('appointment-form');
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                form.style.opacity = '0.5';
+                form.style.pointerEvents = 'none';
+                
+                // Simulate submission
+                setTimeout(() => {
+                    document.getElementById('confirmation-message').classList.add('active');
+                    window.scrollTo({
+                        top: document.getElementById('confirmation-message').offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }, 1500);
+            });
+            
+            // New appointment button
+            document.getElementById('new-appointment').addEventListener('click', function() {
+                form.reset();
+                form.style.opacity = '1';
+                form.style.pointerEvents = 'auto';
+                document.getElementById('confirmation-message').classList.remove('active');
+                window.scrollTo({
+                    top: form.offsetTop - 100,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Theme toggle
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeIcon = document.getElementById('theme-icon');
+            
+            if (localStorage.getItem('theme') === 'dark') {
+                document.documentElement.classList.add('dark');
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
+                themeIcon.classList.add('text-yellow-300');
+            }
+            
+            themeToggle.addEventListener('click', function() {
+                const htmlClasses = document.documentElement.classList;
+                if (htmlClasses.contains('dark')) {
+                    htmlClasses.remove('dark');
+                    localStorage.setItem('theme', 'light');
+                    themeIcon.classList.replace('fa-moon', 'fa-sun');
+                    themeIcon.classList.remove('text-yellow-300');
+                } else {
+                    htmlClasses.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                    themeIcon.classList.replace('fa-sun', 'fa-moon');
+                    themeIcon.classList.add('text-yellow-300');
+                }
+            });
+        });
+        
+        function bookWithDoctor(doctorName) {
+            document.getElementById('full-name').focus();
+            window.scrollTo({
+                top: document.getElementById('book-appointment').offsetTop - 100,
+                behavior: 'smooth'
+            });
+            
+            // You could also auto-fill a "reason" field here with the doctor's specialization
+        }
+    </script>
+</body>
+</html>

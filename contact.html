@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | OrthoSolutions Clinic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800&display=swap');
+        
+        :root {
+            --primary: #1a56db;
+            --secondary: #0e4ecc;
+            --accent: #f8a31b;
+            --dark: #0a2152;
+            --light: #f8fafc;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: #333;
+            line-height: 1.6;
+            background-color: #f9f9f9;
+            overflow-x: hidden;
+        }
+        
+        .playfair {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            max-height: 900px;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(rgba(10, 33, 82, 0.9), rgba(10, 33, 82, 0.7));
+        }
+        
+        .hero-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.4;
+        }
+        
+        .hero-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            width: 100%;
+            padding: 0 2rem;
+        }
+        
+        /* Contact Cards */
+        .contact-card {
+            transition: all 0.3s ease;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .contact-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Form Styles */
+        .contact-form {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .form-group {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(26, 86, 219, 0.2);
+        }
+        
+        .form-label {
+            position: absolute;
+            left: 1rem;
+            top: 1rem;
+            padding: 0 0.5rem;
+            background-color: white;
+            transition: all 0.2s ease;
+            pointer-events: none;
+            color: #64748b;
+        }
+        
+        .form-input:focus + .form-label,
+        .form-input:not(:placeholder-shown) + .form-label {
+            top: -0.5rem;
+            font-size: 0.75rem;
+            color: var(--primary);
+            background: white;
+        }
+        
+        /* Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        
+        /* Section Dividers */
+        section {
+            padding: 6rem 0;
+        }
+        
+        .section-title {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 50px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+        
+        /* Map Styles */
+        .map-container {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            height: 400px;
+        }
+        
+        /* Doctor Preview */
+        .doctor-card {
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        }
+        
+        .doctor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 1024px) {
+            section {
+                padding: 4rem 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            section {
+                padding: 3rem 0;
+            }
+        }
+        
+        /* Interactive Elements */
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+        
+        .btn-primary:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(26, 86, 219, 0.2);
+        }
+        
+        /* Loading Animation */
+        .loader {
+            width: 48px;
+            height: 48px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+            display: none;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <div class="hero flex items-center justify-center">
+        <!-- Video Background -->
+        <video class="hero-video" autoplay muted loop playsinline>
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-woman-receiving-physical-theraphy-in-a-private-clinic-43766-large.mp4" type="video/mp4">
+        </video>
+        
+        <!-- Hero Content -->
+        <div class="hero-content text-white animate" style="animation-delay: 0.2s">
+            <h1 class="playfair text-5xl md:text-6xl font-bold mb-4">OrthoSolutions Clinic</h1>
+            <p class="text-xl mb-8 max-w-2xl mx-auto">World-class orthopedic care from leading specialists</p>
+            <button class="btn-primary scroll-to-form">Get in Touch</button>
+        </div>
+        
+        <!-- Scrolling Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Contact Info Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-16">Contact Information</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Location Card -->
+                <div class="contact-card bg-white p-8 animate" style="animation-delay: 0.3s">
+                    <div class="text-4xl text-blue-600 mb-4">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Our Location</h3>
+                    <p class="mb-4">123 Medical Plaza<br>Boston, MA 02115</p>
+                    <button class="btn-primary w-full">Get Directions</button>
+                </div>
+                
+                <!-- Contact Card -->
+                <div class="contact-card bg-white p-8 animate" style="animation-delay: 0.4s">
+                    <div class="text-4xl text-blue-600 mb-4">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Call Us</h3>
+                    <p class="mb-4">Main: (617) 555-0123<br>Appointments: (617) 555-4567</p>
+                    <button class="btn-primary w-full">Call Now</button>
+                </div>
+                
+                <!-- Hours Card -->
+                <div class="contact-card bg-white p-8 animate" style="animation-delay: 0.5s">
+                    <div class="text-4xl text-blue-600 mb-4">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Clinic Hours</h3>
+                    <ul class="space-y-2">
+                        <li class="flex justify-between"><span>Monday - Friday</span> <span>8:00 AM - 6:00 PM</span></li>
+                        <li class="flex justify-between"><span>Saturday</span> <span>9:00 AM - 2:00 PM</span></li>
+                        <li class="flex justify-between"><span>Sunday</span> <span>Emergency Only</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Our Clinic Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col lg:flex-row items-center">
+                <div class="lg:w-1/2 mb-10 lg:mb-0 lg:pr-10 animate" style="animation-delay: 0.3s">
+                    <h2 class="text-3xl font-bold mb-6">About Our Orthopaedic Clinic</h2>
+                    <p class="mb-4">At OrthoSolutions, we specialize in comprehensive orthopedic care, from sports injuries to joint replacements. Our clinic features state-of-the-art facilities and a team of board-certified orthopedic surgeons.</p>
+                    <p class="mb-6">We pride ourselves on personalized treatment plans and cutting-edge minimally invasive techniques that promote faster recovery times and better outcomes.</p>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="flex items-center">
+                            <div class="text-blue-600 mr-3">
+                                <i class="fas fa-check-circle text-xl"></i>
+                            </div>
+                            <span>Board-certified surgeons</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="text-blue-600 mr-3">
+                                <i class="fas fa-check-circle text-xl"></i>
+                            </div>
+                            <span>Minimally invasive</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="text-blue-600 mr-3">
+                                <i class="fas fa-check-circle text-xl"></i>
+                            </div>
+                            <span>Same-day surgery</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="text-blue-600 mr-3">
+                                <i class="fas fa-check-circle text-xl"></i>
+                            </div>
+                            <span>Physical therapy</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="lg:w-1/2 animate rounded-xl overflow-hidden" style="animation-delay: 0.4s">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="col-span-2 h-64">
+                            <img src="https://placehold.co/800x400" alt="Modern orthopedic clinic operating room with advanced surgical equipment and lighting" class="w-full h-full object-cover rounded-t-lg">
+                        </div>
+                        <div class="h-48">
+                            <img src="https://placehold.co/400x300" alt="Orthopedic specialist examining knee x-ray with patient in consultation room" class="w-full h-full object-cover rounded-bl-lg">
+                        </div>
+                        <div class="h-48">
+                            <img src="https://placehold.co/400x300" alt="Physical therapist guiding patient through rehabilitation exercises in clinic gym" class="w-full h-full object-cover rounded-br-lg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Doctors Preview Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-6">Meet Our Specialist Team</h2>
+            <p class="text-center max-w-2xl mx-auto mb-12">Our orthopedic surgeons bring decades of combined experience across all subspecialties of orthopedic medicine.</p>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Doctor 1 -->
+                <div class="doctor-card bg-white animate" style="animation-delay: 0.3s">
+                    <div class="h-64 overflow-hidden">
+                        <img src="https://placehold.co/600x800" alt="Dr. Sarah Johnson, female orthopedic surgeon specializing in joint replacements with 15 years experience" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-xl">Dr. Sarah Johnson</h3>
+                        <p class="text-blue-600 mb-2">Joint Replacement Specialist</p>
+                        <p class="text-sm text-gray-600">MD, Harvard Medical School • 15 years experience</p>
+                    </div>
+                </div>
+                
+                <!-- Doctor 2 -->
+                <div class="doctor-card bg-white animate" style="animation-delay: 0.4s">
+                    <div class="h-64 overflow-hidden">
+                        <img src="https://placehold.co/600x800" alt="Dr. Michael Chen, male sports medicine orthopedic surgeon treating professional athletes" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-xl">Dr. Michael Chen</h3>
+                        <p class="text-blue-600 mb-2">Sports Medicine</p>
+                        <p class="text-sm text-gray-600">MD, Johns Hopkins • Team Physician, Boston Celtics</p>
+                    </div>
+                </div>
+                
+                <!-- Doctor 3 -->
+                <div class="doctor-card bg-white animate" style="animation-delay: 0.5s">
+                    <div class="h-64 overflow-hidden">
+                        <img src="https://placehold.co/600x800" alt="Dr. Angela Rodriguez, female pediatric orthopedic surgeon with warm bedside manner" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-xl">Dr. Angela Rodriguez</h3>
+                        <p class="text-blue-600 mb-2">Pediatric Orthopedics</p>
+                        <p class="text-sm text-gray-600">MD, Stanford University • Board Certified</p>
+                    </div>
+                </div>
+                
+                <!-- Doctor 4 -->
+                <div class="doctor-card bg-white animate" style="animation-delay: 0.6s">
+                    <div class="h-64 overflow-hidden">
+                        <img src="https://placehold.co/600x800" alt="Dr. Robert Williams, male spine specialist orthopedic surgeon in academic medical center setting" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-xl">Dr. Robert Williams</h3>
+                        <p class="text-blue-600 mb-2">Spine Specialist</p>
+                        <p class="text-sm text-gray-600">MD, PhD, Mayo Clinic • Minimally Invasive Spine Surgery</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form Section -->
+    <section id="contact-form" class="py-16 bg-blue-900 text-white relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-900"></div>
+        </div>
+        
+        <div class="container mx-auto px-6 relative">
+            <h2 class="text-3xl font-bold text-center mb-4">Contact Us</h2>
+            <p class="text-center max-w-2xl mx-auto mb-12">Have questions? Our team is here to help. Fill out the form below and we'll get back to you within 24 hours.</p>
+            
+            <div class="flex flex-col lg:flex-row gap-10">
+                <div class="lg:w-1/2 animate" style="animation-delay: 0.3s">
+                    <div class="contact-form p-8 bg-white rounded-xl shadow-xl">
+                        <form id="clinic-contact-form">
+                            <div class="form-group">
+                                <input type="text" id="name" class="form-input" placeholder=" " required>
+                                <label for="name" class="form-label">Full Name</label>
+                            </div>
+                            
+                            <div class="form-group">
+                                <input type="email" id="email" class="form-input" placeholder=" " required>
+                                <label for="email" class="form-label">Email Address</label>
+                            </div>
+                            
+                            <div class="form-group">
+                                <input type="tel" id="phone" class="form-input" placeholder=" ">
+                                <label for="phone" class="form-label">Phone Number (Optional)</label>
+                            </div>
+                            
+                            <div class="form-group">
+                                <select id="department" class="form-input" required>
+                                    <option value="" selected disabled> </option>
+                                    <option value="general">General Inquiry</option>
+                                    <option value="appointment">Make an Appointment</option>
+                                    <option value="billing">Billing Question</option>
+                                    <option value="medical_records">Medical Records</option>
+                                    <option value="feedback">Feedback</option>
+                                </select>
+                                <label for="department" class="form-label">Department</label>
+                            </div>
+                            
+                            <div class="form-group">
+                                <textarea id="message" class="form-input h-32" placeholder=" " required></textarea>
+                                <label for="message" class="form-label">Your Message</label>
+                            </div>
+                            
+                            <div class="flex items-center mb-4">
+                                <input type="checkbox" id="consent" class="mr-2" required>
+                                <label for="consent" class="text-sm">I consent to having my data collected and stored according to the <a href="#" class="text-blue-600 underline">privacy policy</a></label>
+                            </div>
+                            
+                            <button type="submit" class="btn-primary w-full">Send Message</button>
+                            <div class="loader mt-4" id="form-loader"></div>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="lg:w-1/2 animate" style="animation-delay: 0.4s">
+                    <div class="map-container bg-gray-200 h-full">
+                        <img src="https://placehold.co/800x600" alt="Map showing OrthoSolutions Clinic location at 123 Medical Plaza in Boston with surrounding landmarks" class="w-full h-full object-cover">
+                    </div>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+                        <div class="bg-white bg-opacity-10 p-4 rounded-lg backdrop-blur-sm">
+                            <h4 class="font-bold mb-2">Patient Services</h4>
+                            <p class="text-sm">For scheduling and patient inquiries</p>
+                            <a href="mailto:patients@orthosolutions.com" class="text-blue-200 underline">patients@orthosolutions.com</a>
+                        </div>
+                        
+                        <div class="bg-white bg-opacity-10 p-4 rounded-lg backdrop-blur-sm">
+                            <h4 class="font-bold mb-2">Emergency Contact</h4>
+                            <p class="text-sm">For urgent orthopedic care</p>
+                            <p class="text-blue-200">(617) 555-EMER (3637)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-12">Patient Testimonials</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="contact-card bg-gray-50 p-8 rounded-xl animate" style="animation-delay: 0.3s">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                            <img src="https://placehold.co/200x200" alt="James Wilson, 58 year old male patient after successful knee replacement surgery smiling" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="font-bold">James Wilson</h4>
+                            <p class="text-sm text-gray-600">Knee Replacement Patient</p>
+                        </div>
+                    </div>
+                    <div class="text-yellow-500 mb-3">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="italic">"Dr. Johnson performed my knee replacement and the results have been life-changing. The entire staff was professional and caring throughout my recovery process."</p>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="contact-card bg-gray-50 p-8 rounded-xl animate" style="animation-delay: 0.4s">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                            <img src="https://placehold.co/200x200" alt="Maria Garcia, young female athlete after ACL reconstruction holding tennis racket" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="font-bold">Maria Garcia</h4>
+                            <p class="text-sm text-gray-600">College Athlete</p>
+                        </div>
+                    </div>
+                    <div class="text-yellow-500 mb-3">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="italic">"After my ACL tear, Dr. Chen got me back on the court faster than I imagined possible. His sports-specific rehabilitation program was exactly what I needed."</p>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="contact-card bg-gray-50 p-8 rounded-xl animate" style="animation-delay: 0.5s">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                            <img src="https://placehold.co/200x200" alt="Thomas Baker, elderly gentleman after spinal fusion surgery walking confidently" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="font-bold">Thomas Baker</h4>
+                            <p class="text-sm text-gray-600">Spine Surgery Patient</p>
+                        </div>
+                    </div>
+                    <div class="text-yellow-500 mb-3">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <p class="italic">"The minimally invasive spine surgery changed my life. After years of chronic pain, I can now enjoy gardening and playing with my grandchildren again."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location Map Section -->
+    <section class="py-0 bg-gray-100">
+        <div class="container mx-auto px-6 animate">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-0">
+                <div class="py-12 lg:py-24 lg:pr-12">
+                    <h2 class="text-3xl font-bold mb-6">Visit Our Clinic</h2>
+                    <p class="mb-6">Our modern facility is conveniently located in the heart of Boston's medical district with dedicated patient parking and accessible public transportation options.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="text-blue-600 mr-4 mt-1">
+                                <i class="fas fa-map-marker-alt text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">Address</h4>
+                                <p>123 Medical Plaza<br>Boston, MA 02115</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="text-blue-600 mr-4 mt-1">
+                                <i class="fas fa-subway text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">Public Transportation</h4>
+                                <p>Green Line - Medical Center Station<br>Bus Routes 47, 60, 65</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="text-blue-600 mr-4 mt-1">
+                                <i class="fas fa-car text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">Parking</h4>
+                                <p>Discounted patient parking available in the attached garage with validation</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="h-96 lg:h-full">
+                    <img src="https://placehold.co/800x600" alt="Detailed street view map showing OrthoSolutions Clinic location with nearby landmarks and transportation options highlighted" class="w-full h-full object-cover">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-6 max-w-4xl">
+            <h2 class="text-3xl font-bold text-center mb-12">Frequently Asked Questions</h2>
+            
+            <div class="space-y-4">
+                <!-- FAQ Item 1 -->
+                <div class="border border-gray-200 rounded-xl p-6 animate" style="animation-delay: 0.3s">
+                    <button class="faq-toggle w-full flex justify-between items-center focus:outline-none">
+                        <h3 class="font-bold text-lg text-left">How do I schedule an appointment?</h3>
+                        <div class="text-blue-600">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                    </button>
+                    <div class="faq-content mt-4 hidden">
+                        <p>You can schedule an appointment by calling our main number at (617) 555-4567 during business hours, or by filling out the contact form on this page. For new patients, please have your insurance information ready when you call.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 2 -->
+                <div class="border border-gray-200 rounded-xl p-6 animate" style="animation-delay: 0.4s">
+                    <button class="faq-toggle w-full flex justify-between items-center focus:outline-none">
+                        <h3 class="font-bold text-lg text-left">What insurance plans do you accept?</h3>
+                        <div class="text-blue-600">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                    </button>
+                    <div class="faq-content mt-4 hidden">
+                        <p>We accept most major insurance plans including Blue Cross Blue Shield, Aetna, Medicare, and Tufts Health Plan. Please contact our billing department at (617) 555-8910 to verify your specific coverage.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 3 -->
+                <div class="border border-gray-200 rounded-xl p-6 animate" style="animation-delay: 0.5s">
+                    <button class="faq-toggle w-full flex justify-between items-center focus:outline-none">
+                        <h3 class="font-bold text-lg text-left">What should I bring to my first appointment?</h3>
+                        <div class="text-blue-600">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                    </button>
+                    <div class="faq-content mt-4 hidden">
+                        <p>For your first visit, please bring:</p>
+                        <ul class="list-disc pl-5 mt-2 space-y-1">
+                            <li>Your insurance card</li>
+                            <li>Photo ID</li>
+                            <li>List of current medications</li>
+                            <li>Any relevant medical records or imaging reports</li>
+                            <li>Completed new patient forms (available on our website)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 4 -->
+                <div class="border border-gray-200 rounded-xl p-6 animate" style="animation-delay: 0.6s">
+                    <button class="faq-toggle w-full flex justify-between items-center focus:outline-none">
+                        <h3 class="font-bold text-lg text-left">Do you offer telemedicine appointments?</h3>
+                        <div class="text-blue-600">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                    </button>
+                    <div class="faq-content mt-4 hidden">
+                        <p>Yes, we offer virtual consultations for follow-up visits and certain types of initial consultations. Please indicate your preference for a telemedicine appointment when scheduling. New injury evaluations typically require an in-person visit.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('.scroll-to-form').forEach(button => {
+            button.addEventListener('click', () => {
+                document.getElementById('contact-form').scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // FAQ toggle functionality
+        document.querySelectorAll('.faq-toggle').forEach(button => {
+            button.addEventListener('click', () => {
+                const content = button.nextElementSibling;
+                const icon = button.querySelector('i');
+                
+                content.classList.toggle('hidden');
+                
+                if (content.classList.contains('hidden')) {
+                    icon.classList.remove('fa-minus');
+                    icon.classList.add('fa-plus');
+                } else {
+                    icon.classList.remove('fa-plus');
+                    icon.classList.add('fa-minus');
+                }
+            });
+        });
+        
+        // Form submission handling
+        const contactForm = document.getElementById('clinic-contact-form');
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const loader = document.getElementById('form-loader');
+                loader.style.display = 'block';
+                
+                // Simulate form submission
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    
+                    // Show success message
+                    alert('Thank you for your message! Our team will get back to you within 24 hours.');
+                    contactForm.reset();
+                }, 1500);
+            });
+        }
+        
+        // Intersection Observer for animations
+        const animateElements = document.querySelectorAll('.animate');
+        
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const animateObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                    animateObserver.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+        
+        animateElements.forEach(element => {
+            element.style.opacity = 0;
+            element.style.transform = 'translateY(20px)';
+            element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            animateObserver.observe(element);
+        });
+    </script>
+</body>
+</html>
+
