@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jamuhuri Afya Clinic - Navigation</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Inter:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- FontAwesome -->
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    rel="stylesheet"
+  />
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+  <style>
+    /* Variables */
+    :root {
+      --clr-primary: #1a2639;
+      --clr-secondary: #d4b483;
+      --clr-light-bg: #f8f4e3;
+      --clr-white: #ffffff;
+      --clr-accent: #667eea;
+      --transition-speed: 0.3s;
+      --font-sans: 'Inter', sans-serif;
+      --font-serif: 'Cormorant Garamond', serif;
+    }
+
+    /* Reset */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--clr-light-bg);
+      color: var(--clr-primary);
+      overflow-x: hidden;
+      min-height: 200vh; /* for demo scroll effect */
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    /* Navbar Container */
+    nav.navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(26, 38, 57, 0.9);
+      backdrop-filter: saturate(180%) blur(20px);
+      z-index: 10000;
+      padding: 1rem 2rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: padding var(--transition-speed) ease;
+    }
+
+    nav.navbar.shrink {
+      padding: 0.6rem 2rem;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Logo */
+    .logo {
+      display: flex;
+      align-items: center;
+      font-family: var(--font-serif);
+      font-weight: 600;
+      font-size: 1.8rem;
+      color: var(--clr-secondary);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .logo-icon {
+      margin-right: 0.6rem;
+      font-size: 2.2rem;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+    }
+
+    /* Nav Menu */
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 1.8rem;
+    }
+
+    .nav-item {
+      position: relative;
+    }
+
+    /* Combined styles for both <a>.nav-link and <button>.nav-link.dropdown-toggle */
+    .nav-link {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--clr-white);
+      padding: 0.8rem 0.75rem;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      user-select: none;
+      white-space: nowrap;
+      min-height: 36px;
+      box-sizing: border-box;
+      border: 1px solid transparent;
+    }
+
+    /* Consistent hover/focus for nav links */
+    .nav-link:hover,
+    .nav-link:focus-visible {
+      color: var(--clr-secondary);
+      background: rgba(255, 255, 255, 0.16);
+      border-color: var(--clr-secondary);
+      box-shadow: 0 0 8px rgba(212, 180, 131, 0.3);
+      outline: none;
+    }
+
+    /* Dropdown toggle button specific */
+    .dropdown-toggle {
+      background: rgba(255, 255, 255, 0.07);
+      border: none;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .dropdown-toggle[aria-expanded="true"] {
+      background: rgba(255, 255, 255, 0.16);
+      color: var(--clr-secondary);
+      border-color: var(--clr-secondary);
+      box-shadow: 0 0 8px rgba(212, 180, 131, 0.5);
+    }
+
+    /* Icon styling */
+    .nav-link i,
+    .dropdown-toggle i {
+      font-size: 1.05rem;
+      color: inherit;
+    }
+
+    .dropdown-toggle .fa-chevron-down {
+      transition: transform var(--transition-speed) ease;
+      font-size: 0.75rem;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 3.2rem;
+      left: 0;
+      background: var(--clr-primary);
+      border-radius: 8px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+      min-width: 180px;
+      overflow: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(10px);
+      transition: opacity var(--transition-speed), transform var(--transition-speed);
+      z-index: 9999;
+    }
+
+    .dropdown-menu.show {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    .dropdown-item {
+      color: var(--clr-white);
+      padding: 0.75rem 1.2rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      transition: background-color var(--transition-speed), color var(--transition-speed);
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .dropdown-item:hover,
+    .dropdown-item:focus {
+      background-color: var(--clr-secondary);
+      color: var(--clr-primary);
+      outline: none;
+    }
+
+        .close-menu-btn{
+            display: none;
+        }
+    /* Mobile Menu Button */
+    .mobile-menu-btn {
+      display: none;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      color: var(--clr-white);
+      font-size: 1.8rem;
+      user-select: none;
+      transition: transform 0.2s ease;
+    }
+
+    .mobile-menu-btn:active {
+      transform: scale(0.9);
+    }
+
+    /* Responsive: Tablet/Phone */
+    @media (max-width: 1100px) {
+      nav.navbar {
+        padding: 1rem 1rem;
+      }
+      .nav-menu {
+        position: fixed;
+        overflow: scroll;
+        right: -100%;
+        top: 0;
+        height: 100vh;
+        width: 280px;
+        background: var(--clr-primary);
+        flex-direction: column;
+        padding: 5rem 1.5rem 2rem;
+        gap: 1rem;
+        transition: right 0.3s ease;
+        box-shadow: -4px 0 15px rgba(0, 0, 0, 0.3);
+        z-index: 10001;
+      }
+
+      .nav-menu.active {
+        right: 0;
+      }
+
+      /* Close button inside mobile menu */
+      .nav-menu .close-menu-btn {
+        position: absolute;
+        display: flex;
+        top: 1.2rem;
+        right: 1.2rem;
+        background: transparent;
+        border: none;
+        color: var(--clr-white);
+        font-size: 1.8rem;
+        cursor: pointer;
+        user-select: none;
+        transition: transform 0.2s ease;
+      }
+
+      .nav-menu .close-menu-btn:active {
+        transform: scale(0.9);
+      }
+
+      /* Adjustments for mobile nav-links */
+      .nav-link {
+        font-size: 1.2rem;
+        padding: 1rem 0;
+        border-radius: 0;
+        background: none !important;
+        border: none !important;
+        justify-content: flex-start;
+      }
+
+      .nav-link:hover,
+      .nav-link:focus-visible {
+        color: var(--clr-secondary);
+        background: rgba(255, 255, 255, 0.08) !important;
+        box-shadow: none !important;
+      }
+
+      .dropdown-menu {
+        position: static;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        transform: translateY(0) !important;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.35s ease;
+        box-shadow: none;
+        border-radius: 0;
+        background: transparent;
+      }
+
+      .dropdown-menu.show {
+        max-height: 400px;
+      }
+
+      .dropdown-item {
+        padding-left: 1.5rem;
+        border-bottom: none;
+        background: none !important;
+        color: var(--clr-white);
+      }
+
+      .dropdown-item:hover,
+      .dropdown-item:focus {
+        background: rgba(212, 180, 131, 0.15);
+        color: var(--clr-secondary);
+      }
+
+      .mobile-menu-btn {
+        display: block;
+      }
+    }
+
+    /* Accessibility Focus */
+    /* Handled by .nav-link:focus-visible */
+
+  </style>
+</head>
+<body>
+  <nav class="navbar" role="navigation" aria-label="Primary Navigation">
+    <a href="/" class="logo" aria-label="Jamuhuri Afya homepage">
+      <i class="fas fa-heartbeat logo-icon" aria-hidden="true"></i>
+      Jamuhuri Afya Clinic
+    </a>
+
+    <button
+      class="mobile-menu-btn"
+      aria-label="Toggle menu"
+      aria-expanded="false"
+      aria-controls="nav-menu"
+    >
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <ul class="nav-menu" id="nav-menu">
+      <!-- Close button inside mobile menu -->
+      <button class="close-menu-btn" aria-label="Close menu">
+        <i class="fas fa-times"></i>
+      </button>
+
+      <li class="nav-item">
+        <a href="/" class="nav-link" tabindex="0">
+          <i class="fas fa-home" aria-hidden="true"></i> Home
+        </a>
+      </li>
+
+      <li class="nav-item dropdown">
+        <button
+          class="nav-link dropdown-toggle"
+          aria-haspopup="true"
+          aria-expanded="false"
+          aria-controls="services-dropdown"
+          tabindex="0"
+        >
+          <i class="fas fa-briefcase-medical" aria-hidden="true"></i> Services
+          <i class="fas fa-chevron-down" aria-hidden="true"></i>
+        </button>
+        <ul class="dropdown-menu" id="services-dropdown" role="menu" aria-label="Services submenu">
+          <li><a href="/services/consultation.html" class="dropdown-item" role="menuitem" tabindex="-1">Consultations</a></li>
+          <li><a href="/services/orthopaedics.html" class="dropdown-item" role="menuitem" tabindex="-1">Orthopaedics</a></li>
+          <li><a href="/services/physiotherapy.html" class="dropdown-item" role="menuitem" tabindex="-1">Physiotherapy</a></li>
+          <li><a href="/services/lab-tests.html" class="dropdown-item" role="menuitem" tabindex="-1">Lab Tests</a></li>
+          <li><a href="/services/imaging.html" class="dropdown-item" role="menuitem" tabindex="-1">Imaging</a></li>
+        </ul>
+      </li>
+
+      <li class="nav-item">
+        <a href="/doctors.html" class="nav-link" tabindex="0">
+          <i class="fas fa-user-md" aria-hidden="true"></i> Doctors
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a href="/appointments.html" class="nav-link" tabindex="0">
+          <i class="fas fa-calendar-check" aria-hidden="true"></i> Appointments
+        </a>
+      </li>
+
+      <li class="nav-item dropdown">
+        <button
+          class="nav-link dropdown-toggle"
+          aria-haspopup="true"
+          aria-expanded="false"
+          aria-controls="resources-dropdown"
+          tabindex="0"
+        >
+          <i class="fas fa-book-medical" aria-hidden="true"></i> Patient Resources
+          <i class="fas fa-chevron-down" aria-hidden="true"></i>
+        </button>
+        <ul class="dropdown-menu" id="resources-dropdown" role="menu" aria-label="Patient Resources submenu">
+          <li><a href="/resources/faqs.html" class="dropdown-item" role="menuitem" tabindex="-1">FAQs</a></li>
+          <li><a href="/resources/billing.html" class="dropdown-item" role="menuitem" tabindex="-1">Billing & Insurance</a></li>
+          <li><a href="/resources/forms.html" class="dropdown-item" role="menuitem" tabindex="-1">Forms & Documents</a></li>
+          <li><a href="/resources/contact.html" class="dropdown-item" role="menuitem" tabindex="-1">Contact Support</a></li>
+        </ul>
+      </li>
+
+      <li class="nav-item">
+        <a href="/contact.html" class="nav-link" tabindex="0">
+          <i class="fas fa-phone" aria-hidden="true"></i> Contact
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const navbar = document.querySelector('.navbar');
+      const mobileBtn = document.querySelector('.mobile-menu-btn');
+      const navMenu = document.querySelector('.nav-menu');
+      const dropdowns = document.querySelectorAll('.nav-item.dropdown');
+      const closeBtn = document.querySelector('.close-menu-btn');
+
+      // Navbar shrink on scroll
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 60) {
+          navbar.classList.add('shrink');
+        } else {
+          navbar.classList.remove('shrink');
+        }
+      });
+
+      // Toggle mobile menu open/close
+      mobileBtn.addEventListener('click', () => {
+        const expanded = mobileBtn.getAttribute('aria-expanded') === 'true' || false;
+        mobileBtn.setAttribute('aria-expanded', !expanded);
+        navMenu.classList.toggle('active');
+      });
+
+      // Close mobile menu on close button click
+      closeBtn.addEventListener('click', () => {
+        navMenu.classList.remove('active');
+        mobileBtn.setAttribute('aria-expanded', 'false');
+        // Close all open dropdowns if any
+        dropdowns.forEach(dd => {
+          const menu = dd.querySelector('.dropdown-menu');
+          const toggle = dd.querySelector('.dropdown-toggle');
+          const chevron = toggle.querySelector('.fa-chevron-down');
+          menu.classList.remove('show');
+          toggle.setAttribute('aria-expanded', 'false');
+          if (chevron) chevron.style.transform = 'rotate(0deg)';
+        });
+      });
+
+      // Handle dropdown toggles (desktop & mobile)
+      dropdowns.forEach((dropdown) => {
+        const toggleBtn = dropdown.querySelector('.dropdown-toggle');
+        const menu = dropdown.querySelector('.dropdown-menu');
+        const chevron = toggleBtn.querySelector('.fa-chevron-down');
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+          if (!dropdown.contains(e.target)) {
+            menu.classList.remove('show');
+            toggleBtn.setAttribute('aria-expanded', 'false');
+            if (chevron) chevron.style.transform = 'rotate(0deg)';
+          }
+        });
+
+        // Toggle dropdown menu
+        toggleBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const isShown = menu.classList.contains('show');
+
+          // Close other dropdowns first
+          dropdowns.forEach(dd => {
+            const otherMenu = dd.querySelector('.dropdown-menu');
+            const otherToggle = dd.querySelector('.dropdown-toggle');
+            const otherChevron = otherToggle.querySelector('.fa-chevron-down');
+            if (otherMenu !== menu && otherMenu.classList.contains('show')) {
+              otherMenu.classList.remove('show');
+              otherToggle.setAttribute('aria-expanded', 'false');
+              if (otherChevron) otherChevron.style.transform = 'rotate(0deg)';
+            }
+          });
+
+          if (!isShown) {
+            menu.classList.add('show');
+            toggleBtn.setAttribute('aria-expanded', 'true');
+            if (chevron) chevron.style.transform = 'rotate(180deg)';
+          } else {
+            menu.classList.remove('show');
+            toggleBtn.setAttribute('aria-expanded', 'false');
+            if (chevron) chevron.style.transform = 'rotate(0deg)';
+          }
+        });
+      });
+
+      // Close mobile menu on non-dropdown link click
+      navMenu.querySelectorAll('a.nav-link:not(.dropdown-toggle)').forEach(link => {
+        link.addEventListener('click', () => {
+          if (navMenu.classList.contains('active')) {
+            navMenu.classList.remove('active');
+            mobileBtn.setAttribute('aria-expanded', 'false');
+            dropdowns.forEach(dd => {
+              const menu = dd.querySelector('.dropdown-menu');
+              const toggle = dd.querySelector('.dropdown-toggle');
+              const chevron = toggle.querySelector('.fa-chevron-down');
+              menu.classList.remove('show');
+              toggle.setAttribute('aria-expanded', 'false');
+              if (chevron) chevron.style.transform = 'rotate(0deg)';
+            });
+          }
+        });
+      });
+
+      // GSAP animation for navbar fade in
+      gsap.from('.navbar', { y: -50, opacity: 0, duration: 0.8, ease: 'power3.out' });
+    });
+  </script>
+</body>
+</html>
