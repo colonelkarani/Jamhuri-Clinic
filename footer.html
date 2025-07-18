@@ -1,293 +1,236 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OrthoExcel - Clean Footer</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Thika Wellness Clinic</title>
+  <style>:root{
+  --forest:#004d40;
+  --cream:#f7f5f2;
+  --accent:#d4af37;
+  --text:#111;
+  --grey:#777;
+}
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #ffffff;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-        }
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 
-        .main-content {
-            flex: 1;
-            padding: 2rem;
-            color: #64748b;
-            text-align: center;
-        }
+body{
+  font-family:'Inter',sans-serif;
+  background:#fff;
+  color:var(--text);
+  line-height:1.6;
+}
 
-        .footer {
-            background: #f8fafc;
-            border-top: 1px solid #e2e8f0;
-            padding: 2.5rem 0 1.5rem;
-        }
+#site-footer{
+  background:var(--cream);
+  padding:clamp(3rem,6vw,6rem) 0 2rem;
+  position:relative;
+  overflow:hidden;
+}
 
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
+.footer-inner{
+  max-width:1400px;
+  margin:0 auto;
+  padding:0 2rem;
+}
 
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 1.5fr 1fr 1fr 1fr;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
+.footer-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:3rem;
+}
 
-        .footer-brand {
-            padding-right: 1rem;
-        }
+.footer-brand .logo{
+  font-family:'Playfair Display',serif;
+  font-weight:500;
+  font-size:clamp(1.5rem,2vw,2.2rem);
+  color:var(--forest);
+  margin-bottom:.5rem;
+}
 
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #1e293b;
-            margin-bottom: 0.75rem;
-        }
+.tagline{
+  font-size:.9rem;
+  color:var(--grey);
+  max-width:220px;
+}
 
-        .tagline {
-            color: #64748b;
-            font-size: 0.95rem;
-            margin-bottom: 1.25rem;
-            line-height: 1.5;
-        }
+.footer-nav h3,
+.footer-contact h3,
+.footer-social h3{
+  font-family:'Inter',sans-serif;
+  font-weight:600;
+  font-size:.9rem;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  margin-bottom:1rem;
+}
 
-        .contact-info {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
+.footer-nav ul{
+  list-style:none;
+}
 
-        .contact-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.5rem;
-            color: #475569;
-            font-size: 0.9rem;
-        }
+.footer-nav a,
+.footer-contact a{
+  color:var(--text);
+  text-decoration:none;
+  transition:color .3s;
+}
 
-        .contact-icon {
-            width: 16px;
-            height: 16px;
-            fill: #64748b;
-            flex-shrink: 0;
-            margin-top: 2px;
-        }
+.footer-nav a:hover,
+.footer-contact a:hover{
+  color:var(--accent);
+}
 
-        .section-title {
-            font-size: 1rem;
-            font-weight: 600;
-            color: #1e293b;
-            margin-bottom: 1rem;
-        }
+address{
+  font-style:normal;
+}
 
-        .footer-links {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
+address p{
+  margin-bottom:.8rem;
+  color:var(--grey);
+}
 
-        .footer-links a {
-            color: #64748b;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.2s ease;
-        }
+address a{
+  display:block;
+  margin-bottom:.4rem;
+}
 
-        .footer-links a:hover {
-            color: #1e293b;
-        }
+.newsletter{
+  display:flex;
+  margin-bottom:1rem;
+}
 
-        .footer-bottom {
-            border-top: 1px solid #e2e8f0;
-            padding-top: 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 2rem;
-            flex-wrap: wrap;
-        }
+.newsletter input{
+  flex:1;
+  border:1px solid var(--grey);
+  border-right:0;
+  padding:.6rem .8rem;
+  font-size:.9rem;
+  outline:none;
+  transition:border-color .3s;
+}
 
-        .footer-bottom-left {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-            flex-wrap: wrap;
-        }
+.newsletter input:focus{
+  border-color:var(--accent);
+}
 
-        .copyright {
-            color: #64748b;
-            font-size: 0.85rem;
-        }
+.newsletter button{
+  border:1px solid var(--grey);
+  background:var(--forest);
+  color:#fff;
+  padding:0 1rem;
+  cursor:pointer;
+  transition:background .3s;
+}
 
-        .legal-links {
-            display: flex;
-            gap: 1.5rem;
-        }
+.newsletter button:hover{
+  background:var(--accent);
+}
 
-        .legal-links a {
-            color: #64748b;
-            text-decoration: none;
-            font-size: 0.85rem;
-            transition: color 0.2s ease;
-        }
+.social-icons{
+  display:flex;
+  gap:1rem;
+}
 
-        .legal-links a:hover {
-            color: #1e293b;
-        }
+.social-icons a{
+  font-size:.9rem;
+  color:var(--text);
+}
 
-        .appointment-cta {
-            background: #3b82f6;
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.9rem;
-            transition: background-color 0.2s ease;
-        }
-
-        .appointment-cta:hover {
-            background: #2563eb;
-        }
-
-        @media (max-width: 968px) {
-            .footer-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 2rem;
-            }
-            
-            .footer-brand {
-                grid-column: 1 / -1;
-                padding-right: 0;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .footer {
-                padding: 2rem 0 1rem;
-            }
-            
-            .footer-grid {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-            
-            .footer-content {
-                padding: 0 1rem;
-            }
-            
-            .footer-bottom {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 1rem;
-            }
-            
-            .footer-bottom-left {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.75rem;
-            }
-            
-            .legal-links {
-                gap: 1rem;
-            }
-        }
-    </style>
+.footer-bottom{
+  text-align:center;
+  margin-top:4rem;
+  padding-top:2rem;
+  border-top:1px solid #e5e5e5;
+  color:var(--grey);
+  font-size:.75rem;
+}</style>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet">
 </head>
+
 <body>
-    <div class="main-content">
-        <p>← Main website content would be here</p>
-    </div>
+  <!-- dummy content to create scroll -->
+  <div style="height:100vh"></div>
 
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-grid">
-                <div class="footer-brand">
-                    <div class="logo">OrthoExcel</div>
-                    <p class="tagline">Advanced orthopedic care with a personal touch.</p>
-                    
-                    <div class="contact-info">
-                        <div class="contact-item">
-                            <svg class="contact-icon" viewBox="0 0 24 24">
-                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                            </svg>
-                            <span>2847 Medical Plaza, Suite 400<br>Healthcare District, NY 10001</span>
-                        </div>
-                        <div class="contact-item">
-                            <svg class="contact-icon" viewBox="0 0 24 24">
-                                <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
-                            </svg>
-                            <span>(555) 123-BONE</span>
-                        </div>
-                        <div class="contact-item">
-                            <svg class="contact-icon" viewBox="0 0 24 24">
-                                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-                            </svg>
-                            <span>info@orthoexcel.com</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="footer-section">
-                    <h3 class="section-title">Services</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Joint Replacement</a></li>
-                        <li><a href="#">Sports Medicine</a></li>
-                        <li><a href="#">Spine Care</a></li>
-                        <li><a href="#">Trauma Surgery</a></li>
-                        <li><a href="#">Physical Therapy</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-section">
-                    <h3 class="section-title">Patient Care</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Schedule Appointment</a></li>
-                        <li><a href="#">Patient Portal</a></li>
-                        <li><a href="#">Insurance</a></li>
-                        <li><a href="#">Preparation Guide</a></li>
-                        <li><a href="#">Recovery Resources</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-section">
-                    <h3 class="section-title">About</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Our Doctors</a></li>
-                        <li><a href="#">Our Facility</a></li>
-                        <li><a href="#">Patient Stories</a></li>
-                        <li><a href="#">Careers</a></li>
-                        <li><a href="#">Contact</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="footer-bottom">
-                <div class="footer-bottom-left">
-                    <p class="copyright">© 2025 OrthoExcel. All rights reserved.</p>
-                    <div class="legal-links">
-                        <a href="#">Privacy Policy</a>
-                        <a href="#">Terms of Service</a>
-                        <a href="#">HIPAA Notice</a>
-                    </div>
-                </div>
-                <a href="#" class="appointment-cta">Book Appointment</a>
-            </div>
+  <!--  AWWWARDS-WORTHY FOOTER  -->
+  <footer id="site-footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <!-- Column 1: Brand / Tagline -->
+        <div class="footer-brand">
+          <h2 class="logo">Thika Wellness</h2>
+          <p class="tagline">Healing rooted in Kenyan soil.</p>
         </div>
-    </footer>
+
+        <!-- Column 2: Quick Links -->
+        <nav class="footer-nav">
+          <h3>Explore</h3>
+          <ul>
+            <li><a href="/services">Services</a></li>
+            <li><a href="/doctors">Our Doctors</a></li>
+            <li><a href="/book">Book Appointment</a></li>
+            <li><a href="/blog">Health Blog</a></li>
+          </ul>
+        </nav>
+
+        <!-- Column 3: Contact -->
+        <address class="footer-contact">
+          <h3>Visit Us</h3>
+          <p>
+            P.O. Box 320, Thika 01000<br/>
+            Along Thika-Garissa Rd, next to Bidii Centre
+          </p>
+          <a href="tel:+254202555555">+254 20 255 5555</a>
+          <a href="mailto:hello@thikawellness.co.ke">hello@thikawellness.co.ke</a>
+        </address>
+
+        <!-- Column 4: Social / Newsletter -->
+        <div class="footer-social">
+          <h3>Stay Updated</h3>
+          <form class="newsletter">
+            <input type="email" placeholder="Your email" required/>
+            <button type="submit">→</button>
+          </form>
+          <div class="social-icons">
+            <a aria-label="Facebook" href="#">Fb</a>
+            <a aria-label="Instagram" href="#">Ig</a>
+            <a aria-label="Twitter" href="#">Tw</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <small>&copy; <span id="year"></span> Thika Wellness Clinic. All rights reserved.</small>
+      </div>
+    </div>
+  </footer>
+
+  <!-- GSAP CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script >// Dynamic year
+document.getElementById('year').textContent = new Date().getFullYear();
+
+// GSAP Scroll-triggered reveal
+gsap.registerPlugin(ScrollTrigger);
+
+gsap.from("#site-footer .footer-grid > *", {
+  y: 60,
+  opacity: 0,
+  duration: 1,
+  stagger: 0.15,
+  ease: "power3.out",
+  scrollTrigger: {
+    trigger: "#site-footer",
+    start: "top 95%"
+  }
+});</script>
 </body>
 </html>

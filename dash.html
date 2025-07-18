@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jamhuri Afya – Patient Portal</title>
+    <style>
+        /*  RESET & BASE  */
+        *{margin:0;padding:0;box-sizing:border-box;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;}
+        :root{
+            --c-bg:#f5f7fa;
+            --c-card:#ffffff;
+            --c-primary:#0066ff;
+            --c-primary-light:#e6efff;
+            --c-secondary:#00d1b2;
+            --c-danger:#ff3b30;
+            --c-warning:#ffcc00;
+            --c-text:#1a1d29;
+            --c-muted:#8a94a6;
+            --c-border:#e1e6ef;
+            --radius:16px;
+            --shadow:0 6px 32px rgba(0,0,0,.06);
+            --shadow-hover:0 12px 48px rgba(0,0,0,.12);
+            --trans:.35s cubic-bezier(.4,0,.2,1);
+        }
+        body{background:var(--c-bg);color:var(--c-text);display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px;}
+        /*  DASHBOARD WRAPPER  */
+        .dashboard{
+            width:100%;
+            max-width:1440px;
+            display:grid;
+            gap:24px;
+            grid-template-columns:260px 1fr;
+            animation:fadeIn .8s ease-out;
+        }
+        @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}}
+        /*  SIDEBAR  */
+        .sidebar{
+            background:var(--c-card);
+            border-radius:var(--radius);
+            padding:32px 24px;
+            box-shadow:var(--shadow);
+            display:flex;
+            flex-direction:column;
+            gap:32px;
+            height:fit-content;
+            position:sticky;
+            top:24px;
+        }
+        .logo{
+            font-size:22px;
+            font-weight:700;
+            color:var(--c-primary);
+            letter-spacing:-.5px;
+            display:flex;
+            align-items:center;
+            gap:8px;
+        }
+        .logo svg{width:28px;height:28px;fill:currentColor;}
+        .nav-links{
+            list-style:none;
+            display:flex;
+            flex-direction:column;
+            gap:4px;
+        }
+        .nav-links a{
+            display:flex;
+            align-items:center;
+            gap:12px;
+            padding:10px 12px;
+            border-radius:var(--radius);
+            color:var(--c-muted);
+            font-weight:500;
+            text-decoration:none;
+            transition:var(--trans);
+        }
+        .nav-links a:hover,
+        .nav-links a.active{
+            background:var(--c-primary-light);
+            color:var(--c-primary);
+        }
+        .nav-links a svg{width:20px;height:20px;flex-shrink:0;}
+        .user-profile{
+            margin-top:auto;
+            display:flex;
+            align-items:center;
+            gap:12px;
+            padding:12px;
+            border-radius:var(--radius);
+            background:var(--c-primary-light);
+        }
+        .user-avatar{
+            width:40px;height:40px;border-radius:50%;object-fit:cover;}
+        .user-info small{color:var(--c-muted);}
+        /*  MAIN  */
+        .main{
+            display:grid;
+            gap:24px;
+            grid-template-rows:auto 1fr;
+        }
+        .header{
+            background:var(--c-card);
+            border-radius:var(--radius);
+            padding:24px 32px;
+            box-shadow:var(--shadow);
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            flex-wrap:wrap;
+            gap:12px;
+        }
+        .greeting h1{font-size:28px;font-weight:700;}
+        .greeting p{color:var(--c-muted);}
+        .quick-actions{
+            display:flex;
+            gap:12px;
+        }
+        .btn{
+            border:none;
+            background:var(--c-primary);
+            color:#fff;
+            font-weight:600;
+            padding:12px 20px;
+            border-radius:var(--radius);
+            cursor:pointer;
+            transition:var(--trans);
+            display:flex;
+            align-items:center;
+            gap:8px;
+        }
+        .btn:hover{box-shadow:var(--shadow-hover);}
+        .btn.outline{
+            background:transparent;
+            color:var(--c-primary);
+            border:1px solid var(--c-primary);
+        }
+        .btn svg{width:18px;height:18px;}
+        .grid-3{
+            display:grid;
+            gap:24px;
+            grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+        }
+        /*  CARD  */
+        .card{
+            background:var(--c-card);
+            border-radius:var(--radius);
+            box-shadow:var(--shadow);
+            padding:28px;
+            transition:var(--trans);
+        }
+        .card:hover{box-shadow:var(--shadow-hover);}
+        .card-header{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            margin-bottom:20px;
+        }
+        .card-header h2{font-size:20px;font-weight:600;}
+        .badge{
+            font-size:12px;
+            font-weight:700;
+            padding:4px 8px;
+            border-radius:20px;
+            text-transform:uppercase;
+            letter-spacing:.5px;
+        }
+        .badge.upcoming{background:var(--c-primary-light);color:var(--c-primary);}
+        .badge.completed{background:#e5faf5;color:var(--c-secondary);}
+        .badge.cancelled{background:#ffeaea;color:var(--c-danger);}
+        /*  APPOINTMENTS  */
+        .appointment-list{
+            display:flex;
+            flex-direction:column;
+            gap:16px;
+        }
+        .appointment{
+            display:flex;
+            align-items:center;
+            gap:16px;
+            padding:12px;
+            border-radius:var(--radius);
+            transition:var(--trans);
+        }
+        .appointment:hover{background:var(--c-bg);}
+        .appointment img{
+            width:48px;height:48px;border-radius:50%;object-fit:cover;
+        }
+        .appointment-info h4{font-size:16px;font-weight:600;}
+        .appointment-info p{font-size:14px;color:var(--c-muted);}
+        /*  STATS  */
+        .stats-row{
+            display:flex;
+            gap:24px;
+            flex-wrap:wrap;
+        }
+        .stat-card{
+            flex:1 1 160px;
+            padding:20px;
+            background:linear-gradient(135deg,var(--c-primary-light),rgba(0,102,255,.05));
+            border-radius:var(--radius);
+            text-align:center;
+        }
+        .stat-card h3{font-size:32px;font-weight:700;color:var(--c-primary);}
+        .stat-card p{font-size:14px;color:var(--c-muted);}
+        /*  CHART PLACEHOLDER  */
+        .chart{
+            height:220px;
+            background:var(--c-bg);
+            border-radius:var(--radius);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            color:var(--c-muted);
+            font-size:14px;
+            position:relative;
+            overflow:hidden;
+        }
+        .chart svg{position:absolute;inset:0;width:100%;height:100%;}
+        /*  LAB RESULTS  */
+        .lab-table{
+            width:100%;
+            border-collapse:collapse;
+        }
+        .lab-table th,
+        .lab-table td{
+            padding:12px 8px;
+            text-align:left;
+            font-size:14px;
+        }
+        .lab-table th{color:var(--c-muted);font-weight:600;}
+        .lab-table tr{border-bottom:1px solid var(--c-border);}
+        .lab-table tr:last-child{border:none;}
+        .lab-table small{color:var(--c-muted);}
+        /*  PRESCRIPTIONS  */
+        .prescription{
+            display:flex;
+            gap:16px;
+            align-items:center;
+            padding:16px;
+            border:1px solid var(--c-border);
+            border-radius:var(--radius);
+            margin-bottom:12px;
+        }
+        .prescription img{width:36px;height:36px;border-radius:50%;}
+        .prescription-info h5{font-size:15px;font-weight:600;}
+        .prescription-info p{font-size:13px;color:var(--c-muted);}
+        .prescription-actions{
+            margin-left:auto;
+            display:flex;
+            gap:8px;
+        }
+        .prescription-actions button{
+            border:none;
+            background:transparent;
+            cursor:pointer;
+            padding:6px;
+            border-radius:50%;
+            transition:var(--trans);
+        }
+        .prescription-actions button:hover{background:var(--c-bg);}
+        /*  NOTIFICATIONS  */
+        .notification-list{
+            display:flex;
+            flex-direction:column;
+            gap:12px;
+        }
+        .notification{
+            display:flex;
+            gap:12px;
+            padding:12px;
+            border-radius:var(--radius);
+            background:var(--c-bg);
+            animation:slideIn .4s ease-out;
+        }
+        @keyframes slideIn{from{opacity:0;transform:translateX(-10px);}}
+        .notification-icon{
+            width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:700;}
+        .notification-content p{font-size:14px;}
+        .notification-content small{color:var(--c-muted);}
+        /*  RESPONSIVE  */
+        @media(max-width:1024px){
+            .dashboard{grid-template-columns:1fr;}
+            .sidebar{order:2;position:relative;top:0;}
+            .main{order:1;}
+        }
+        @media(max-width:640px){
+            .header{flex-direction:column;align-items:flex-start;}
+            .quick-actions{width:100%;justify-content:flex-end;}
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="logo">
+            <svg viewBox="0 0 24 24"><path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/></svg>
+            Jamhuri Afya
+        </div>
+
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#" class="active">
+                    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                    Overview
+                </a></li>
+                <li><a href="#">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                    Appointments
+                </a></li>
+                <li><a href="#">
+                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    Lab Results
+                </a></li>
+                <li><a href="#">
+                    <svg viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h4"/><path d="M16 2v20"/></svg>
+                    Prescriptions
+                </a></li>
+                <li><a href="#">
+                    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    Profile
+                </a></li>
+            </ul>
+        </nav>
+
+        <div class="user-profile">
+            <img class="user-avatar" src="https://i.pravatar.cc/100?img=12" alt="User">
+            <div class="user-info">
+                <strong>Emily Clark</strong>
+                <small>ID: 847291</small>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+        <!-- HEADER -->
+        <header class="header">
+            <div class="greeting">
+                <h1>Welcome back, Emily!</h1>
+                <p>You have 3 upcoming appointments and 2 new lab results.</p>
+            </div>
+            <div class="quick-actions">
+                <button class="btn">
+                    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    Book Appointment
+                </button>
+                <button class="btn outline">
+                    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    Download Report
+                </button>
+            </div>
+        </header>
+
+        <!-- GRID -->
+        <div class="grid-3">
+
+            <!-- UPCOMING APPOINTMENTS -->
+            <section class="card">
+                <div class="card-header">
+                    <h2>Next Appointments</h2>
+                    <span class="badge upcoming">3</span>
+                </div>
+                <div class="appointment-list">
+                    <div class="appointment">
+                        <img src="https://i.pravatar.cc/100?img=32" alt="Dr.">
+                        <div class="appointment-info">
+                            <h4>Dr. Olivia Harris</h4>
+                            <p>Jul 18, 2025 • 9:30 AM</p>
+                        </div>
+                    </div>
+                    <div class="appointment">
+                        <img src="https://i.pravatar.cc/100?img=22" alt="Dr.">
+                        <div class="appointment-info">
+                            <h4>Dr. Samuel Reed</h4>
+                            <p>Jul 22, 2025 • 2:15 PM</p>
+                        </div>
+                    </div>
+                    <div class="appointment">
+                        <img src="https://i.pravatar.cc/100?img=13" alt="Dr.">
+                        <div class="appointment-info">
+                            <h4>Dr. Mia Chen</h4>
+                            <p>Jul 25, 2025 • 11:00 AM</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- HEALTH METRICS -->
+            <section class="card">
+                <div class="card-header">
+                    <h2>Health Metrics</h2>
+                </div>
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <h3>72</h3>
+                        <p>BPM</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>118/76</h3>
+                        <p>mmHg</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>98.6°</h3>
+                        <p>F</p>
+                    </div>
+                </div>
+                <div class="chart" id="metricChart">
+                    <svg>
+                        <polyline points="20,180 60,140 100,150 140,100 180,110 220,80 260,90 300,60 340,70" 
+                                  fill="none" stroke="#0066ff" stroke-width="3"/>
+                        <circle cx="340" cy="70" r="4" fill="#0066ff"/>
+                    </svg>
+                    <span>Weekly Heart Rate Trend</span>
+                </div>
+            </section>
+
+            <!-- LAB RESULTS -->
+            <section class="card">
+                <div class="card-header">
+                    <h2>Recent Lab Results</h2>
+                </div>
+                <table class="lab-table">
+                    <thead>
+                        <tr>
+                            <th>Test</th>
+                            <th>Value</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Cholesterol <small>(mg/dL)</small></td>
+                            <td>189</td>
+                            <td><small style="color:var(--c-secondary)">Normal</small></td>
+                        </tr>
+                        <tr>
+                            <td>HbA1c <small>(%)</small></td>
+                            <td>5.3</td>
+                            <td><small style="color:var(--c-secondary)">Normal</small></td>
+                        </tr>
+                        <tr>
+                            <td>Vitamin D <small>(ng/mL)</small></td>
+                            <td>22</td>
+                            <td><small style="color:var(--c-warning)">Low</small></td>
+                        </tr>
+                        <tr>
+                            <td>Iron <small>(µg/dL)</small></td>
+                            <td>78</td>
+                            <td><small style="color:var(--c-muted)">Borderline</small></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- ACTIVE PRESCRIPTIONS -->
+            <section class="card">
+                <div class="card-header">
+                    <h2>Active Prescriptions</h2>
+                </div>
+                <div>
+                    <div class="prescription">
+                        <img src="https://via.placeholder.com/48/0066ff/fff?text=M" alt="Med">
+                        <div class="prescription-info">
+                            <h5>Metformin 500mg</h5>
+                            <p>Take twice daily with meals</p>
+                        </div>
+                        <div class="prescription-actions">
+                            <button title="Refill">
+                                <svg width="16" height="16" viewBox="0 0 24 24"><path d="M1 4v6h6M23 20v-6h-6" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="prescription">
+                        <img src="https://via.placeholder.com/48/00d1b2/fff?text=L" alt="Med">
+                        <div class="prescription-info">
+                            <h5>Lisinopril 10mg</h5>
+                            <p>Once daily in the morning</p>
+                        </div>
+                        <div class="prescription-actions">
+                            <button title="Refill">
+                                <svg width="16" height="16" viewBox="0 0 24 24"><path d="M1 4v6h6M23 20v-6h-6" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="prescription">
+                        <img src="https://via.placeholder.com/48/ff3b30/fff?text=V" alt="Med">
+                        <div class="prescription-info">
+                            <h5>Vitamin D3 2000 IU</h5>
+                            <p>Once daily with breakfast</p>
+                        </div>
+                        <div class="prescription-actions">
+                            <button title="Refill">
+                                <svg width="16" height="16" viewBox="0 0 24 24"><path d="M1 4v6h6M23 20v-6h-6" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- NOTIFICATIONS -->
+            <section class="card">
+                <div class="card-header">
+                    <h2>Notifications</h2>
+                </div>
+                <div class="notification-list">
+                    <div class="notification">
+                        <div class="notification-icon" style="background:var(--c-primary);">!</div>
+                        <div class="notification-content">
+                            <p>Your lab results are ready to view.</p>
+                            <small>2 hours ago</small>
+                        </div>
+                    </div>
+                    <div class="notification">
+                        <div class="notification-icon" style="background:var(--c-secondary);">✓</div>
+                        <div class="notification-content">
+                            <p>Appointment confirmed with Dr. Harris.</p>
+                            <small>Yesterday</small>
+                        </div>
+                    </div>
+                    <div class="notification">
+                        <div class="notification-icon" style="background:var(--c-warning);">R</div>
+                        <div class="notification-content">
+                            <p>Refill request approved for Metformin.</p>
+                            <small>3 days ago</small>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- INSURANCE -->
+            <section class="card">
+                <div class="card-header">
+                    <h2>Insurance</h2>
+                </div>
+                <div style="display:flex;align-items:center;gap:16px;">
+                    <img src="https://via.placeholder.com/64/1a1d29/fff?text=HI" alt="Insurance" style="border-radius:var(--radius);">
+                    <div>
+                        <h4>HealthPlus Premium</h4>
+                        <p style="color:var(--c-muted);font-size:14px;">Policy #HP-847291-X</p>
+                        <p style="color:var(--c-muted);font-size:14px;">Expires 12/2025</p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+</div>
+
+<script>
+    // Simple interactive highlight on nav
+    document.querySelectorAll('.nav-links a').forEach(link=>{
+        link.addEventListener('click',(e)=>{
+            document.querySelectorAll('.nav-links a').forEach(l=>l.classList.remove('active'));
+            e.currentTarget.classList.add('active');
+        })
+    })
+    // Animate chart on hover
+    const chart = document.getElementById('metricChart');
+    chart.addEventListener('mouseenter',()=>{
+        chart.querySelector('polyline').style.strokeDasharray='300';
+        chart.querySelector('polyline').style.strokeDashoffset='300';
+        chart.querySelector('polyline').style.animation='draw 1.2s ease-out forwards';
+    })
+    // Add CSS animation via JS
+    const style = document.createElement('style');
+    style.textContent=`
+        @keyframes draw{
+            to{stroke-dashoffset:0;}
+        }
+    `;
+    document.head.appendChild(style);
+</script>
+</body>
+</html>
