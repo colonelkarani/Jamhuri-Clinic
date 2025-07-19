@@ -369,7 +369,7 @@
     .hero h1{
       font-family:'Playfair Display',serif;
       font-size:clamp(2.5rem,5vw,4.5rem);
-      color:#fff;
+      color:var(--primary);
       line-height:1.2;
       margin-bottom:1.5rem;
       opacity:0;
@@ -378,7 +378,7 @@
     .hero p{
       font-size:clamp(1rem,2vw,1.25rem);
       font-weight:300;
-      color:#fff;
+      color:var(--dark);
       max-width:600px;
       margin-bottom:2.5rem;
       opacity:0;
@@ -415,15 +415,15 @@
       transition:transform .5s cubic-bezier(.23,1,.32,1);
     }
     .btn-primary{
-      background:#fff;
+      background:var(--primary);
       color:var(--forest);
     }
     .btn-primary:hover{
-      color:#fff;
+      color:var(--secondary);
       box-shadow:0 10px 25px rgba(0,0,0,.3);
     }
     .btn-secondary{
-      color:#fff;
+      color:#387373;
       border:2px solid #fff;
     }
     .btn-secondary::before{
