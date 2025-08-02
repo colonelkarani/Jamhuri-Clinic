@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Jamhuri Afya – Complete Care Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Services Styles -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <style>
+    :root{
+      --bg:#f7fafc;
+      --c1:#0066ff;
+      --c2:#00d2ff;
+      --c3:#ff3b30;
+      --c4:#34c759;
+      --dark:#1a1d29;
+      --light:#ffffff;
+      --grey:#8d96a8;
+      --radius:24px;
+      --card-shadow:0 12px 40px rgba(0,0,0,.06);
+      --font:'Inter',sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--font);
+      background:var(--bg);
+      color:var(--dark);
+      padding:40px 24px;
+      display:flex;
+      justify-content:center;
+    }
+    .dash{
+      width:100%;
+      max-width:1400px;
+      display:grid;
+      gap:32px;
+    }
+       /* services grid */
+    .services{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:28px;
+    }
+    .service-card{
+      background:var(--light);
+      border-radius:var(--radius);
+      box-shadow:var(--card-shadow);
+      padding:32px;
+      display:flex;
+      flex-direction:column;
+      transition:transform .3s;
+      cursor:pointer;
+    }
+    .service-card:hover{transform:translateY(-6px)}
+    .service-icon{
+      width:64px;height:64px;
+      border-radius:50%;
+      background:linear-gradient(135deg,var(--c1),var(--c2));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      margin-bottom:20px;
+    }
+    .service-icon span{font-size:32px;color:#fff}
+    .service-card h3{font-size:20px;font-weight:600;margin:0 0 12px}
+    .service-card p{font-size:15px;color:var(--grey);line-height:1.6;margin:0 0 20px;flex:1}
+    .service-card .tag{
+      align-self:flex-start;
+      padding:4px 12px;
+      font-size:12px;
+      font-weight:600;
+      border-radius:20px;
+      color:#fff;
+      background:var(--c4);
+    }
+    .service-card[data-urgent] .tag{background:var(--c3)}
+
+    /* modal */
+    .modal{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.4);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      opacity:0;
+      visibility:hidden;
+      transition:.3s;
+      padding:20px;
+      z-index:999;
+    }
+    .modal.show{opacity:1;visibility:visible}
+    .modal-inner{
+      background:var(--light);
+      border-radius:var(--radius);
+      max-width:600px;
+      width:100%;
+      padding:40px;
+      transform:translateY(40px);
+      transition:transform .3s;
+    }
+    .modal.show .modal-inner{transform:translateY(0)}
+    .modal h2{margin-top:0}
+    .modal-close{
+      position:absolute;
+      top:16px;right:20px;
+      font-size:28px;
+      cursor:pointer;
+    }
+    .btn{
+      margin-top:24px;
+      background:var(--c1);
+      color:#fff;
+      border:none;
+      padding:14px 32px;
+      border-radius:12px;
+      font-size:15px;
+      cursor:pointer;
+      transition:.2s;
+    }
+    .btn:hover{filter:brightness(1.1)}
+    @media(max-width:800px){
+      .hero h1{font-size:32px}
+    }
+  </style>
+</head>
+<body>
+
+
+
+  <div class="services" id="services">
+    <!-- cards are injected by JS -->
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal" id="modal">
+  <div class="modal-inner">
+    <span class="material-icons modal-close" id="closeModal">close</span>
+    <h2 id="modalTitle"></h2>
+    <p id="modalBody"></p>
+    <button class="btn" id="ctaBtn">Book Appointment</button>
+  </div>
+</div>
+
+<script>
+const services = [
+  {
+    title:"Orthopedic Consultations & Diagnosis",
+    icon:"medical_services",
+    desc:"Comprehensive musculoskeletal evaluation using physical exams & advanced diagnostics for a tailored treatment plan.",
+    tag:"Consult"
+  },
+  {
+    title:"Fracture Care",
+    icon:"healing",
+    desc:"Full-spectrum fracture management: reduction, fixation, immobilization & follow-up imaging.",
+    tag:"Acute"
+  },
+  {
+    title:"Physical Therapy",
+    icon:"fitness_center",
+    desc:"Individualized rehab programs to restore strength, mobility and function after injury or surgery.",
+    tag:"Rehab"
+  },
+  {
+    title:"Pain Management",
+    icon:"medication",
+    desc:"Non-surgical pain relief with medications, viscosupplementation, steroid injections & nerve blocks.",
+    tag:"Relief"
+  },
+  {
+    title:"Pediatric Orthopedics",
+    icon:"child_care",
+    desc:"Specialized care for growth-related issues, congenital deformities & sports injuries in children.",
+    tag:"Kids"
+  },
+  {
+    title:"Non-Operative Treatments",
+    icon:"accessibility_new",
+    desc:"Conservative management for arthritis, tendonitis, sprains, strains & nerve pain via bracing & therapy.",
+    tag:"Conservative"
+  },
+  {
+    title:"Physiotherapy",
+    icon:"sports_kabaddi",
+    desc:"Hands-on manual therapy, electro-modalities & exercise prescription under expert supervision.",
+    tag:"Therapy"
+  },
+  {
+    title:"Occupational Therapy",
+    icon:"work",
+    desc:"Re-learn daily activities & return-to-work programs tailored for orthopedic and hand conditions.",
+    tag:"ADL"
+  },
+  {
+    title:"Urgent Care",
+    icon:"local_hospital",
+    desc:"Same-day treatment for acute injuries, sprains, suspected fractures & post-op complications.",
+    tag:"Urgent",
+    urgent:true
+  },
+  {
+    title:"Primary Care Services",
+    icon:"health_and_safety",
+    desc:"Annual physicals, labs, vaccinations, chronic-disease management & minor illness care.",
+    tag:"Wellness"
+  },
+  {
+    title:"Post-Surgical Rehabilitation",
+    icon:"analytics",
+    desc:"Protocol-driven recovery plans after joint replacements, arthroscopy or spinal surgery.",
+    tag:"Post-Op"
+  },
+  {
+    title:"Pain Clinics",
+    icon:"psychology",
+    desc:"Multidisciplinary chronic-pain programs with physiatrists, psychologists & interventional procedures.",
+    tag:"Chronic"
+  },
+  {
+    title:"Nutritional Counseling",
+    icon:"restaurant",
+    desc:"Dietary guidance for bone density, inflammation control & optimal musculoskeletal healing.",
+    tag:"Diet"
+  },
+  {
+    title:"Patient Education",
+    icon:"school",
+    desc:"Interactive workshops & resources on ergonomics, lifestyle modification & self-care strategies.",
+    tag:"Learn"
+  }
+];
+
+/* inject cards */
+const servicesContainer = document.getElementById('services');
+services.forEach(s=>{
+  const card = document.createElement('div');
+  card.className='service-card';
+  if(s.urgent) card.dataset.urgent=true;
+  card.innerHTML=`
+    <div class="service-icon">
+      <span class="material-icons">${s.icon}</span>
+    </div>
+    <h3>${s.title}</h3>
+    <p>${s.desc}</p>
+    <span class="tag">${s.tag}</span>
+  `;
+  card.addEventListener('click',()=>openModal(s));
+  servicesContainer.appendChild(card);
+});
+
+/* modal logic */
+const modal=document.getElementById('modal');
+const modalTitle=document.getElementById('modalTitle');
+const modalBody=document.getElementById('modalBody');
+const closeBtn=document.getElementById('closeModal');
+const ctaBtn=document.getElementById('ctaBtn');
+
+function openModal(service){
+  modalTitle.textContent=service.title;
+  modalBody.textContent=service.desc;
+  modal.classList.add('show');
+  gsap.fromTo('.modal-inner',{scale:.9},{scale:1,duration:.3,ease:'back.out(1.6)'});
+}
+
+[closeBtn,modal].forEach(el=>el.addEventListener('click',e=>{
+  if(e.target===modal||e.target===closeBtn) modal.classList.remove('show');
+}));
+
+/* stagger animation on load */
+gsap.from('.service-card',{
+  opacity:0,
+  y:40,
+  stagger:.08,
+  duration:.6,
+  ease:'power3.out'
+});
+</script>
+
+</body>
+</html>

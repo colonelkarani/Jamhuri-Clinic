@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orthopaedic Resources | Jamhuri Afya</title>
+    <meta name="description" content="Comprehensive orthopaedic resources and patient education from world-leading specialists.">
+    
+    <!-- Preloads -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" as="style">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" as="script">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" as="script">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 10L90 90H10L50 10Z' fill='%23001f3f'/%3E%3C/svg%3E">
+    
+    <!-- Styles -->
+    <style>
+        :root {
+            --primary-900: #001f3f;
+            --primary-800: #002d5a;
+            --primary-700: #003d7a;
+            --primary-600: #004d9a;
+            --accent-400: #00d4ff;
+            --accent-300: #33ddff;
+            --neutral-100: #fafafa;
+            --neutral-200: #f5f5f5;
+            --neutral-300: #e5e5e5;
+            --neutral-400: #a3a3a3;
+            --neutral-500: #737373;
+            --neutral-600: #525252;
+            --neutral-700: #404040;
+            --neutral-800: #262626;
+            --neutral-900: #171717;
+            --success-400: #22c55e;
+            --warning-400: #f59e0b;
+            --error-400: #ef4444;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--neutral-700);
+            background-color: var(--neutral-100);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(250, 250, 250, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--neutral-200);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.5rem;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary-900);
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            color: var(--neutral-600);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -0.5rem;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-400);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-900);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            background: linear-gradient(135deg, var(--primary-900) 0%, var(--primary-700) 100%);
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+        }
+
+        .hero-bg-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 212, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 8rem 1.5rem 4rem;
+            color: white;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 2rem;
+            background: var(--accent-400);
+            color: var(--primary-900);
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .hero-cta:hover {
+            background: var(--accent-300);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        /* Search Section */
+        .search-section {
+            padding: 4rem 0;
+            background: var(--neutral-100);
+            border-bottom: 1px solid var(--neutral-200);
+        }
+
+        .search-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .search-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--primary-900);
+            margin-bottom: 1rem;
+        }
+
+        .search-input-container {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1.25rem 3rem 1.25rem 1.5rem;
+            font-size: 1.125rem;
+            border: 2px solid var(--neutral-300);
+            border-radius: 50px;
+            background: white;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-400);
+            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--neutral-400);
+            font-size: 1.25rem;
+        }
+
+        /* Filter Pills */
+        .filter-section {
+            padding: 2rem 0;
+            background: var(--neutral-100);
+        }
+
+        .filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .filter-pill {
+            padding: 0.5rem 1.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--neutral-600);
+            background: white;
+            border: 1px solid var(--neutral-300);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .filter-pill:hover {
+            background: var(--neutral-200);
+            transform: translateY(-1px);
+        }
+
+        .filter-pill.active {
+            background: var(--primary-900);
+            color: white;
+            border-color: var(--primary-900);
+        }
+
+        /* Resources Grid */
+        .resources-section {
+            padding: 4rem 0 6rem;
+            background: var(--neutral-100);
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .resource-card {
+            background: white;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-2xl);
+        }
+
+        .resource-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary-800) 0%, var(--primary-600) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .resource-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+            background-size: 20px 20px;
+            opacity: 0.3;
+        }
+
+        .resource-category {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            padding: 0.5rem 1rem;
+            background: rgba(0, 212, 255, 0.9);
+            color: var(--primary-900);
+            font-size: 0.875rem;
+            font-weight: 600;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+        }
+
+        .resource-content {
+            padding: 2rem;
+        }
+
+        .resource-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-900);
+            margin-bottom: 0.75rem;
+            line-height: 1.3;
+        }
+
+        .resource-description {
+            color: var(--neutral-600);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .resource-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.875rem;
+            color: var(--neutral-500);
+        }
+
+        .resource-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .resource-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .resource-tag {
+            padding: 0.25rem 0.75rem;
+            font-size: 0.75rem;
+            color: var(--primary-700);
+            background: rgba(0, 212, 255, 0.1);
+            border-radius: 50px;
+        }
+
+        .resource-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .resource-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .resource-btn-primary {
+            background: var(--primary-900);
+            color: white;
+        }
+
+        .resource-btn-primary:hover {
+            background: var(--primary-800);
+            transform: translateY(-1px);
+        }
+
+        .resource-btn-secondary {
+            background: transparent;
+            color: var(--primary-900);
+            border: 1px solid var(--neutral-300);
+        }
+
+        .resource-btn-secondary:hover {
+            background: var(--neutral-100);
+            border-color: var(--neutral-400);
+        }
+
+        /* No Results */
+        .no-results {
+            text-align: center;
+            padding: 4rem 0;
+            color: var(--neutral-500);
+            display: none;
+        }
+
+        .no-results-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .no-results-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--neutral-700);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--primary-900);
+            color: white;
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--accent-400);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-400);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.875rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .resources-grid {
+                grid-template-columns: 1fr;
+                padding: 0 1rem;
+            }
+            
+            .hero-content {
+                padding: 6rem 1rem 3rem;
+            }
+            
+            .search-title {
+                font-size: 2rem;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0, 212, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--accent-400);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Focus styles */
+        :focus-visible {
+            outline: 2px solid var(--accent-400);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="#" class="logo">Jamhuri Afya</a>
+            <ul class="nav-links">
+                <li><a href="#resources" class="nav-link">Resources</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg">
+            <div class="hero-bg-grid"></div>
+        </div>
+        <div class="hero-content">
+            <h1 class="hero-title">Comprehensive Resources to help you with your healing journey</h1>
+            <p class="hero-subtitle">Expert-curated guides, videos, and interactive tools to help you understand and manage orthopaedic conditions</p>
+            <a href="#resources" class="hero-cta">
+                Explore Resources
+                <span>→</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="search-section">
+        <div class="search-container">
+            <h2 class="search-title">Find Your Condition</h2>
+            <div class="search-input-container">
+                <input 
+                    type="search" 
+                    class="search-input" 
+                    placeholder="Search by condition, treatment, or body part..."
+                    aria-label="Search orthopaedic resources"
+                    id="searchInput"
+                >
+                <span class="search-icon">🔍</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filter Section -->
+    <section class="filter-section">
+        <div class="filter-container">
+            <button class="filter-pill active" data-filter="all">All Resources</button>
+            <button class="filter-pill" data-filter="spine">Spine</button>
+            <button class="filter-pill" data-filter="knee">Knee</button>
+            <button class="filter-pill" data-filter="shoulder">Shoulder</button>
+            <button class="filter-pill" data-filter="hip">Hip</button>
+            <button class="filter-pill" data-filter="hand">Hand & Wrist</button>
+            <button class="filter-pill" data-filter="foot">Foot & Ankle</button>
+            <button class="filter-pill" data-filter="sports">Sports Medicine</button>
+            <button class="filter-pill" data-filter="pediatric">Pediatric</button>
+        </div>
+    </section>
+
+    <!-- Resources Section -->
+    <section class="resources-section" id="resources">
+        <div class="resources-grid" id="resourcesGrid">
+            <!-- Resources will be populated by JavaScript -->
+        </div>
+        
+        <div class="no-results" id="noResults">
+            <div class="no-results-icon">🔍</div>
+            <h3 class="no-results-title">No resources found</h3>
+            <p>Try adjusting your search terms or filters</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Jamhuri Afya</h3>
+                <p>World-class orthopaedic care with compassion and expertise.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#resources">Resources</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#privacy">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <ul class="footer-links">
+                    <li>📍 123 Maingi Dr</li>
+                    <li>📞 (254) 123-4567</li>
+                    <li>✉️ info@jamhuriafya.com</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Jamhuri Afya. All rights reserved. | Designed with care for your recovery journey.</p>
+        </div>
+    </footer>
+
+    <!-- GSAP Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <script>
+        // Resources data
+        const resources = [
+            {
+                id: 1,
+                title: "Comprehensive Guide to Osteoarthritis of the Knee",
+                description: "Learn about the causes, symptoms, and treatment options for knee osteoarthritis. Includes exercise recommendations and lifestyle modifications.",
+                category: "knee",
+                tags: ["osteoarthritis", "knee pain", "treatment", "exercise"],
+                readTime: "8 min read",
+                difficulty: "Beginner",
+                image: "knee-osteoarthritis",
+                color: "#00d4ff"
+            },
+            {
+                id: 2,
+                title: "Rotator Cuff Injuries: Complete Recovery Protocol",
+                description: "Detailed rehabilitation timeline and exercises for rotator cuff tears and tendinitis. Evidence-based approach with video demonstrations.",
+                category: "shoulder",
+                tags: ["rotator cuff", "shoulder injury", "rehabilitation", "physical therapy"],
+                readTime: "12 min read",
+                difficulty: "Intermediate",
+                image: "shoulder-rotator-cuff",
+                color: "#ff6b6b"
+            },
+            {
+                id: 3,
+                title: "Understanding Herniated Discs: A Patient's Guide",
+                description: "Comprehensive overview of herniated discs, from diagnosis to recovery. Learn when surgery is needed and what to expect during treatment.",
+                category: "spine",
+                tags: ["herniated disc", "back pain", "spine surgery", "recovery"],
+                readTime: "10 min read",
+                difficulty: "Intermediate",
+                image: "spine-herniated-disc",
+                color: "#4ecdc4"
+            },
+            {
+                id: 4,
+                title: "ACL Reconstruction: Pre and Post-Surgery Guide",
+                description: "Everything you need to know about ACL reconstruction surgery. From preparation to full return to sports, this guide covers it all.",
+                category: "knee",
+                tags: ["ACL", "knee surgery", "sports medicine", "rehabilitation"],
+                readTime: "15 min read",
+                difficulty: "Advanced",
+                image: "knee-acl",
+                color: "#a8e6cf"
+            },
+            {
+                id: 5,
+                title: "Carpal Tunnel Syndrome: Prevention and Treatment",
+                description: "Learn about carpal tunnel syndrome causes, symptoms, and both surgical and non-surgical treatment options. Includes ergonomic tips.",
+                category: "hand",
+                tags: ["carpal tunnel", "hand pain", "ergonomics", "treatment"],
+                readTime: "7 min read",
+                difficulty: "Beginner",
+                image: "hand-carpal-tunnel",
+                color: "#ffd93d"
+            },
+            {
+                id: 6,
+                title: "Plantar Fasciitis: Complete Treatment Guide",
+                description: "Evidence-based approach to treating plantar fasciitis. Includes stretching routines, shoe recommendations, and when to see a specialist.",
+                category: "foot",
+                tags: ["plantar fasciitis", "foot pain", "stretching", "shoes"],
+                readTime: "9 min read",
+                difficulty: "Beginner",
+                image: "foot-plantar-fasciitis",
+                color: "#ff8b94"
+            },
+            {
+                id: 7,
+                title: "Hip Replacement Surgery: What to Expect",
+                description: "Complete guide to hip replacement surgery, including preparation, the procedure itself, and full recovery timeline.",
+                category: "hip",
+                tags: ["hip replacement", "surgery", "recovery", "mobility"],
+                readTime: "14 min read",
+                difficulty: "Intermediate",
+                image: "hip-replacement",
+                color: "#c7ceea"
+            },
+            {
+                id: 8,
+                title: "Scoliosis in Children: Early Detection and Treatment",
+                description: "Understanding scoliosis in pediatric patients. Learn about screening, treatment options, and how to support your child through treatment.",
+                category: "pediatric",
+                tags: ["scoliosis", "pediatric", "spine", "bracing"],
+                readTime: "11 min read",
+                difficulty: "Intermediate",
+                image: "pediatric-scoliosis",
+                color: "#ffd3b6"
+            },
+            {
+                id: 9,
+                title: "Tennis Elbow: From Diagnosis to Recovery",
+                description: "Comprehensive guide to lateral epicondylitis (tennis elbow). Includes treatment options, prevention strategies, and return-to-activity timeline.",
+                category: "sports",
+                tags: ["tennis elbow", "sports injury", "treatment", "prevention"],
+                readTime: "6 min read",
+                difficulty: "Beginner",
+                image: "sports-tennis-elbow",
+                color: "#ffaaa5"
+            },
+            {
+                id: 10,
+                title: "Meniscus Tears: Treatment Options Explained",
+                description: "Understanding different types of meniscus tears and the best treatment approaches. Learn when surgery is necessary and recovery expectations.",
+                category: "knee",
+                tags: ["meniscus tear", "knee injury", "surgery", "recovery"],
+                readTime: "8 min read",
+                difficulty: "Intermediate",
+                image: "knee-meniscus",
+                color: "#8fcaca"
+            },
+            {
+                id: 11,
+                title: "Frozen Shoulder: Adhesive Capsulitis Guide",
+                description: "Complete guide to frozen shoulder, including causes, stages, and treatment options. Learn about effective exercises and pain management.",
+                category: "shoulder",
+                tags: ["frozen shoulder", "adhesive capsulitis", "exercises", "pain relief"],
+                readTime: "9 min read",
+                difficulty: "Intermediate",
+                image: "shoulder-frozen",
+                color: "#d8a7b1"
+            },
+            {
+                id: 12,
+                title: "Ankle Sprains: Complete Recovery Guide",
+                description: "Everything you need to know about ankle sprains, from acute injury to full recovery. Includes grading system and rehabilitation protocols.",
+                category: "foot",
+                tags: ["ankle sprain", "injury", "rehabilitation", "prevention"],
+                readTime: "7 min read",
+                difficulty: "Beginner",
+                image: "ankle-sprain",
+                color: "#b5ead7"
+            }
+        ];
+
+        // Initialize GSAP and ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Page load animations
+        function initPageAnimations() {
+            // Hero animations
+            const heroTl = gsap.timeline();
+            heroTl
+                .to('.hero-title', {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1.2,
+                    ease: "power2.out"
+                })
+                .to('.hero-subtitle', {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1,
+                    ease: "power2.out"
+                }, "-=0.8")
+                .to('.hero-cta', {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.8,
+                    ease: "power2.out"
+                }, "-=0.6");
+
+            // Parallax effect for hero background
+            gsap.to('.hero-bg-grid', {
+                yPercent: 50,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: '.hero',
+                    start: 'top bottom',
+                    end: 'bottom top',
+                    scrub: true
+                }
+            });
+        }
+
+        // Resource card animations
+        function animateResourceCards() {
+            gsap.utils.toArray('.resource-card').forEach((card, index) => {
+                gsap.fromTo(card, {
+                    opacity: 0,
+                    y: 50
+                }, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.6,
+                    delay: index * 0.1,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: card,
+                        start: 'top 95%',
+                        toggleActions: 'play none none reverse'
+                    }
+                });
+            });
+        }
+
+        // Render resources
+        function renderResources(filteredResources = resources) {
+            const grid = document.getElementById('resourcesGrid');
+            const noResults = document.getElementById('noResults');
+            
+            grid.innerHTML = '';
+            
+            if (filteredResources.length === 0) {
+                noResults.style.display = 'block';
+                return;
+            }
+            
+            noResults.style.display = 'none';
+            
+            filteredResources.forEach(resource => {
+                const card = document.createElement('article');
+                card.className = 'resource-card';
+                card.dataset.category = resource.category;
+                
+                card.innerHTML = `
+                    <div class="resource-image" style="background: linear-gradient(135deg, ${resource.color}88, ${resource.color}44)">
+                        <span class="resource-category">${resource.category.charAt(0).toUpperCase() + resource.category.slice(1)}</span>
+                    </div>
+                    <div class="resource-content">
+                        <h3 class="resource-title">${resource.title}</h3>
+                        <p class="resource-description">${resource.description}</p>
+                        <div class="resource-meta">
+                            <span class="resource-meta-item">📖 ${resource.readTime}</span>
+                            <span class="resource-meta-item">⭐ ${resource.difficulty}</span>
+                        </div>
+                        <div class="resource-tags">
+                            ${resource.tags.map(tag => `<span class="resource-tag">#${tag}</span>`).join('')}
+                        </div>
+                        <div class="resource-actions">
+                            <a href="#" class="resource-btn resource-btn-primary" onclick="handleResourceClick(${resource.id}, 'read')">
+                                Read Guide
+                            </a>
+                            <a href="#" class="resource-btn resource-btn-secondary" onclick="handleResourceClick(${resource.id}, 'save')">
+                                Save for Later
+                            </a>
+                        </div>
+                    </div>
+                `;
+                
+                grid.appendChild(card);
+            });
+            
+            // Re-animate new cards
+            animateResourceCards();
+        }
+
+        // Filter functionality
+        function setupFilters() {
+            const filterButtons = document.querySelectorAll('.filter-pill');
+            const searchInput = document.getElementById('searchInput');
+            
+            let currentFilter = 'all';
+            let searchTerm = '';
+            
+            function applyFilters() {
+                let filtered = resources;
+                
+                // Apply category filter
+                if (currentFilter !== 'all') {
+                    filtered = filtered.filter(resource => resource.category === currentFilter);
+                }
+                
+                // Apply search filter
+                if (searchTerm) {
+                    const term = searchTerm.toLowerCase();
+                    filtered = filtered.filter(resource => 
+                        resource.title.toLowerCase().includes(term) ||
+                        resource.description.toLowerCase().includes(term) ||
+                        resource.tags.some(tag => tag.toLowerCase().includes(term))
+                    );
+                }
+                
+                renderResources(filtered);
+            }
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    currentFilter = button.dataset.filter;
+                    applyFilters();
+                });
+            });
+            
+            searchInput.addEventListener('input', (e) => {
+                searchTerm = e.target.value;
+                applyFilters();
+            });
+        }
+
+        // Resource interaction handlers
+        function handleResourceClick(resourceId, action) {
+            event.preventDefault();
+            
+            const resource = resources.find(r => r.id === resourceId);
+            const button = event.target;
+            
+            // Add loading state
+            const originalText = button.textContent;
+            button.innerHTML = '<span class="loading"></span>';
+            button.style.pointerEvents = 'none';
+            
+            // Simulate API call
+            setTimeout(() => {
+                if (action === 'read') {
+                    // In real app, navigate to resource page
+                    console.log(`Opening resource: ${resource.title}`);
+                    button.innerHTML = originalText;
+                    button.style.pointerEvents = 'auto';
+                    
+                    // Show success feedback
+                    showToast(`Opening: ${resource.title}`);
+                } else if (action === 'save') {
+                    button.innerHTML = '✓ Saved';
+                    button.style.background = 'var(--success-400)';
+                    button.style.color = 'white';
+                    button.style.borderColor = 'var(--success-400)';
+                    
+                    showToast('Resource saved to your library');
+                }
+            }, 800);
+        }
+
+        // Toast notification
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: var(--primary-900);
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 0.5rem;
+                box-shadow: var(--shadow-xl);
+                z-index: 1001;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+            `;
+            toast.textContent = message;
+            
+            document.body.appendChild(toast);
+            
+            // Animate in
+            setTimeout(() => {
+                toast.style.transform = 'translateX(0)';
+            }, 100);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                toast.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 300);
+            }, 3000);
+        }
+
+        // Smooth scroll for navigation links
+        function setupSmoothScroll() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        }
+
+        // Navigation scroll effect
+        function setupNavScroll() {
+            const nav = document.querySelector('.nav');
+            let lastScrollY = window.scrollY;
+            
+            window.addEventListener('scroll', () => {
+                const currentScrollY = window.scrollY;
+                
+                if (currentScrollY > 100) {
+                    nav.style.background = 'rgba(250, 250, 250, 0.98)';
+                    nav.style.backdropFilter = 'blur(20px)';
+                } else {
+                    nav.style.background = 'rgba(250, 250, 250, 0.95)';
+                    nav.style.backdropFilter = 'blur(20px)';
+                }
+                
+                lastScrollY = currentScrollY;
+            });
+        }
+
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', () => {
+            initPageAnimations();
+            renderResources();
+            setupFilters();
+            setupSmoothScroll();
+            setupNavScroll();
+        });
+
+        // Add keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '/' && !e.target.matches('input, textarea')) {
+                e.preventDefault();
+                document.getElementById('searchInput').focus();
+            }
+        });
+    </script>
+</body>
+</html>
