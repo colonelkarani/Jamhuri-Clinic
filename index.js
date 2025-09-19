@@ -7,9 +7,9 @@ app.set("view engine", "ejs")
 app.use(express.static("views"))
 
 app.get("/",(req,res)=>{
-    res.render("index")
+    res.send("home.html")
 })
-app.get("/nav",(req,res)=>{
+app.get("/services",(req,res)=>{
     res.render("navbar")
 })
 

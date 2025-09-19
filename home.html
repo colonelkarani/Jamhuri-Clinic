@@ -441,6 +441,199 @@
     .btn:hover::before{
       transform:scaleX(1);
     }
+    /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .hero {
+                height: auto;
+                padding: 6rem 0;
+            }
+            
+            .btn-secondary {
+                margin-left: 0;
+                margin-top: 1rem;
+            }
+            
+            .section {
+                padding: 4rem 1rem;
+            }
+            
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        * Large tablets and small desktops */
+@media (max-width: 1024px) {
+    .hero {
+        min-height: 500px;
+        padding: 0 1.5rem;
+    }
+    
+    .hero h1 {
+        margin-bottom: 1.25rem;
+    }
+    
+    .hero p {
+        margin-bottom: 2rem;
+        max-width: 500px;
+    }
+    
+    .btn-group {
+        gap: 1.25rem;
+    }
+}
+
+/* Tablets */
+@media (max-width: 768px) {
+    .hero {
+        height: auto;
+        min-height: 450px;
+        padding: 4rem 1rem;
+        background-attachment: scroll; /* Better mobile performance */
+    }
+    
+    .hero h1 {
+        font-size: clamp(2rem, 8vw, 3.5rem);
+        margin-bottom: 1rem;
+        line-height: 1.1;
+    }
+    
+    .hero p {
+        font-size: clamp(0.9rem, 4vw, 1.1rem);
+        margin-bottom: 1.5rem;
+        max-width: 400px;
+        line-height: 1.5;
+    }
+    
+    .btn-group {
+        flex-direction: column;
+        gap: 1rem;
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .btn {
+        width: 100%;
+        padding: 0.8rem 1.5rem;
+        font-size: 0.9rem;
+        min-width: unset;
+    }
+    
+    .btn-secondary {
+        margin-left: 0;
+        margin-top: 0;
+    }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+    .hero {
+        min-height: 400px;
+        padding: 3rem 0.75rem;
+    }
+    
+    .hero h1 {
+        font-size: clamp(1.75rem, 9vw, 2.5rem);
+        margin-bottom: 0.75rem;
+    }
+    
+    .hero p {
+        font-size: clamp(0.85rem, 4.5vw, 1rem);
+        margin-bottom: 1.25rem;
+        max-width: 320px;
+        padding: 0 0.5rem;
+    }
+    
+    .btn {
+        padding: 0.75rem 1.25rem;
+        font-size: 0.85rem;
+        border-radius: 40px;
+    }
+    
+    .btn-group {
+        max-width: 280px;
+        gap: 0.75rem;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 360px) {
+    .hero {
+        min-height: 350px;
+        padding: 2.5rem 0.5rem;
+    }
+    
+    .hero h1 {
+        font-size: clamp(1.5rem, 10vw, 2rem);
+        margin-bottom: 0.5rem;
+    }
+    
+    .hero p {
+        font-size: clamp(0.8rem, 5vw, 0.9rem);
+        margin-bottom: 1rem;
+        max-width: 280px;
+    }
+    
+    .btn {
+        padding: 0.7rem 1rem;
+        font-size: 0.8rem;
+    }
+    
+    .btn-group {
+        max-width: 250px;
+        gap: 0.5rem;
+    }
+}
+
+/* Landscape orientation adjustments */
+@media (max-height: 500px) and (orientation: landscape) {
+    .hero {
+        height: auto;
+        min-height: 100vh;
+        padding: 2rem 1rem;
+    }
+    
+    .hero h1 {
+        font-size: clamp(1.5rem, 4vw, 2.5rem);
+        margin-bottom: 0.75rem;
+    }
+    
+    .hero p {
+        font-size: clamp(0.8rem, 2vw, 1rem);
+        margin-bottom: 1rem;
+    }
+    
+    .btn-group {
+        flex-direction: row;
+        gap: 1rem;
+    }
+    
+    .btn {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.8rem;
+    }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .hero::before {
+        background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=2700&q=90');
+    }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    .hero h1,
+    .hero p,
+    .btn {
+        opacity: 1;
+        transform: none;
+    }
+    
+    .btn,
+    .btn::before {
+        transition: none;
+    }
+}
   </style>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -893,26 +1086,7 @@
         .delay-2 { animation-delay: 0.4s; }
         .delay-3 { animation-delay: 0.6s; }
 
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .hero {
-                height: auto;
-                padding: 6rem 0;
-            }
-            
-            .btn-secondary {
-                margin-left: 0;
-                margin-top: 1rem;
-            }
-            
-            .section {
-                padding: 4rem 1rem;
-            }
-            
-            .contact-container {
-                grid-template-columns: 1fr;
-            }
-        }
+        
     </style>
     <style>
     :root{
@@ -1102,6 +1276,7 @@ address a{
       display:grid;
       grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
       gap:28px;
+      padding-bottom: 3rem;
     }
     .service-card{
       background:var(--light);
@@ -1206,32 +1381,18 @@ address a{
                 <li class="nav-item">
                     <a href="#" class="nav-link active">Home</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle">
-                        About <span class="dropdown-chevron"><i class="fas fa-chevron-down"></i></span>
-                    </a>
-                    <div class="dropdown-menu">
-                        <a href="#" class="dropdown-item">Our Story</a>
-                        <a href="#" class="dropdown-item">Our Team</a>
-                    </div>
-                </li>
+               
                
                 <li class="nav-item">
+                    <a href="/services.html" class="nav-link">Services</a>
+                </li>
+                 <li class="nav-item">
                     <a href="#" class="nav-link">Free Resources</a>
+                </li> <li class="nav-item">
+                    <a href="#" class="nav-link">Our Team</a>
                 </li>
                 
-                <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle">
-                        Services<span class="dropdown-chevron"><i class="fas fa-chevron-down"></i></span>
-                    </a>
-                    <div class="dropdown-menu">
-                        <a href="#" class="dropdown-item">Primary Care</a>
-                        <a href="#" class="dropdown-item">Special Care ( Orthopaedics )</a>
-                        <a href="#" class="dropdown-item">Diagnostic & Lab Services</a>
-                        <a href="#" class="dropdown-item">Urgent Care</a>
-                        <a href="#" class="dropdown-item">Health Education</a>
-                    </div>
-                </li>
+      
 
                 <li class="nav-item">
                     <a href="#" class="nav-link">Contact</a>
@@ -1282,7 +1443,7 @@ address a{
         <div class="doctors-grid">
             <div class="doctor-card">
                 <div class="doctor-image">
-                    <img src="images/doctor maingi.jpeg" alt="Dr. George Maingi, female physician with warm smile wearing white coat" />
+                    <img src="images/doctor maingi.jpeg" alt="Dr. George Maingi, male physician with warm smile wearing white coat" />
                 </div>
                 <div class="doctor-content">
                     <h3 class="doctor-name">Dr. George Maingi</h3>
@@ -1293,7 +1454,7 @@ address a{
 
             <div class="doctor-card">
                 <div class="doctor-image">
-                    <img src="images/nini.jpeg" alt="Dr. Michael Rodriguez, male physician with stethoscope in modern clinic" />
+                    <img src="images/nini.jpeg" alt="Dr. James Mwangi, male physician with stethoscope in modern clinic" />
                 </div>
                 <div class="doctor-content">
                     <h3 class="doctor-name">Dr. James Mwangi</h3>
@@ -1307,7 +1468,7 @@ address a{
                     <img src="images/female doctor.jpeg" alt="Dr. Priya , female physician reviewing medical chart with patient" />
                 </div>
                 <div class="doctor-content">
-                    <h3 class="doctor-name">Dr. Margaret Mwangi</h3>
+                    <h3 class="doctor-name">Dr. Margaret </h3>
                     <p class="doctor-specialty">Pediatrics</p>
                     <p class="doctor-bio">Passionate about child development and family-centered care with a gentle, compassionate approach.</p>
                 </div>
@@ -1470,7 +1631,7 @@ address a{
         <div class="footer-social">
           <h3>Leave a Feedback</h3>
           <form class="newsletter">
-            <input type="email" placeholder="Feedback" required/>
+            <input type="text" placeholder="Feedback" required/>
             <button type="submit">→</button>
           </form>
          
@@ -1693,13 +1854,13 @@ const services = [
   {
     title:"Pain Clinics",
     icon:"psychology",
-    desc:"Multidisciplinary chronic-pain programs with physiatrists, psychologists & interventional procedures.",
+    desc:"Multidisciplinary chronic-pain programs .",
     tag:"Chronic"
   },
   {
     title:"Nutritional Counseling",
     icon:"restaurant",
-    desc:"Dietary guidance for bone density, inflammation control & optimal musculoskeletal healing.",
+    desc:"Dietary guidance for bone density, inflammation control & optimal musculoskeletal healing and growth.",
     tag:"Diet"
   },
   {

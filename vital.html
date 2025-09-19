@@ -359,12 +359,90 @@
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        /* Base styles as before */
+
+/* Add at the end of your CSS for improved responsiveness */
+@media (max-width: 900px) {
+    .dashboard-container {
+        padding: 1rem;
+        margin: 0.5rem;
+        max-width: 100%;
+    }
+    .vitals-grid {
+        grid-template-columns: 1fr; /* Always single column on tablet and below */
+        gap: 1rem;
+    }
+    .charts-section,
+    .input-section {
+        padding: 1rem;
+    }
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .header h1 {
+        font-size: 1.4rem;
+    }
+    .header p {
+        font-size: 1rem;
+    }
+    .dashboard-container {
+        padding: 0.5rem;
+        margin: 0.2rem;
+        border-radius: 15px;
+    }
+    .section-title,
+    .stat-label {
+        font-size: 1rem;
+    }
+    .stat-value {
+        font-size: 1.2rem;
+    }
+    .charts-section,
+    .input-section {
+        padding: 0.5rem;
+        border-radius: 12px;
+    }
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    .warning-score,
+    .stat-card {
+        padding: 1rem;
+        font-size: 0.95rem;
+    }
+    .submit-btn {
+        font-size: 0.9rem;
+        padding: 0.8rem;
+        border-radius: 9px;
+    }
+}
+
+@media (max-width: 420px) {
+    .header h1 {
+        font-size: 1rem;
+    }
+    .charts-section,
+    .input-section {
+        padding: 0.2rem;
+    }
+    .stat-label, .warning-title {
+        font-size: 0.9rem;
+    }
+    .stat-value, .warning-value {
+        font-size: 1rem;
+    }
+}
+
     </style>
 </head>
 <body>
     <div class="dashboard-container">
         <div class="header">
-            <h1>Health Vitals Tracker</h1>
+            <h1>Lets record your health</h1>
             <p>Monitor your key health metrics with ease and precision</p>
         </div>
 
@@ -467,7 +545,7 @@
     </div>
 
     <script>
-        // Sample data for demonstration
+        // Sample data 
         let vitalsData = {
             labels: ['6 days ago', '5 days ago', '4 days ago', '3 days ago', '2 days ago', 'Yesterday', 'Today'],
             datasets: [
