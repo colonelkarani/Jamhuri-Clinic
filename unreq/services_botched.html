@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Services | Jamhuri Afya Orthopaedics</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      color: #1e293b;
+      overflow-x: hidden;
+    }
+
+    /* Services Header Section */
+    .services-header {
+      position: relative;
+      padding: 120px 40px 80px;
+      text-align: center;
+      background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+      color: white;
+      overflow: hidden;
+    }
+
+    .services-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .services-header-content {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .services-header h1 {
+      font-size: 56px;
+      font-weight: 800;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -1px;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    .services-header p {
+      font-size: 20px;
+      color: #cbd5e1;
+      line-height: 1.6;
+      animation: fadeInUp 0.8s ease-out 0.2s both;
+    }
+
+    /* Filter Section */
+    .filter-section {
+      max-width: 1400px;
+      margin: -40px auto 60px;
+      padding: 0 40px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .filter-container {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .filter-btn {
+      padding: 12px 24px;
+      border: 2px solid #e2e8f0;
+      background: white;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #64748b;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .filter-btn:hover {
+      border-color: #10b981;
+      color: #10b981;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+    }
+
+    .filter-btn.active {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      border-color: #10b981;
+      color: white;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+
+    /* Services Grid */
+    .services-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 40px 100px;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 32px;
+    }
+
+    .service-card {
+      background: white;
+      border-radius: 20px;
+      padding: 36px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 2px solid transparent;
+      animation: fadeInUp 0.6s ease-out both;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #10b981, #3b82f6);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+
+    .service-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+      border-color: #e2e8f0;
+    }
+
+    .service-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .service-card.urgent {
+      border-color: #ef4444;
+      background: linear-gradient(135deg, #fef2f2 0%, white 100%);
+    }
+
+    .service-icon {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      transition: all 0.4s ease;
+    }
+
+    .service-card:hover .service-icon {
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    .service-card.urgent .service-icon {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .service-icon .material-icons {
+      color: white;
+      font-size: 32px;
+    }
+
+    .service-tag {
+      display: inline-block;
+      padding: 6px 14px;
+      background: #f1f5f9;
+      color: #10b981;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-radius: 50px;
+      margin-bottom: 16px;
+    }
+
+    .service-card.urgent .service-tag {
+      background: #fee2e2;
+      color: #ef4444;
+    }
+
+    .service-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 14px;
+      line-height: 1.3;
+    }
+
+    .service-desc {
+      font-size: 15px;
+      color: #64748b;
+      line-height: 1.7;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+      }
+      50% {
+        box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+      }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .services-header {
+        padding: 80px 24px 60px;
+      }
+
+      .services-header h1 {
+        font-size: 36px;
+      }
+
+      .services-header p {
+        font-size: 16px;
+      }
+
+      .filter-section {
+        padding: 0 24px;
+        margin: -30px auto 40px;
+      }
+
+      .filter-container {
+        padding: 16px;
+        gap: 8px;
+      }
+
+      .filter-btn {
+        padding: 10px 18px;
+        font-size: 12px;
+      }
+
+      .services-container {
+        padding: 0 24px 60px;
+      }
+
+      .services-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      .service-card {
+        padding: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Services Header -->
+  <section class="services-header">
+    <div class="services-header-content">
+      <h1>Our Services</h1>
+      <p>Comprehensive orthopedic care tailored to your needs. From diagnosis to recovery, we're with you every step of the way.</p>
+    </div>
+  </section>
+
+  <!-- Filter Section -->
+  <section class="filter-section">
+    <div class="filter-container">
+      <button class="filter-btn active" data-filter="all">All Services</button>
+      <button class="filter-btn" data-filter="acute">Acute Care</button>
+      <button class="filter-btn" data-filter="rehab">Rehabilitation</button>
+      <button class="filter-btn" data-filter="chronic">Chronic Care</button>
+      <button class="filter-btn" data-filter="pediatric">Pediatric</button>
+      <button class="filter-btn" data-filter="urgent">Urgent</button>
+    </div>
+  </section>
+
+  <!-- Services Grid -->
+  <section class="services-container">
+    <div class="services-grid" id="servicesGrid"></div>
+  </section>
+
+  <script>
+    const services = [
+      {
+        title: "Orthopedic Consultations & Diagnosis",
+        icon: "medical_services",
+        desc: "Comprehensive musculoskeletal evaluation using physical exams & advanced diagnostics for a tailored treatment plan.",
+        tag: "Consult",
+        category: "general"
+      },
+      {
+        title: "Fracture Care",
+        icon: "healing",
+        desc: "Full-spectrum fracture management: reduction, fixation, immobilization & follow-up imaging.",
+        tag: "Acute",
+        category: "acute"
+      },
+      {
+        title: "Physical Therapy",
+        icon: "fitness_center",
+        desc: "Individualized rehab programs to restore strength, mobility and function after injury or surgery.",
+        tag: "Rehab",
+        category: "rehab"
+      },
+      {
+        title: "Pain Management",
+        icon: "medication",
+        desc: "Non-surgical pain relief with medications, viscosupplementation, steroid injections & nerve blocks.",
+        tag: "Relief",
+        category: "chronic"
+      },
+      {
+        title: "Pediatric Orthopedics",
+        icon: "child_care",
+        desc: "Specialized care for growth-related issues, congenital deformities & sports injuries in children.",
+        tag: "Kids",
+        category: "pediatric"
+      },
+      {
+        title: "Non-Operative Treatments",
+        icon: "accessibility_new",
+        desc: "Conservative management for arthritis, tendonitis, sprains, strains & nerve pain via bracing & therapy.",
+        tag: "Conservative",
+        category: "chronic"
+      },
+      {
+        title: "Physiotherapy",
+        icon: "sports_kabaddi",
+        desc: "Hands-on manual therapy, electro-modalities & exercise prescription under expert supervision.",
+        tag: "Therapy",
+        category: "rehab"
+      },
+      {
+        title: "Occupational Therapy",
+        icon: "work",
+        desc: "Re-learn daily activities & return-to-work programs tailored for orthopedic and hand conditions.",
+        tag: "ADL",
+        category: "rehab"
+      },
+      {
+        title: "Urgent Care",
+        icon: "local_hospital",
+        desc: "Same-day treatment for acute injuries, sprains, suspected fractures & post-op complications.",
+        tag: "Urgent",
+        urgent: true,
+        category: "urgent"
+      },
+      {
+        title: "Primary Care Services",
+        icon: "health_and_safety",
+        desc: "Annual physicals, labs, vaccinations, chronic-disease management & minor illness care.",
+        tag: "Wellness",
+        category: "general"
+      },
+      {
+        title: "Post-Surgical Rehabilitation",
+        icon: "analytics",
+        desc: "Protocol-driven recovery plans after joint replacements, arthroscopy or spinal surgery.",
+        tag: "Post-Op",
+        category: "rehab"
+      },
+      {
+        title: "Pain Clinics",
+        icon: "psychology",
+        desc: "Multidisciplinary chronic-pain programs.",
+        tag: "Chronic",
+        category: "chronic"
+      },
+      {
+        title: "Nutritional Counseling",
+        icon: "restaurant",
+        desc: "Dietary guidance for bone density, inflammation control & optimal musculoskeletal healing and growth.",
+        tag: "Diet",
+        category: "general"
+      },
+      {
+        title: "Patient Education",
+        icon: "school",
+        desc: "Interactive workshops & resources on ergonomics, lifestyle modification & self-care strategies.",
+        tag: "Learn",
+        category: "general"
+      }
+    ];
+
+    // Render services
+    function renderServices(filteredServices) {
+      const grid = document.getElementById('servicesGrid');
+      grid.innerHTML = '';
+      
+      filteredServices.forEach((service, index) => {
+        const card = document.createElement('div');
+        card.className = `service-card ${service.urgent ? 'urgent' : ''}`;
+        card.style.animationDelay = `${index * 0.05}s`;
+        
+        card.innerHTML = `
+          <div class="service-icon">
+            <span class="material-icons">${service.icon}</span>
+          </div>
+          <span class="service-tag">${service.tag}</span>
+          <h3 class="service-title">${service.title}</h3>
+          <p class="service-desc">${service.desc}</p>
+        `;
+        
+        grid.appendChild(card);
+      });
+    }
+
+    // Filter functionality
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Remove active class from all buttons
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        const filter = btn.dataset.filter;
+        
+        if (filter === 'all') {
+          renderServices(services);
+        } else {
+          const filtered = services.filter(s => s.category === filter);
+          renderServices(filtered);
+        }
+      });
+    });
+
+    // Initial render
+    renderServices(services);
+  </script>
+</body>
+</html>
