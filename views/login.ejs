@@ -347,18 +347,18 @@
             <form onsubmit="handleSignup(event)" action="/register" method="post">
                 <div class="input-group">
                     <label for="signupName">Full Name</label>
-                    <input type="text" id="signupName" placeholder="John Doe" required>
+                    <input type="text" id="signupName" placeholder="John Doe" name="signupName" required>
                 </div>
 
                 <div class="input-group">
                     <label for="signupEmail">Email</label>
-                    <input type="email" id="signupEmail" placeholder="your@email.com" required>
+                    <input type="email" id="signupEmail" placeholder="your@email.com" name="signupEmail" required>
                 </div>
 
                 <div class="input-group">
                     <label for="signupPassword">Password</label>
                     <div class="input-wrapper">
-                        <input type="password" id="signupPassword" placeholder="Create password" required>
+                        <input type="password" id="signupPassword" placeholder="Create password" name="signupPassword" required>
                         <i class="fas fa-eye password-toggle" onclick="togglePassword('signupPassword', this)"></i>
                     </div>
                 </div>
