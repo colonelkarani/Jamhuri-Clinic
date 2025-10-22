@@ -450,9 +450,16 @@
             //event.preventDefault();
             const password = document.getElementById('signupPassword').value;
             const confirm = document.getElementById('confirmPassword').value;
-            
+    
+            if (!password || !confirm) {
+                showMessage('Please fill in both password fields!', 'error');
+                event.preventDefault();
+                return false;
+            }
+
             if (password !== confirm) {
                 showMessage('Passwords do not match!', 'error');
+                event.preventDefault();
                 return;
             }
             
