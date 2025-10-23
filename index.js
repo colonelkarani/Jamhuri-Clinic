@@ -9,6 +9,8 @@ const session = require('express-session')
 const methodOverride = require('method-override')
 const mongoose = require("mongoose")
 const {connectDB} = require("./db/connectDB.js");
+const path = require('path');
+
 const DATABASE_URL =
   process.env.DATABASE_URL;
 
@@ -28,6 +30,8 @@ initializePassport(
 );
 
 app.set('view engine', 'ejs')
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(express.urlencoded({ extended: false }))
 app.use(flash())
 app.use(session({
@@ -41,6 +45,10 @@ app.use(methodOverride('_method'))
 
 app.get('/', checkAuthenticated, (req, res) => {
   res.render('index.ejs', { name: req.user.signupName })
+})
+
+app.get("/home", (req,res)=>{
+res.render('home.ejs')
 })
 
 app.get('/login', checkNotAuthenticated, (req, res) => {
