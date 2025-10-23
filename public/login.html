@@ -438,30 +438,31 @@
         }
 
         function handleLogin(event) {
-            event.preventDefault();
+            //event.preventDefault();
+            //Place error here when logging in
             showMessage('Successfully logged in!', 'success');
             
-            setTimeout(() => {
-                console.log('Redirecting to dashboard...');
-            }, 1500);
+            // setTimeout(() => {
+            //     console.log('Redirecting to dashboard...');
+            // }, 1500);
         }
 
-        function handleSignup(event) {
-            event.preventDefault();
-            const password = document.getElementById('signupPassword').value;
-            const confirm = document.getElementById('confirmPassword').value;
+        // function handleSignup(event) {
+        //     event.preventDefault();
+        //     const password = document.getElementById('signupPassword').value;
+        //     const confirm = document.getElementById('confirmPassword').value;
             
-            if (password !== confirm) {
-                showMessage('Passwords do not match!', 'error');
-                return;
-            }
+        //     if (password !== confirm) {
+        //         showMessage('Passwords do not match!', 'error');
+        //         return;
+        //     }
             
-            showMessage('Account created successfully!', 'success');
+        //     showMessage('Account created successfully!', 'success');
             
-            setTimeout(() => {
-                switchTab('login');
-            }, 1500);
-        }
+        //     setTimeout(() => {
+        //         switchTab('login');
+        //     }, 1500);
+        // }
 
         function handleGoogleLogin() {
             showMessage('Redirecting to Google...', 'success');

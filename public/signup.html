@@ -448,12 +448,12 @@
         }
 
         function handleSignup(event) {
-            event.preventDefault();
             const password = document.getElementById('signupPassword').value;
             const confirm = document.getElementById('confirmPassword').value;
             
             if (password !== confirm) {
                 showMessage('Passwords do not match!', 'error');
+            event.preventDefault();
                 return;
             }
             

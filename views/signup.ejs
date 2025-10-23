@@ -296,12 +296,13 @@
         <div class="message" id="message"></div>
 
         <div class="tabs">
-            <button class="tab active"onclick="window.location.href='./login.html' " >Login</button>
-            <button class="tab " onclick="window.location.href='/signup' ">Sign Up</button>
+
+            <button class="tab "onclick="window.location.href='/login' " >Login</button>
+            <button class="tab active" onclick="window.location.href='./signup' ">Sign Up</button>
         </div>
 
         <!-- Login Form -->
-        <div class="form-section active" id="loginSection">
+        <div class="form-section " id="loginSection">
             <form onsubmit="handleLogin(event)">
                 <div class="input-group">
                     <label for="loginEmail">Email</label>
@@ -343,16 +344,16 @@
         </div>
 
         <!-- Sign Up Form -->
-        <div class="form-section" id="signupSection">
-            <form onsubmit="handleSignup(event)">
+        <div class="form-section active" id="signupSection">
+            <form action="/signup" method="POST" onsubmit="handleSignup(event)" >
                 <div class="input-group">
                     <label for="signupName">Full Name</label>
-                    <input type="text" id="signupName" placeholder="John Doe" required>
+                    <input type="text" id="signupName" name="signupName"placeholder="John Doe" required>
                 </div>
 
                 <div class="input-group">
                     <label for="signupEmail">Email</label>
-                    <input type="email" id="signupEmail" placeholder="your@email.com" required>
+                    <input type="email" id="signupEmail" name="signupEmail" placeholder="your@email.com" required>
                 </div>
 
                 <div class="input-group">
@@ -366,7 +367,7 @@
                 <div class="input-group">
                     <label for="confirmPassword">Confirm Password</label>
                     <div class="input-wrapper">
-                        <input type="password" id="confirmPassword" placeholder="Confirm password" required>
+                        <input type="password" id="confirmPassword" name="signupPassword" placeholder="Confirm password" required>
                         <i class="fas fa-eye password-toggle" onclick="togglePassword('confirmPassword', this)"></i>
                     </div>
                 </div>
@@ -438,29 +439,28 @@
         }
 
         function handleLogin(event) {
-            //event.preventDefault();
             showMessage('Successfully logged in!', 'success');
             
-            // setTimeout(() => {
-            //     console.log('Redirecting to dashboard...');
-            // }, 1500);
+            setTimeout(() => {
+                console.log('Redirecting to dashboard...');
+            }, 1500);
         }
 
         function handleSignup(event) {
-            event.preventDefault();
             const password = document.getElementById('signupPassword').value;
             const confirm = document.getElementById('confirmPassword').value;
             
             if (password !== confirm) {
+            event.preventDefault();
                 showMessage('Passwords do not match!', 'error');
                 return;
             }
             
             showMessage('Account created successfully!', 'success');
             
-            setTimeout(() => {
-                switchTab('login');
-            }, 1500);
+            // setTimeout(() => {
+            //     switchTab('login');
+            // }, 1500);
         }
 
         function handleGoogleLogin() {

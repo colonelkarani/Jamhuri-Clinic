@@ -474,11 +474,11 @@
     <div class="container">
         <header>
             <div class="welcome-message">
-                <h1>Welcome, Sarah!</h1>
+                <h1>Welcome, <%= name %>!</h1>
                 <p>Track and manage your health metrics</p>
             </div>
             <div class="user-account">
-                <div class="user-avatar">S</div>
+                <div class="user-avatar"><%= name[0] %></div>
                 <form action="/logout?_method=DELETE" method="POST">
                 <button class="logout-btn" type="submit">Logout</button>
 </form>

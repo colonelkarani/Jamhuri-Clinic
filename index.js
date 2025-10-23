@@ -7,6 +7,7 @@ const passport = require('passport')
 const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
+const port = 3000
 
 const initializePassport = require('./passport_config')
 initializePassport(
@@ -43,22 +44,23 @@ app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
   failureFlash: true
 }))
 
-app.get('/register', checkNotAuthenticated, (req, res) => {
-  res.render('register.ejs')
+app.get('/signup', checkNotAuthenticated, (req, res) => {
+  res.render('signup.ejs')
 })
 
-app.post('/register', checkNotAuthenticated, async (req, res) => {
+app.post('/signup', checkNotAuthenticated, async (req, res) => {
   try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10)
+    const hashedPassword = await bcrypt.hash(req.body.signupPassword, 10)
     users.push({
       id: Date.now().toString(),
-      signupName: req.body.name,
-      signupEmail: req.body.email,
+      signupName: req.body.signupName,
+      signupEmail: req.body.signupEmail,
       signupPassword: hashedPassword
     })
     console.log(users)
-    res.redirect('/login')
+    res.redirect('/')
   } catch {
+    console.log("error signing up")
     res.redirect('/')
   }
 })
@@ -83,4 +85,4 @@ function checkNotAuthenticated(req, res, next) {
   next()
 }
 
-app.listen(3000, console.log("app is listening bana"))
+app.listen(port, console.log(`app is listening at http://localhost:${port}}`))
