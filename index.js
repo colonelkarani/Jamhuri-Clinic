@@ -7,15 +7,25 @@ const passport = require('passport')
 const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
+const mongoose = require("mongoose")
+const {connectDB} = require("./db/connectDB.js");
+const DATABASE_URL =
+  process.env.DATABASE_URL;
+
+connectDB(DATABASE_URL);
+
+const userModel = require("./models/user_model.js")
+
+
 const port = 3000
 const users = []
 
 const initializePassport = require('./passport_config')
 initializePassport(
   passport,
-  email => users.find(user => user.signupEmail === email),
-  id => users.find(user => user.id === id)
-)
+  async email => await userModel.findOne({ signupEmail: email }),
+  async id => await userModel.findById(id)
+);
 
 app.set('view engine', 'ejs')
 app.use(express.urlencoded({ extended: false }))
@@ -49,20 +59,28 @@ app.get('/signup', checkNotAuthenticated, (req, res) => {
 
 app.post('/signup', checkNotAuthenticated, async (req, res) => {
   try {
-    const hashedPassword = await bcrypt.hash(req.body.signupPassword, 10)
-    users.push({
-      id: Date.now().toString(),
+    const existingUser = await userModel.findOne({ signupEmail: req.body.signupEmail });
+    if (existingUser) {
+      req.flash('error', 'Email already registered');
+      return res.redirect('/signup');
+    }
+
+    const newUser = new userModel({
       signupName: req.body.signupName,
       signupEmail: req.body.signupEmail,
-      signupPassword: hashedPassword
-    })
-    console.log(users)
-    res.redirect('/')
-  } catch {
-    console.log("error signing up")
-    res.redirect('/')
+      signupPassword: req.body.signupPassword
+    });
+
+    await newUser.save();
+    console.log('User saved to MongoDB');
+
+    res.redirect('/login');
+  } catch (err) {
+    console.error('Error signing up user:', err);
+    res.redirect('/signup');
   }
-})
+});
+
 
 app.delete('/logout', (req, res, next) => {
   req.logout(function(err) {
