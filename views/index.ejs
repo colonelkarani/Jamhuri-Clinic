@@ -478,7 +478,7 @@
                 <p>Track and manage your health metrics</p>
             </div>
             <div class="user-account">
-                <div class="user-avatar"><%= name[0] %></div>
+                <div class="user-avatar"><%= name[0].toUpperCase() %></div>
                 <form action="/logout?_method=DELETE" method="POST">
                 <button class="logout-btn" type="submit">Logout</button>
 </form>

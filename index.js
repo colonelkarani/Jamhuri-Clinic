@@ -8,17 +8,16 @@ const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
 const port = 3000
+const users = []
 
 const initializePassport = require('./passport_config')
 initializePassport(
   passport,
-  email => users.find(user => user.email === email),
+  email => users.find(user => user.signupEmail === email),
   id => users.find(user => user.id === id)
 )
 
-const users = []
-
-app.set('view-engine', 'ejs')
+app.set('view engine', 'ejs')
 app.use(express.urlencoded({ extended: false }))
 app.use(flash())
 app.use(session({
@@ -31,7 +30,7 @@ app.use(passport.session())
 app.use(methodOverride('_method'))
 
 app.get('/', checkAuthenticated, (req, res) => {
-  res.render('index.ejs', { name: req.user.name })
+  res.render('index.ejs', { name: req.user.signupName })
 })
 
 app.get('/login', checkNotAuthenticated, (req, res) => {
@@ -65,10 +64,13 @@ app.post('/signup', checkNotAuthenticated, async (req, res) => {
   }
 })
 
-app.delete('/logout', (req, res) => {
-  req.logOut()
-  res.redirect('/login')
-})
+app.delete('/logout', (req, res, next) => {
+  req.logout(function(err) {
+    if (err) return next(err);
+    res.redirect('/login');
+  });
+});
+
 
 function checkAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
@@ -85,4 +87,4 @@ function checkNotAuthenticated(req, res, next) {
   next()
 }
 
-app.listen(port, console.log(`app is listening at http://localhost:${port}}`))
+app.listen(port, ()=> console.log(`app is listening at http://localhost:${port}`))

@@ -293,25 +293,30 @@
             <p class="clinic-subtitle">Patient Portal Login</p>
         </div>
 
-        <div class="message" id="message"></div>
+        <div class="message" id="message">
+            <% if (messages.error) { %>
+  <%= messages.error %>
+<% } %>
+
+        </div>
 
         <div class="tabs">
-            <button class="tab active"onclick="window.location.href='./login.html' " >Login</button>
+            <button class="tab active"onclick="window.location.href='./login' " >Login</button>
             <button class="tab " onclick="window.location.href='/signup' ">Sign Up</button>
         </div>
 
         <!-- Login Form -->
         <div class="form-section active" id="loginSection">
-            <form onsubmit="handleLogin(event)">
+            <form action="/login" method="post">
                 <div class="input-group">
                     <label for="loginEmail">Email</label>
-                    <input type="email" id="loginEmail" placeholder="your@email.com" required>
+                    <input type="email" id="loginEmail" name="email" placeholder="your@email.com" required>
                 </div>
 
                 <div class="input-group">
                     <label for="loginPassword">Password</label>
                     <div class="input-wrapper">
-                        <input type="password" id="loginPassword" placeholder="Enter password" required>
+                        <input type="password" id="loginPassword" name="password" placeholder="Enter password" required>
                         <i class="fas fa-eye password-toggle" onclick="togglePassword('loginPassword', this)"></i>
                     </div>
                 </div>
@@ -437,14 +442,14 @@
             document.getElementById('message').style.display = 'none';
         }
 
-        function handleLogin(event) {
-            //event.preventDefault();
-            showMessage('Successfully logged in!', 'success');
+        // function handleLogin(event) {
+        //     //event.preventDefault();
+        //     showMessage('Successfully logged in!', 'success');
             
-            // setTimeout(() => {
-            //     console.log('Redirecting to dashboard...');
-            // }, 1500);
-        }
+        //     // setTimeout(() => {
+        //     //     console.log('Redirecting to dashboard...');
+        //     // }, 1500);
+        // }
 
         function handleSignup(event) {
             event.preventDefault();
