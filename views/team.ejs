@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excellence in Healthcare</title><!-- NavBar Styles -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>    
+    <style>
+        :root {
+            --primary: #387373;
+            --secondary: #93BFB7;
+            --light: #E4F2E7;
+            --dark: #2D3E40;
+            --accent: #97A6A0;
+        }
+
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--light);
+            color: var(--primary);
+            overflow-x: hidden;
+            /* Added a background image to demonstrate the navbar transparency */
+            background: linear-gradient(rgba(26, 38, 57, 0.7), rgba(26, 38, 57, 0.4)), url('/api/placeholder/1920/1080') center/cover;
+            background-attachment: fixed;
+            height: 200vh; /* Making the page scrollable for demo */
+        }
+        
+        /* Navbar Styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1.5rem 2rem;
+            transition: all 0.4s ease;
+            will-change: transform; /* Optimization for animations */
+        }
+        
+        .navbar.scrolled {
+            background-color: var(--primary);
+            padding: 1rem 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            font-size: 1.8rem;
+            color: var(--secondary);
+            margin-right: 0.8rem;
+        }
+        
+        .logo-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .nav-item {
+            position: relative;
+        }
+        
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            padding: 0 0;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--secondary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+        
+        .dropdown {
+            position: relative;
+        }
+        
+        .dropdown-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        
+        .dropdown-toggle i {
+            font-size: 0.8rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 1rem);
+            left: 50%;
+            transform: translateX(-50%) scaleY(0.8);
+            min-width: 200px;
+            background-color: var(--primary);
+            border-radius: 5px;
+            padding: 1rem 0;
+            opacity: 0;
+            visibility: hidden;
+            transform-origin: top center;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .dropdown-menu::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: 50%;
+            transform: translateX(-50%) rotate(45deg);
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary);
+        }
+        
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) scaleY(1);
+        }
+        
+        .dropdown:hover .dropdown-toggle i {
+            transform: rotate(180deg);
+        }
+        
+        .dropdown-item {
+            display: block;
+            padding: 0.7rem 1.5rem;
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--secondary);
+            padding-left: 1.8rem;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Added overlay for mobile menu */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 998;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .close-menu{
+            visibility:hidden ;
+        }
+        
+        @media (max-width: 1100px) {
+            .mobile-menu-btn {
+                display: block;
+                z-index: 1001;
+            }
+            .dropdown-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--secondary);
+            padding-left: 0.1rem;
+        }
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0%) scaleY(1);
+        }
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -280px; /* Changed from -100% to exact pixels */
+                width: 280px;
+                height: 100vh;
+                background-color: var(--primary);
+                flex-direction: column;
+                padding: 6rem 2rem 2rem;
+                gap: 1.5rem;
+                transition: right 0.4s ease;
+                z-index: 999;
+                box-shadow: -5px 0 30px rgba(0, 0, 0, 0.1);
+                overflow-y: auto; /* Added scroll for tall menus */
+            }
+            
+            .nav-links.active {
+                right: 0;
+            }
+            
+            .dropdown-menu {
+                position: static;
+                transform: none;
+                background-color: rgba(255, 255, 255, 0.05);
+                box-shadow: none;
+                padding: 0;
+                margin-top: 0.5rem;
+                max-height: 0;
+                overflow: hidden;
+                opacity: 1;
+                visibility: visible;
+                border-radius: 5px;
+                transition: max-height 0.4s ease, padding 0.4s ease;
+            }
+            
+            .dropdown-menu::before {
+                display: none;
+            }
+            
+            .dropdown.active .dropdown-menu {
+                max-height: 500px;
+                padding: 0.5rem 0;
+            }
+            
+            .dropdown-toggle {
+
+                justify-content: space-between;
+                width: 100%;
+            }
+            
+            .close-menu {
+                position: absolute;
+                top: 1.5rem;
+                right: 1.5rem;
+                background: none;
+                border: none;
+                color: white;
+                font-size: 1.2rem;
+                cursor: pointer;
+                z-index: 1001;
+                visibility: visible;
+            }
+            
+            /* Fix for dropdown link click area */
+            .dropdown-toggle {
+                pointer-events: auto;
+            }
+            
+            /* Make the chevron container clickable separately */
+            .dropdown-chevron {
+                padding: 10px;
+                margin: -10px;
+                cursor: pointer;
+            }
+        }
+
+        /* Demo content to show scrolling effect */
+        .demo-content {
+            height: 150vh;
+            padding-top: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+        
+        .demo-content h1 {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+        }
+        
+        .demo-content p {
+            max-width: 600px;
+            line-height: 1.6;
+        }
+        
+    </style>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow-x: hidden;
+            color: #333;
+        }
+
+
+        .hero-section {
+            position: relative;
+            height: 100vh;
+            background: linear-gradient(135deg, #3E848C, #C4EEF2), 
+                        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><rect fill="%23f0f4f8" width="1200" height="800"/><path fill="%23e8f2e8" d="M0 400h1200v400H0z"/><circle cx="300" cy="200" r="80" fill="%23d4a574" opacity="0.3"/><circle cx="900" cy="600" r="120" fill="%2397bc62" opacity="0.2"/></svg>');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--white);
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 0 20px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .hero-date {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--accent-color);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-5px);
+            }
+        }
+        .hero-section {
+    background: url("images/background.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+  background-attachment: fixed;   /* keeps hero in place */
+  color: #ffffff;
+}
+
+        .team-section {
+            padding: 5rem 2rem;
+            background: linear-gradient(to bottom, #f8fafc, #e2e8f0);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 3rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .team-card {
+            background: white;
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .team-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.6s;
+        }
+
+        .team-card:hover::before {
+            left: 100%;
+        }
+
+        .team-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+            font-weight: 700;
+            transition: transform 0.3s ease;
+        }
+
+        .team-card:hover .avatar {
+            transform: scale(1.1);
+        }
+
+        .name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 0.5rem;
+        }
+
+        .role {
+            font-size: 1.1rem;
+            color: #667eea;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .specialties {
+            margin-top: 2rem;
+        }
+
+        .specialty-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 1rem;
+        }
+
+        .specialty-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .specialty-tag {
+            background: linear-gradient(45deg, #f7fafc, #edf2f7);
+            color: #4a5568;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .specialty-tag:hover {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .contact-info {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            font-size: 0.95rem;
+            color: #4a5568;
+        }
+
+        .contact-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 1rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+        }
+
+        .stats-section {
+            background: linear-gradient(135deg, #1a202c, #2d3748);
+            padding: 5rem 2rem;
+            color: white;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .stat-item {
+            text-align: center;
+            opacity: 0;
+            animation: countUp 2s ease-out forwards;
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 5rem 2rem;
+            text-align: center;
+            color: white;
+        }
+
+        .cta-title {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes countUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-5px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .team-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .team-card {
+                padding: 2rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem;
+            }
+        }
+
+        .parallax-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("images/background.png");
+            z-index: -1;
+            animation: parallaxMove 20s ease-in-out infinite;
+        }
+
+        @keyframes parallaxMove {
+            0%, 100% {
+                transform: translateX(0) translateY(0);
+            }
+            25% {
+                transform: translateX(-50px) translateY(-30px);
+            }
+            50% {
+                transform: translateX(30px) translateY(-50px);
+            }
+            75% {
+                transform: translateX(-30px) translateY(30px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="#" class="logo">
+    <i class="fas fa-heartbeat logo-icon"></i>
+                <span class="logo-text">Jamhuri Afya & Orthopaedics</span>
+            </a>
+            
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <ul class="nav-links">
+                <button class="close-menu">
+                    <i class="fas fa-times"></i>
+                </button>
+                <li class="nav-item">
+                    <a href="#" class="nav-link active">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Services</a>
+                </li>
+               
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Free Resources</a>
+                </li>
+                
+              <li class="nav-item">
+                    <a href="#" class="nav-link">Our Team</a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Contact</a>
+                </li>
+                 <li class="nav-item">
+                    <a href="#" class="nav-link">Appointments</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Login</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- Overlay for mobile menu -->
+    <div class="menu-overlay"></div>
+     <section class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">Meet our team</h1>
+            <p class="hero-subtitle">A diverse group of talented individuals committed to excellence.</p>
+            <p class="hero-date">Est. 2002</p>
+        </div>
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down" style="font-size: 2rem;"></i>
+        </div>
+    </section>
+
+    <section class="team-section">
+        <h2 class="section-title">Our Expert Team</h2>
+        <div class="team-grid">
+            <div class="team-card">
+                <div class="card-header">
+                    <div class="avatar">GM</div>
+                    <h3 class="name">Dr. George Maingi</h3>
+                    <p class="role">Chief Orthopaedist</p>
+                </div>
+                <div class="specialties">
+                    <h4 class="specialty-title">Specializations</h4>
+                    <div class="specialty-list">
+                        <span class="specialty-tag">Joint Replacement</span>
+                        <span class="specialty-tag">Pediatric Orthopaedics</span>
+                        <span class="specialty-tag">Sports Medicine</span>
+                        <span class="specialty-tag">Trauma Surgery</span>
+                        <span class="specialty-tag">Arthroscopy</span>
+                    </div>
+                </div>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">📧</div>
+                        <span>ggmaingi@gmail.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">📞</div>
+                        <span>0712345678</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="team-card">
+                <div class="card-header">
+                    <div class="avatar">MM</div>
+                    <h3 class="name">Dr. Michael Mungai</h3>
+                    <p class="role">Pediatrician</p>
+                </div>
+                <div class="specialties">
+                    <h4 class="specialty-title">Specializations</h4>
+                    <div class="specialty-list">
+                        <span class="specialty-tag">Child Development</span>
+                        <span class="specialty-tag">Immunizations</span>
+                        <span class="specialty-tag">Adolescent Medicine</span>
+                        <span class="specialty-tag">Behavioral Health</span>
+                    </div>
+                </div>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">📧</div>
+                        <span>michael@gmail.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">📞</div>
+                        <span>+25473233256</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="team-card">
+                <div class="card-header">
+                    <div class="avatar">JW</div>
+                    <h3 class="name">Jennifer Wangui</h3>
+                    <p class="role">Registered Nurse</p>
+                </div>
+                <div class="specialties">
+                    <h4 class="specialty-title">Specializations</h4>
+                    <div class="specialty-list">
+                        <span class="specialty-tag">Critical Care</span>
+                        <span class="specialty-tag">Patient Education</span>
+                        <span class="specialty-tag">Wound Care</span>
+                        <span class="specialty-tag">Emergency Response</span>
+                    </div>
+                </div>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">📧</div>
+                        <span>j.thompson@healthcenter.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">📞</div>
+                        <span>+1 (555) 345-6789</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="team-card">
+                <div class="card-header">
+                    <div class="avatar">SM</div>
+                    <h3 class="name">Shannon Muriuki</h3>
+                    <p class="role">Medical Secretary</p>
+                </div>
+                <div class="specialties">
+                    <h4 class="specialty-title">Specializations</h4>
+                    <div class="specialty-list">
+                        <span class="specialty-tag">Appointment Scheduling</span>
+                        <span class="specialty-tag">Medical Records</span>
+                        <span class="specialty-tag">Insurance Processing</span>
+                        <span class="specialty-tag">Patient Relations</span>
+                    </div>
+                </div>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">📧</div>
+                        <span>sharon@healthcenter.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">📞</div>
+                        <span>+254325637438</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="team-card">
+                <div class="card-header">
+                    <div class="avatar">EM</div>
+                    <h3 class="name">Dr. Emily Musyoka</h3>
+                    <p class="role">Chief Medical Officer</p>
+                </div>
+                <div class="specialties">
+                    <h4 class="specialty-title">Specializations</h4>
+                    <div class="specialty-list">
+                        <span class="specialty-tag">Internal Medicine</span>
+                        <span class="specialty-tag">Healthcare Administration</span>
+                        <span class="specialty-tag">Quality Assurance</span>
+                        <span class="specialty-tag">Team Leadership</span>
+                    </div>
+                </div>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">📧</div>
+                        <span>e.johnson@healthcenter.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">📞</div>
+                        <span>+254356346743</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number">15+</div>
+                <div class="stat-label">Years Experience</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">10K+</div>
+                <div class="stat-label">Patients Served</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Available Support</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">98%</div>
+                <div class="stat-label">Satisfaction Rate</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <h2 class="cta-title">Ready to Experience Excellence?</h2>
+        <p class="cta-subtitle">Schedule your appointment with our world-class medical team today and take the first step towards better health.</p>
+        <a href="#" class="cta-button">Book Appointment</a>
+    </section>
+
+    <script>
+        // Smooth scrolling for scroll indicator
+        document.querySelector('.scroll-indicator').addEventListener('click', () => {
+            document.querySelector('.team-section').scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+
+        // Card hover effects and animations
+        const cards = document.querySelectorAll('.team-card');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe team cards for staggered animation
+        cards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(50px)';
+            card.style.transition = `all 0.6s ease ${index * 0.1}s`;
+            observer.observe(card);
+        });
+
+        // Parallax effect for hero background
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero-section');
+            const heroHeight = hero.offsetHeight;
+            
+            if (scrolled < heroHeight) {
+                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+
+        // Dynamic stat counter animation
+        const statNumbers = document.querySelectorAll('.stat-number');
+        const animateStats = () => {
+            statNumbers.forEach(stat => {
+                const finalValue = stat.textContent;
+                const isNumber = /^\d+/.test(finalValue);
+                
+                if (isNumber) {
+                    const numValue = parseInt(finalValue);
+                    let currentValue = 0;
+                    const increment = numValue / 50;
+                    
+                    const timer = setInterval(() => {
+                        currentValue += increment;
+                        if (currentValue >= numValue) {
+                            currentValue = numValue;
+                            clearInterval(timer);
+                        }
+                        stat.textContent = Math.floor(currentValue) + finalValue.replace(/^\d+/, '');
+                    }, 40);
+                }
+            });
+        };
+
+        // Trigger stat animation when stats section is visible
+        const statsSection = document.querySelector('.stats-section');
+        const statsObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateStats();
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        statsObserver.observe(statsSection);
+
+        // Add dynamic cursor effect
+        document.addEventListener('mousemove', (e) => {
+            const cursor = document.querySelector('.cursor');
+            if (!cursor) {
+                const newCursor = document.createElement('div');
+                newCursor.className = 'cursor';
+                newCursor.style.cssText = `
+                    position: fixed;
+                    width: 20px;
+                    height: 20px;
+                    background: rgba(102, 126, 234, 0.5);
+                    border-radius: 50%;
+                    pointer-events: none;
+                    z-index: 9999;
+                    transition: transform 0.1s ease;
+                `;
+                document.body.appendChild(newCursor);
+            }
+            
+            const cursor_elem = document.querySelector('.cursor');
+            cursor_elem.style.left = e.clientX - 10 + 'px';
+            cursor_elem.style.top = e.clientY - 10 + 'px';
+        });
+
+        // Interactive hover effects for specialty tags
+        const specialtyTags = document.querySelectorAll('.specialty-tag');
+        specialtyTags.forEach(tag => {
+            tag.addEventListener('mouseenter', () => {
+                tag.style.transform = 'translateY(-2px) scale(1.05)';
+            });
+            
+            tag.addEventListener('mouseleave', () => {
+                tag.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
+       <!-- Nav Bar Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Register ScrollTrigger plugin
+            gsap.registerPlugin(ScrollTrigger);
+            
+            // Navbar scroll effect with debouncing
+            const navbar = document.querySelector('.navbar');
+            let scrollTimer;
+            
+            // Initial check on page load
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            }
+            
+            window.addEventListener('scroll', () => {
+                // Clear the previous timer
+                clearTimeout(scrollTimer);
+                
+                // Set a new timer
+                scrollTimer = setTimeout(() => {
+                    if (window.scrollY > 50) {
+                        navbar.classList.add('scrolled');
+                    } else {
+                        navbar.classList.remove('scrolled');
+                    }
+                }, 10); // Small delay for better performance
+            });
+            
+            // Navbar animations with GSAP
+            gsap.from('.navbar', {
+                y: -100,
+                opacity: 0,
+                duration: 1,
+                ease: 'power3.out',
+                delay: 0.2,
+                clearProps: 'all' // Clean up after animation
+            });
+            
+            // Mobile menu elements
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const closeMenuBtn = document.querySelector('.close-menu');
+            const navLinks = document.querySelector('.nav-links');
+            const overlay = document.querySelector('.menu-overlay');
+            const dropdowns = document.querySelectorAll('.dropdown');
+            
+            // Open mobile menu
+            mobileMenuBtn.addEventListener('click', () => {
+                navLinks.classList.add('active');
+                overlay.classList.add('active');
+                document.querySelector('.mobile-menu-btn').style.visibility = 'hidden';
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            });
+            
+            // Close mobile menu function
+            const closeMenu = () => {
+                navLinks.classList.remove('active');
+                overlay.classList.remove('active');
+                document.querySelector('.mobile-menu-btn').style.visibility = 'visible';
+                document.body.style.overflow = ''; // Re-enable scrolling
+            };
+            
+            // Close menu events
+            closeMenuBtn.addEventListener('click', closeMenu);
+            overlay.addEventListener('click', closeMenu);
+            
+            // Handle dropdowns
+            dropdowns.forEach(dropdown => {
+                const dropdownToggle = dropdown.querySelector('.dropdown-toggle');
+                const dropdownChevron = dropdown.querySelector('.dropdown-chevron');
+                
+                // Only for mobile
+                if (window.innerWidth <= 768) {
+                    // Make the main link navigate and chevron toggle dropdown
+                    dropdownChevron.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        // Close other open dropdowns
+                        dropdowns.forEach(otherDropdown => {
+                            if (otherDropdown !== dropdown && otherDropdown.classList.contains('active')) {
+                                otherDropdown.classList.remove('active');
+                            }
+                        });
+                        
+                        // Toggle current dropdown
+                        dropdown.classList.toggle('active');
+                        
+                        // Rotate chevron
+                        const icon = dropdownChevron.querySelector('i');
+                        if (dropdown.classList.contains('active')) {
+                            icon.style.transform = 'rotate(180deg)';
+                        } else {
+                            icon.style.transform = 'rotate(0)';
+                        }
+                    });
+                }
+            });
+            
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768) {
+                    // Reset mobile menu state when switching to desktop
+                    navLinks.classList.remove('active');
+                    overlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                    
+                    // Reset all dropdowns
+                    dropdowns.forEach(dropdown => {
+                        dropdown.classList.remove('active');
+                        const icon = dropdown.querySelector('.dropdown-chevron i');
+                        if (icon) icon.style.transform = 'rotate(0)';
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

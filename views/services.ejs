@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Services | Jamhuri Afya Orthopaedics</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      color: #1e293b;
+      overflow-x: hidden;
+    }
+
+    /* Hero Section */
+
+    /* Services Header Section */
+    .services-header {
+      position: relative;
+      padding: 100px 40px 80px;
+      text-align: center;
+      background: white;
+    }
+
+    .services-header-content {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .services-header h2 {
+      font-size: 48px;
+      font-weight: 800;
+      margin-bottom: 20px;
+      color: #0f172a;
+      letter-spacing: -1px;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    .services-header h2 span {
+      background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .services-header p {
+      font-size: 18px;
+      color: #64748b;
+      line-height: 1.7;
+      animation: fadeInUp 0.8s ease-out 0.2s both;
+    }
+
+    /* Filter Section */
+    .filter-section {
+      max-width: 1400px;
+      margin: 0 auto 60px;
+      padding: 0 40px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .filter-container {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid #e2e8f0;
+    }
+
+    .filter-btn {
+      padding: 12px 24px;
+      border: 2px solid #e2e8f0;
+      background: white;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #64748b;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .filter-btn:hover {
+      border-color: #10b981;
+      color: #10b981;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+    }
+
+    .filter-btn.active {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      border-color: #10b981;
+      color: white;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+
+    /* Services Grid */
+    .services-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 40px 100px;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 32px;
+      margin-bottom: 60px;
+    }
+
+    .service-card {
+      background: white;
+      border-radius: 20px;
+      padding: 36px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 2px solid transparent;
+      animation: fadeInUp 0.6s ease-out both;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #10b981, #3b82f6);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+
+    .service-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+      border-color: #e2e8f0;
+    }
+
+    .service-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .service-card.urgent {
+      border-color: #ef4444;
+      background: linear-gradient(135deg, #fef2f2 0%, white 100%);
+    }
+
+    .service-icon {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      transition: all 0.4s ease;
+    }
+
+    .service-card:hover .service-icon {
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    .service-card.urgent .service-icon {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .service-icon .material-icons {
+      color: white;
+      font-size: 32px;
+    }
+
+    .service-tag {
+      display: inline-block;
+      padding: 6px 14px;
+      background: #f1f5f9;
+      color: #10b981;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-radius: 50px;
+      margin-bottom: 16px;
+    }
+
+    .service-card.urgent .service-tag {
+      background: #fee2e2;
+      color: #ef4444;
+    }
+
+    .service-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 14px;
+      line-height: 1.3;
+    }
+
+    .service-desc {
+      font-size: 15px;
+      color: #64748b;
+      line-height: 1.7;
+    }
+
+    /* CTA Section */
+    .services-cta {
+      text-align: center;
+      padding: 80px 40px;
+      background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .services-cta::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 30% 50%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 70% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
+    }
+
+    .services-cta-content {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .services-cta h2 {
+      font-size: 42px;
+      font-weight: 800;
+      color: white;
+      margin-bottom: 20px;
+      letter-spacing: -1px;
+    }
+
+    .services-cta p {
+      font-size: 18px;
+      color: #cbd5e1;
+      margin-bottom: 40px;
+      line-height: 1.6;
+    }
+
+    .services-cta-buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+      }
+      50% {
+        box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+      }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .hero {
+        min-height: 70vh;
+        padding: 60px 20px;
+      }
+
+      .hero-logo {
+        font-size: 42px;
+      }
+
+      .hero-tagline {
+        font-size: 18px;
+        margin-bottom: 40px;
+      }
+
+      .hero-cta {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .cta-btn {
+        width: 100%;
+        max-width: 300px;
+        padding: 16px 32px;
+        font-size: 14px;
+      }
+
+      .services-header {
+        padding: 60px 24px 40px;
+      }
+
+      .services-header h2 {
+        font-size: 32px;
+      }
+
+      .services-header p {
+        font-size: 16px;
+      }
+
+      .filter-section {
+        padding: 0 24px;
+        margin-bottom: 40px;
+      }
+
+      .filter-container {
+        padding: 16px;
+        gap: 8px;
+      }
+
+      .filter-btn {
+        padding: 10px 18px;
+        font-size: 12px;
+      }
+
+      .services-container {
+        padding: 0 24px 60px;
+      }
+
+      .services-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      .service-card {
+        padding: 28px;
+      }
+
+      .services-cta {
+        padding: 60px 24px;
+      }
+
+      .services-cta h2 {
+        font-size: 28px;
+      }
+
+      .services-cta p {
+        font-size: 16px;
+      }
+
+      .services-cta-buttons {
+        flex-direction: column;
+      }
+    }
+  </style>
+    <!-- NavBar Styles -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>    
+    <style>
+        :root {
+            --primary: #387373;
+            --secondary: #93BFB7;
+            --light: #E4F2E7;
+            --dark: #2D3E40;
+            --accent: #97A6A0;
+        }
+
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--light);
+            color: var(--primary);
+            overflow-x: hidden;
+            /* Added a background image to demonstrate the navbar transparency */
+            background: linear-gradient(rgba(26, 38, 57, 0.7), rgba(26, 38, 57, 0.4)), url('/api/placeholder/1920/1080') center/cover;
+            background-attachment: fixed;
+            height: 200vh; /* Making the page scrollable for demo */
+        }
+        
+        /* Navbar Styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1.5rem 2rem;
+            transition: all 0.4s ease;
+            will-change: transform; /* Optimization for animations */
+        }
+        
+        .navbar.scrolled {
+            background-color: var(--primary);
+            padding: 1rem 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            font-size: 1.8rem;
+            color: var(--secondary);
+            margin-right: 0.8rem;
+        }
+        
+        .logo-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .nav-item {
+            position: relative;
+        }
+        
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            padding: 0 0;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--secondary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+        
+        .dropdown {
+            position: relative;
+        }
+        
+        .dropdown-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        
+        .dropdown-toggle i {
+            font-size: 0.8rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 1rem);
+            left: 50%;
+            transform: translateX(-50%) scaleY(0.8);
+            min-width: 200px;
+            background-color: var(--primary);
+            border-radius: 5px;
+            padding: 1rem 0;
+            opacity: 0;
+            visibility: hidden;
+            transform-origin: top center;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .dropdown-menu::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: 50%;
+            transform: translateX(-50%) rotate(45deg);
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary);
+        }
+        
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) scaleY(1);
+        }
+        
+        .dropdown:hover .dropdown-toggle i {
+            transform: rotate(180deg);
+        }
+        
+        .dropdown-item {
+            display: block;
+            padding: 0.7rem 1.5rem;
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--secondary);
+            padding-left: 1.8rem;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Added overlay for mobile menu */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 998;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .close-menu{
+            visibility:hidden ;
+        }
+        
+        @media (max-width: 1100px) {
+            .mobile-menu-btn {
+                display: block;
+                z-index: 1001;
+            }
+            .dropdown-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--secondary);
+            padding-left: 0.1rem;
+        }
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0%) scaleY(1);
+        }
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -280px; /* Changed from -100% to exact pixels */
+                width: 280px;
+                height: 100vh;
+                background-color: var(--primary);
+                flex-direction: column;
+                padding: 6rem 2rem 2rem;
+                gap: 1.5rem;
+                transition: right 0.4s ease;
+                z-index: 999;
+                box-shadow: -5px 0 30px rgba(0, 0, 0, 0.1);
+                overflow-y: auto; /* Added scroll for tall menus */
+            }
+            
+            .nav-links.active {
+                right: 0;
+            }
+            
+            .dropdown-menu {
+                position: static;
+                transform: none;
+                background-color: rgba(255, 255, 255, 0.05);
+                box-shadow: none;
+                padding: 0;
+                margin-top: 0.5rem;
+                max-height: 0;
+                overflow: hidden;
+                opacity: 1;
+                visibility: visible;
+                border-radius: 5px;
+                transition: max-height 0.4s ease, padding 0.4s ease;
+            }
+            
+            .dropdown-menu::before {
+                display: none;
+            }
+            
+            .dropdown.active .dropdown-menu {
+                max-height: 500px;
+                padding: 0.5rem 0;
+            }
+            
+            .dropdown-toggle {
+
+                justify-content: space-between;
+                width: 100%;
+            }
+            
+            .close-menu {
+                position: absolute;
+                top: 1.5rem;
+                right: 1.5rem;
+                background: none;
+                border: none;
+                color: white;
+                font-size: 1.2rem;
+                cursor: pointer;
+                z-index: 1001;
+                visibility: visible;
+            }
+            
+            /* Fix for dropdown link click area */
+            .dropdown-toggle {
+                pointer-events: auto;
+            }
+            
+            /* Make the chevron container clickable separately */
+            .dropdown-chevron {
+                padding: 10px;
+                margin: -10px;
+                cursor: pointer;
+            }
+        }
+
+        /* Demo content to show scrolling effect */
+        .demo-content {
+            height: 150vh;
+            padding-top: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+        
+        .demo-content h1 {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+        }
+        
+        .demo-content p {
+            max-width: 600px;
+            line-height: 1.6;
+        }
+        
+    </style>
+     <!-- Hero styling -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --forest:#004d40;
+      --cream:#f7f5f2;
+      --accent:#d4af37;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;font-family:'Inter',sans-serif;background:#fff;color:#111}
+    .hero{
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      height:100vh;
+      padding:0 2rem;
+      text-align:center;
+      position:relative;
+      overflow:hidden;
+      background-position: center;
+      background: url("./images/background.png");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+    }
+    .hero::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      background:url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1350&q=80') center/cover no-repeat;
+      filter:brightness(.55);
+      z-index:-1;
+    }
+    .hero h1{
+      font-family:'Playfair Display',serif;
+      font-size:clamp(2.5rem,5vw,4.5rem);
+      color:var(--primary);
+      line-height:1.2;
+      margin-bottom:1.5rem;
+      opacity:1;
+      transform:translateY(30px);
+    }
+    .hero p{
+      font-size:clamp(1rem,2vw,1.25rem);
+      font-weight:300;
+      color:var(--dark);
+      max-width:600px;
+      margin-bottom:2.5rem;
+      opacity:1;
+      transform:translateY(30px);
+    }
+    .btn-group{
+      display:flex;
+      gap:1.5rem;
+      flex-wrap:wrap;
+    }
+    .btn{
+      position:relative;
+      display:inline-block;
+      padding:.9rem 2.2rem;
+      font-size:.95rem;
+      font-weight:600;
+      text-decoration:none;
+      border-radius:50px;
+      transition:all .5s cubic-bezier(.23,1,.32,1);
+      overflow:hidden;
+      z-index:1;
+      opacity:1;
+      transform:translateY(30px);
+    }
+    .btn::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      border-radius:50px;
+      background:linear-gradient(135deg,var(--accent),#f9a602);
+      z-index:-1;
+      transform:scaleX(0);
+      transform-origin:left;
+      transition:transform .5s cubic-bezier(.23,1,.32,1);
+    }
+    .btn-primary{
+      background:var(--primary);
+      color:var(--forest);
+    }
+    .btn-primary:hover{
+      color:var(--secondary);
+      box-shadow:0 10px 25px rgba(0,0,0,.3);
+    }
+    .btn-secondary{
+      color:#387373;
+      border:2px solid #fff;
+    }
+    .btn-secondary::before{
+      background:linear-gradient(135deg,#fff,#fff);
+    }
+    .btn-secondary:hover{
+      color:var(--forest);
+      box-shadow:0 10px 25px rgba(0,0,0,.3);
+    }
+    .btn:hover::before{
+      transform:scaleX(1);
+    }
+    /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .hero {
+                height: auto;
+                padding: 6rem 0;
+            }
+            
+            .btn-secondary {
+                margin-left: 0;
+                margin-top: 1rem;
+            }
+            
+            .section {
+                padding: 4rem 1rem;
+            }
+            
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        /* Large tablets and small desktops */
+@media (max-width: 1024px) {
+    .hero {
+        min-height: 500px;
+        padding: 0 1.5rem;
+    }
+    
+    .hero h1 {
+        margin-bottom: 1.25rem;
+    }
+    
+    .hero p {
+        margin-bottom: 2rem;
+        max-width: 500px;
+    }
+    
+    .btn-group {
+        gap: 1.25rem;
+    }
+}
+
+/* Tablets */
+@media (max-width: 768px) {
+    .hero {
+        height: auto;
+        min-height: 450px;
+        padding: 4rem 1rem;
+        background-attachment: scroll; /* Better mobile performance */
+    }
+    
+    .hero h1 {
+        font-size: clamp(2rem, 8vw, 3.5rem);
+        margin-bottom: 1rem;
+        line-height: 1.1;
+    }
+    
+    .hero p {
+        font-size: clamp(0.9rem, 4vw, 1.1rem);
+        margin-bottom: 1.5rem;
+        max-width: 400px;
+        line-height: 1.5;
+    }
+    
+    .btn-group {
+        flex-direction: column;
+        gap: 1rem;
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .btn {
+        width: 100%;
+        padding: 0.8rem 1.5rem;
+        font-size: 0.9rem;
+        min-width: unset;
+    }
+    
+    .btn-secondary {
+        margin-left: 0;
+        margin-top: 0;
+    }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+    .hero {
+        min-height: 400px;
+        padding: 3rem 0.75rem;
+    }
+    
+    .hero h1 {
+        font-size: clamp(1.75rem, 9vw, 2.5rem);
+        margin-bottom: 0.75rem;
+    }
+    
+    .hero p {
+        font-size: clamp(0.85rem, 4.5vw, 1rem);
+        margin-bottom: 1.25rem;
+        max-width: 320px;
+        padding: 0 0.5rem;
+    }
+    
+    .btn {
+        padding: 0.75rem 1.25rem;
+        font-size: 0.85rem;
+        border-radius: 40px;
+    }
+    
+    .btn-group {
+        max-width: 280px;
+        gap: 0.75rem;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 360px) {
+    .hero {
+        min-height: 350px;
+        padding: 2.5rem 0.5rem;
+    }
+    
+    .hero h1 {
+        font-size: clamp(1.5rem, 10vw, 2rem);
+        margin-bottom: 0.5rem;
+    }
+    
+    .hero p {
+        font-size: clamp(0.8rem, 5vw, 0.9rem);
+        margin-bottom: 1rem;
+        max-width: 280px;
+    }
+    
+    .btn {
+        padding: 0.7rem 1rem;
+        font-size: 0.8rem;
+    }
+    
+    .btn-group {
+        max-width: 250px;
+        gap: 0.5rem;
+    }
+}
+
+/* Landscape orientation adjustments */
+@media (max-height: 500px) and (orientation: landscape) {
+    .hero {
+        height: auto;
+        min-height: 100vh;
+        padding: 2rem 1rem;
+    }
+    
+    .hero h1 {
+        font-size: clamp(1.5rem, 4vw, 2.5rem);
+        margin-bottom: 0.75rem;
+    }
+    
+    .hero p {
+        font-size: clamp(0.8rem, 2vw, 1rem);
+        margin-bottom: 1rem;
+    }
+    
+    .btn-group {
+        flex-direction: row;
+        gap: 1rem;
+    }
+    
+    .btn {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.8rem;
+    }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .hero::before {
+        background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=2700&q=90');
+    }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    .hero h1,
+    .hero p,
+    .btn {
+        opacity: 1;
+        transform: none;
+    }
+    
+    .btn,
+    .btn::before {
+        transition: none;
+    }
+}
+  </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+  <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="#" class="logo">
+    <i class="fas fa-heartbeat logo-icon"></i>
+                <span class="logo-text">Jamhuri Afya & Orthopaedics</span>
+            </a>
+            
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <ul class="nav-links">
+                <button class="close-menu">
+                    <i class="fas fa-times"></i>
+                </button>
+                <li class="nav-item">
+                    <a href="#" class="nav-link active">Home</a>
+                </li>
+               
+               
+                <li class="nav-item">
+                    <a href="#services" class="nav-link">Services</a>
+                </li>
+                 <li class="nav-item">
+                    <a href="#" class="nav-link">Free Resources</a>
+                </li> <li class="nav-item">
+                    <a href="#" class="nav-link">Our Team</a>
+                </li>
+                
+      
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Contact</a>
+                </li>
+                 <li class="nav-item">
+                    <a href="#" class="nav-link">Appointments</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Login</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+<!-- Hero -->
+  <section class="hero">
+    <h1 id="hero-headline">Jamhuri Afya</h1>
+    <p id="hero-subline">Modern care rooted in Kenyan heritage</p>
+    <div class="btn-group">
+      <a id="btn1" class="btn btn-primary" href="#services">Book Appointment</a>
+      <a id="btn2" class="btn btn-secondary" href="#about">Learn More</a>
+    </div>
+  </section>
+
+  <!-- Services Header -->
+  <section class="services-header" id="services">
+    <div class="services-header-content">
+      <h2>Comprehensive <span>Orthopedic Services</span></h2>
+      <p>From diagnosis to recovery, we provide expert care tailored to your musculoskeletal health needs. Our team of specialists is dedicated to helping you move better and live pain-free.</p>
+    </div>
+  </section>
+
+  <!-- Filter Section -->
+  <section class="filter-section">
+    <div class="filter-container">
+      <button class="filter-btn active" data-filter="all">All Services</button>
+      <button class="filter-btn" data-filter="acute">Acute Care</button>
+      <button class="filter-btn" data-filter="rehab">Rehabilitation</button>
+      <button class="filter-btn" data-filter="chronic">Chronic Care</button>
+      <button class="filter-btn" data-filter="pediatric">Pediatric</button>
+      <button class="filter-btn" data-filter="urgent">Urgent</button>
+    </div>
+  </section>
+
+  <!-- Services Grid -->
+  <section class="services-container">
+    <div class="services-grid" id="servicesGrid"></div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="services-cta" id="book">
+    <div class="services-cta-content">
+      <h2>Ready to Start Your Journey to Better Health?</h2>
+      <p>Our expert team is here to provide the care you deserve. Schedule your consultation today and take the first step toward a pain-free life.</p>
+      <div class="services-cta-buttons">
+        <a href="/book" class="cta-btn cta-primary">
+          <span class="material-icons">event</span>
+          Schedule Consultation
+        </a>
+        <a href="tel:+254202555555" class="cta-btn cta-secondary">
+          <span class="material-icons">phone</span>
+          Call Us Now
+        </a>
+      </div>
+    </div>
+  </section>
+<!-- Nav Bar Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Register ScrollTrigger plugin
+            gsap.registerPlugin(ScrollTrigger);
+            
+            // Navbar scroll effect with debouncing
+            const navbar = document.querySelector('.navbar');
+            let scrollTimer;
+            
+            // Initial check on page load
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            }
+            
+            window.addEventListener('scroll', () => {
+                // Clear the previous timer
+                clearTimeout(scrollTimer);
+                
+                // Set a new timer
+                scrollTimer = setTimeout(() => {
+                    if (window.scrollY > 50) {
+                        navbar.classList.add('scrolled');
+                    } else {
+                        navbar.classList.remove('scrolled');
+                    }
+                }, 10); // Small delay for better performance
+            });
+            
+            // Navbar animations with GSAP
+            gsap.from('.navbar', {
+                y: -100,
+                opacity: 0,
+                duration: 1,
+                ease: 'power3.out',
+                delay: 0.2,
+                clearProps: 'all' // Clean up after animation
+            });
+            
+            // Mobile menu elements
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const closeMenuBtn = document.querySelector('.close-menu');
+            const navLinks = document.querySelector('.nav-links');
+            const overlay = document.querySelector('.menu-overlay');
+            const dropdowns = document.querySelectorAll('.dropdown');
+            
+            // Open mobile menu
+            mobileMenuBtn.addEventListener('click', () => {
+                navLinks.classList.add('active');
+                overlay.classList.add('active');
+                document.querySelector('.mobile-menu-btn').style.visibility = 'hidden';
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            });
+            
+            // Close mobile menu function
+            const closeMenu = () => {
+                navLinks.classList.remove('active');
+                overlay.classList.remove('active');
+                document.querySelector('.mobile-menu-btn').style.visibility = 'visible';
+                document.body.style.overflow = ''; // Re-enable scrolling
+            };
+            
+            // Close menu events
+            closeMenuBtn.addEventListener('click', closeMenu);
+            overlay.addEventListener('click', closeMenu);
+            
+            // Handle dropdowns
+            dropdowns.forEach(dropdown => {
+                const dropdownToggle = dropdown.querySelector('.dropdown-toggle');
+                const dropdownChevron = dropdown.querySelector('.dropdown-chevron');
+                
+                // Only for mobile
+                if (window.innerWidth <= 768) {
+                    // Make the main link navigate and chevron toggle dropdown
+                    dropdownChevron.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        // Close other open dropdowns
+                        dropdowns.forEach(otherDropdown => {
+                            if (otherDropdown !== dropdown && otherDropdown.classList.contains('active')) {
+                                otherDropdown.classList.remove('active');
+                            }
+                        });
+                        
+                        // Toggle current dropdown
+                        dropdown.classList.toggle('active');
+                        
+                        // Rotate chevron
+                        const icon = dropdownChevron.querySelector('i');
+                        if (dropdown.classList.contains('active')) {
+                            icon.style.transform = 'rotate(180deg)';
+                        } else {
+                            icon.style.transform = 'rotate(0)';
+                        }
+                    });
+                }
+            });
+            
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768) {
+                    // Reset mobile menu state when switching to desktop
+                    navLinks.classList.remove('active');
+                    overlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                    
+                    // Reset all dropdowns
+                    dropdowns.forEach(dropdown => {
+                        dropdown.classList.remove('active');
+                        const icon = dropdown.querySelector('.dropdown-chevron i');
+                        if (icon) icon.style.transform = 'rotate(0)';
+                    });
+                }
+            });
+        });
+    </script>
+  <script>
+    const services = [
+      {
+        title: "Orthopedic Consultations & Diagnosis",
+        icon: "medical_services",
+        desc: "Comprehensive musculoskeletal evaluation using physical exams & advanced diagnostics for a tailored treatment plan.",
+        tag: "Consult",
+        category: "general"
+      },
+      {
+        title: "Fracture Care",
+        icon: "healing",
+        desc: "Full-spectrum fracture management: reduction, fixation, immobilization & follow-up imaging.",
+        tag: "Acute",
+        category: "acute"
+      },
+      {
+        title: "Physical Therapy",
+        icon: "fitness_center",
+        desc: "Individualized rehab programs to restore strength, mobility and function after injury or surgery.",
+        tag: "Rehab",
+        category: "rehab"
+      },
+      {
+        title: "Pain Management",
+        icon: "medication",
+        desc: "Non-surgical pain relief with medications, viscosupplementation, steroid injections & nerve blocks.",
+        tag: "Relief",
+        category: "chronic"
+      },
+      {
+        title: "Pediatric Orthopedics",
+        icon: "child_care",
+        desc: "Specialized care for growth-related issues, congenital deformities & sports injuries in children.",
+        tag: "Kids",
+        category: "pediatric"
+      },
+      {
+        title: "Non-Operative Treatments",
+        icon: "accessibility_new",
+        desc: "Conservative management for arthritis, tendonitis, sprains, strains & nerve pain via bracing & therapy.",
+        tag: "Conservative",
+        category: "chronic"
+      },
+      {
+        title: "Physiotherapy",
+        icon: "sports_kabaddi",
+        desc: "Hands-on manual therapy, electro-modalities & exercise prescription under expert supervision.",
+        tag: "Therapy",
+        category: "rehab"
+      },
+      {
+        title: "Occupational Therapy",
+        icon: "work",
+        desc: "Re-learn daily activities & return-to-work programs tailored for orthopedic and hand conditions.",
+        tag: "ADL",
+        category: "rehab"
+      },
+      {
+        title: "Urgent Care",
+        icon: "local_hospital",
+        desc: "Same-day treatment for acute injuries, sprains, suspected fractures & post-op complications.",
+        tag: "Urgent",
+        urgent: true,
+        category: "urgent"
+      },
+      {
+        title: "Primary Care Services",
+        icon: "health_and_safety",
+        desc: "Annual physicals, labs, vaccinations, chronic-disease management & minor illness care.",
+        tag: "Wellness",
+        category: "general"
+      },
+      {
+        title: "Post-Surgical Rehabilitation",
+        icon: "analytics",
+        desc: "Protocol-driven recovery plans after joint replacements, arthroscopy or spinal surgery.",
+        tag: "Post-Op",
+        category: "rehab"
+      },
+      {
+        title: "Pain Clinics",
+        icon: "psychology",
+        desc: "Multidisciplinary chronic-pain programs.",
+        tag: "Chronic",
+        category: "chronic"
+      },
+      {
+        title: "Nutritional Counseling",
+        icon: "restaurant",
+        desc: "Dietary guidance for bone density, inflammation control & optimal musculoskeletal healing and growth.",
+        tag: "Diet",
+        category: "general"
+      },
+      {
+        title: "Patient Education",
+        icon: "school",
+        desc: "Interactive workshops & resources on ergonomics, lifestyle modification & self-care strategies.",
+        tag: "Learn",
+        category: "general"
+      }
+    ];
+
+    // Render services
+    function renderServices(filteredServices) {
+      const grid = document.getElementById('servicesGrid');
+      grid.innerHTML = '';
+      
+      filteredServices.forEach((service, index) => {
+        const card = document.createElement('div');
+        card.className = `service-card ${service.urgent ? 'urgent' : ''}`;
+        card.style.animationDelay = `${index * 0.05}s`;
+        
+        card.innerHTML = `
+          <div class="service-icon">
+            <span class="material-icons">${service.icon}</span>
+          </div>
+          <span class="service-tag">${service.tag}</span>
+          <h3 class="service-title">${service.title}</h3>
+          <p class="service-desc">${service.desc}</p>
+        `;
+        
+        grid.appendChild(card);
+      });
+    }
+
+    // Filter functionality
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        const filter = btn.dataset.filter;
+        
+        if (filter === 'all') {
+          renderServices(services);
+        } else {
+          const filtered = services.filter(s => s.category === filter);
+          renderServices(filtered);
+        }
+      });
+    });
+
+    // Smooth scroll for CTA buttons
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // Initial render
+    renderServices(services);
+  </script>
+</body>
+</html>

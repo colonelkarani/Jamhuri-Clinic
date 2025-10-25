@@ -1,0 +1,1581 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jamhuri Afya | Book Appointment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- NavBar Styles -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>    
+    <style>
+        :root {
+            --primary: #387373;
+            --secondary: #93BFB7;
+            --light: #E4F2E7;
+            --dark: #2D3E40;
+            --accent: #97A6A0;
+        }
+
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--light);
+            color: var(--primary);
+            overflow-x: hidden;
+            /* Added a background image to demonstrate the navbar transparency */
+            background: linear-gradient(rgba(26, 38, 57, 0.7), rgba(26, 38, 57, 0.4)), url('/api/placeholder/1920/1080') center/cover;
+            background-attachment: fixed;
+            height: 200vh; /* Making the page scrollable for demo */
+        }
+        
+        /* Navbar Styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1.5rem 2rem;
+            transition: all 0.4s ease;
+            will-change: transform; /* Optimization for animations */
+        }
+        
+        .navbar.scrolled {
+            background-color: var(--primary);
+            padding: 1rem 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            font-size: 1.8rem;
+            color: var(--secondary);
+            margin-right: 0.8rem;
+        }
+        
+        .logo-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .nav-item {
+            position: relative;
+        }
+        
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            padding: 0 0;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--secondary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+        
+        .dropdown {
+            position: relative;
+        }
+        
+        .dropdown-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        
+        .dropdown-toggle i {
+            font-size: 0.8rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 1rem);
+            left: 50%;
+            transform: translateX(-50%) scaleY(0.8);
+            min-width: 200px;
+            background-color: var(--primary);
+            border-radius: 5px;
+            padding: 1rem 0;
+            opacity: 0;
+            visibility: hidden;
+            transform-origin: top center;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .dropdown-menu::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: 50%;
+            transform: translateX(-50%) rotate(45deg);
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary);
+        }
+        
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) scaleY(1);
+        }
+        
+        .dropdown:hover .dropdown-toggle i {
+            transform: rotate(180deg);
+        }
+        
+        .dropdown-item {
+            display: block;
+            padding: 0.7rem 1.5rem;
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--secondary);
+            padding-left: 1.8rem;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Added overlay for mobile menu */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 998;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .close-menu{
+            visibility:hidden ;
+        }
+        
+        @media (max-width: 1100px) {
+            .mobile-menu-btn {
+                display: block;
+                z-index: 1001;
+            }
+            .dropdown-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--secondary);
+            padding-left: 0.1rem;
+        }
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0%) scaleY(1);
+        }
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -280px; /* Changed from -100% to exact pixels */
+                width: 280px;
+                height: 100vh;
+                background-color: var(--primary);
+                flex-direction: column;
+                padding: 6rem 2rem 2rem;
+                gap: 1.5rem;
+                transition: right 0.4s ease;
+                z-index: 999;
+                box-shadow: -5px 0 30px rgba(0, 0, 0, 0.1);
+                overflow-y: auto; /* Added scroll for tall menus */
+            }
+            
+            .nav-links.active {
+                right: 0;
+            }
+            
+            .dropdown-menu {
+                position: static;
+                transform: none;
+                background-color: rgba(255, 255, 255, 0.05);
+                box-shadow: none;
+                padding: 0;
+                margin-top: 0.5rem;
+                max-height: 0;
+                overflow: hidden;
+                opacity: 1;
+                visibility: visible;
+                border-radius: 5px;
+                transition: max-height 0.4s ease, padding 0.4s ease;
+            }
+            
+            .dropdown-menu::before {
+                display: none;
+            }
+            
+            .dropdown.active .dropdown-menu {
+                max-height: 500px;
+                padding: 0.5rem 0;
+            }
+            
+            .dropdown-toggle {
+
+                justify-content: space-between;
+                width: 100%;
+            }
+            
+            .close-menu {
+                position: absolute;
+                top: 1.5rem;
+                right: 1.5rem;
+                background: none;
+                border: none;
+                color: white;
+                font-size: 1.2rem;
+                cursor: pointer;
+                z-index: 1001;
+                visibility: visible;
+            }
+            
+            /* Fix for dropdown link click area */
+            .dropdown-toggle {
+                pointer-events: auto;
+            }
+            
+            /* Make the chevron container clickable separately */
+            .dropdown-chevron {
+                padding: 10px;
+                margin: -10px;
+                cursor: pointer;
+            }
+        }
+
+        /* Demo content to show scrolling effect */
+        .demo-content {
+            height: 150vh;
+            padding-top: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+        
+        .demo-content h1 {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+        }
+        
+        .demo-content p {
+            max-width: 600px;
+            line-height: 1.6;
+        }
+        
+    </style>
+    <!-- Hero styling -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --forest:#004d40;
+      --cream:#f7f5f2;
+      --accent:#d4af37;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;font-family:'Inter',sans-serif;background:#fff;color:#111}
+    .hero{
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      height:100vh;
+      padding:0 2rem;
+      text-align:center;
+      position:relative;
+      overflow:hidden;
+      background-position: center;
+      background: url("./images/background.png");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+    }
+    .hero::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      background:url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1350&q=80') center/cover no-repeat;
+      filter:brightness(.55);
+      z-index:-1;
+    }
+    .hero h1{
+      font-family:'Playfair Display',serif;
+      font-size:clamp(2.5rem,5vw,4.5rem);
+      color:var(--primary);
+      line-height:1.2;
+      margin-bottom:1.5rem;
+      transform:translateY(30px);
+    }
+    .hero p{
+      font-size:clamp(1rem,2vw,1.25rem);
+      font-weight:300;
+      color:var(--dark);
+      max-width:600px;
+      margin-bottom:2.5rem;
+      transform:translateY(30px);
+    }
+    .btn-group{
+      display:flex;
+      gap:1.5rem;
+      flex-wrap:wrap;
+    }
+    .btn{
+      position:relative;
+      display:inline-block;
+      padding:.9rem 2.2rem;
+      font-size:.95rem;
+      font-weight:600;
+      text-decoration:none;
+      border-radius:50px;
+      transition:all .5s cubic-bezier(.23,1,.32,1);
+      overflow:hidden;
+      z-index:1;
+      transform:translateY(30px);
+    }
+    .btn::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      border-radius:50px;
+      background:linear-gradient(135deg,var(--accent),#f9a602);
+      z-index:-1;
+      transform:scaleX(0);
+      transform-origin:left;
+      transition:transform .5s cubic-bezier(.23,1,.32,1);
+    }
+    .btn-primary{
+      background:var(--primary);
+      color:var(--forest);
+    }
+    .btn-primary:hover{
+      color:var(--secondary);
+      box-shadow:0 10px 25px rgba(0,0,0,.3);
+    }
+    .btn-secondary{
+      color:#387373;
+      border:2px solid #fff;
+    }
+    .btn-secondary::before{
+      background:linear-gradient(135deg,#fff,#fff);
+    }
+    .btn-secondary:hover{
+      color:var(--forest);
+      box-shadow:0 10px 25px rgba(0,0,0,.3);
+    }
+    .btn:hover::before{
+      transform:scaleX(1);
+    }
+    /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .hero {
+                height: auto;
+                padding: 6rem 0;
+            }
+            
+            .btn-secondary {
+                margin-left: 0;
+                margin-top: 1rem;
+            }
+            
+            .section {
+                padding: 4rem 1rem;
+            }
+            
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        * Large tablets and small desktops */
+@media (max-width: 1024px) {
+    .hero {
+        min-height: 500px;
+        padding: 0 1.5rem;
+    }
+    
+    .hero h1 {
+        margin-bottom: 1.25rem;
+    }
+    
+    .hero p {
+        margin-bottom: 2rem;
+        max-width: 500px;
+    }
+    
+    .btn-group {
+        gap: 1.25rem;
+    }
+}
+
+/* Tablets */
+@media (max-width: 768px) {
+    .hero {
+        height: auto;
+        min-height: 450px;
+        padding: 4rem 1rem;
+        background-attachment: scroll; /* Better mobile performance */
+    }
+    
+    .hero h1 {
+        font-size: clamp(2rem, 8vw, 3.5rem);
+        margin-bottom: 1rem;
+        line-height: 1.1;
+    }
+    
+    .hero p {
+        font-size: clamp(0.9rem, 4vw, 1.1rem);
+        margin-bottom: 1.5rem;
+        max-width: 400px;
+        line-height: 1.5;
+    }
+    
+    .btn-group {
+        flex-direction: column;
+        gap: 1rem;
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .btn {
+        width: 100%;
+        padding: 0.8rem 1.5rem;
+        font-size: 0.9rem;
+        min-width: unset;
+    }
+    
+    .btn-secondary {
+        margin-left: 0;
+        margin-top: 0;
+    }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+    .hero {
+        min-height: 400px;
+        padding: 3rem 0.75rem;
+    }
+    
+    .hero h1 {
+        font-size: clamp(1.75rem, 9vw, 2.5rem);
+        margin-bottom: 0.75rem;
+    }
+    
+    .hero p {
+        font-size: clamp(0.85rem, 4.5vw, 1rem);
+        margin-bottom: 1.25rem;
+        max-width: 320px;
+        padding: 0 0.5rem;
+    }
+    
+    .btn {
+        padding: 0.75rem 1.25rem;
+        font-size: 0.85rem;
+        border-radius: 40px;
+    }
+    
+    .btn-group {
+        max-width: 280px;
+        gap: 0.75rem;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 360px) {
+    .hero {
+        min-height: 350px;
+        padding: 2.5rem 0.5rem;
+    }
+    
+    .hero h1 {
+        font-size: clamp(1.5rem, 10vw, 2rem);
+        margin-bottom: 0.5rem;
+    }
+    
+    .hero p {
+        font-size: clamp(0.8rem, 5vw, 0.9rem);
+        margin-bottom: 1rem;
+        max-width: 280px;
+    }
+    
+    .btn {
+        padding: 0.7rem 1rem;
+        font-size: 0.8rem;
+    }
+    
+    .btn-group {
+        max-width: 250px;
+        gap: 0.5rem;
+    }
+}
+
+/* Landscape orientation adjustments */
+@media (max-height: 500px) and (orientation: landscape) {
+    .hero {
+        height: auto;
+        min-height: 100vh;
+        padding: 2rem 1rem;
+    }
+    
+    .hero h1 {
+        font-size: clamp(1.5rem, 4vw, 2.5rem);
+        margin-bottom: 0.75rem;
+    }
+    
+    .hero p {
+        font-size: clamp(0.8rem, 2vw, 1rem);
+        margin-bottom: 1rem;
+    }
+    
+    .btn-group {
+        flex-direction: row;
+        gap: 1rem;
+    }
+    
+    .btn {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.8rem;
+    }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .hero::before {
+        background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=2700&q=90');
+    }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    .hero h1,
+    .hero p,
+    .btn {
+        opacity: 1;
+        transform: none;
+    }
+    
+    .btn,
+    .btn::before {
+        transition: none;
+    }
+}
+  </style>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            light: '#3B82F6',
+                            dark: '#1D4ED8'
+                        },
+                        secondary: {
+                            light: '#10B981',
+                            dark: '#059669'
+                        },
+                        accent: {
+                            light: '#F59E0B',
+                            dark: '#D97706'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Montserrat', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@500;600;700;800&display=swap');
+        
+        :root {
+            --transition-all: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        body {
+            transition: var(--transition-all);
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+        }
+        
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        
+        .btn-gradient {
+            background: linear-gradient(135deg, #3B82F6 0%, #10B981 100%);
+            transition: var(--transition-all);
+        }
+        
+        .btn-gradient:hover {
+            background: linear-gradient(135deg, #1D4ED8 0%, #059669 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-input {
+            transition: var(--transition-all);
+        }
+        
+        .form-input:focus {
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+        }
+        
+        .doctor-card {
+            transition: var(--transition-all);
+        }
+        
+        .doctor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .service-card {
+            transition: var(--transition-all);
+            cursor: pointer;
+        }
+        
+        .service-card:hover {
+            transform: scale(1.03);
+        }
+        
+        .service-card.selected {
+            border-color: #3B82F6;
+            background-color: rgba(59, 130, 246, 0.05);
+        }
+        
+        .appointment-confirm {
+            transition: var(--transition-all);
+            opacity: 0;
+            height: 0;
+            overflow: hidden;
+        }
+        
+        .appointment-confirm.active {
+            opacity: 1;
+            height: auto;
+        }
+        
+        .section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: var(--transition-all);
+        }
+        
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            body, .btn-gradient, .form-input, .doctor-card, .service-card, .appointment-confirm, .section {
+                transition: none !important;
+                animation: none !important;
+            }
+        }
+        
+        ::-webkit-calendar-picker-indicator {
+            filter: invert(48%) sepia(13%) saturate(3207%) hue-rotate(190deg) brightness(95%) contrast(80%);
+        }
+        
+        .dark ::-webkit-calendar-picker-indicator {
+            filter: invert(100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 font-sans antialiased">
+ 
+  <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="#" class="logo">
+    <i class="fas fa-heartbeat logo-icon"></i>
+                <span class="logo-text">Jamhuri Afya & Orthopaedics</span>
+            </a>
+            
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <ul class="nav-links">
+                <button class="close-menu">
+                    <i class="fas fa-times"></i>
+                </button>
+                <li class="nav-item">
+                    <a href="#" class="nav-link active">Home</a>
+                </li>
+               
+               
+                <li class="nav-item">
+                    <a href="#services" class="nav-link">Services</a>
+                </li>
+                 <li class="nav-item">
+                    <a href="#" class="nav-link">Free Resources</a>
+                </li> <li class="nav-item">
+                    <a href="#" class="nav-link">Our Team</a>
+                </li>
+                
+      
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Contact</a>
+                </li>
+                 <li class="nav-item">
+                    <a href="#" class="nav-link">Appointments</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Login</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- Overlay for mobile menu -->
+    <div class="menu-overlay"></div>
+  <!-- Hero -->
+  <section class="hero">
+    <h1 id="hero-headline">Jamhuri Afya</h1>
+    <p id="hero-subline">Modern care rooted in Kenyan heritage</p>
+    <div class="btn-group">
+      <a id="btn1" class="btn btn-primary" href="#services">Book Appointment</a>
+      <a id="btn2" class="btn btn-secondary" href="#about">Learn More</a>
+    </div>
+  </section>
+
+    <!-- Appointment Form Section -->
+    <section id="book-appointment" class="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-800 section">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-heading font-bold mb-4">Book Your <span class="text-primary-light dark:text-primary-dark">Appointment</span></h2>
+                <p class="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                    Complete the form below to schedule your visit with our orthopaedic specialists.
+                </p>
+            </div>
+            
+            <div class="bg-white dark:bg-gray-900 rounded-xl shadow-lg overflow-hidden border border-gray-100 dark:border-gray-700 mt-10">
+                <div class="p-6 md:p-8">
+                    <form id="appointment-form">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Personal Information -->
+                            <div class="space-y-6">
+                                <div>
+                                    <label for="full-name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Full Name</label>
+                                    <input type="text" id="full-name" name="full-name" required class="form-input w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:border-transparent bg-gray-50 dark:bg-gray-800">
+                                </div>
+                                <div>
+                                    <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+                                    <input type="email" id="email" name="email" required class="form-input w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:border-transparent bg-gray-50 dark:bg-gray-800">
+                                </div>
+                                <div>
+                                    <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Phone Number</label>
+                                    <input type="tel" id="phone" name="phone" required class="form-input w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:border-transparent bg-gray-50 dark:bg-gray-800">
+                                </div>
+                            </div>
+                            
+                            <!-- Appointment Details -->
+                            <div class="space-y-6">
+                                <div>
+                                    <label for="appointment-date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Date</label>
+                                    <input type="date" id="appointment-date" name="appointment-date" required min="" class="form-input w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:border-transparent bg-gray-50 dark:bg-gray-800">
+                                </div>
+                                <div>
+                                    <label for="appointment-time" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Time</label>
+                                    <select id="appointment-time" name="appointment-time" required class="form-input w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:border-transparent bg-gray-50 dark:bg-gray-800">
+                                        <option value="" disabled selected>Select a time</option>
+                                        <option value="08:00">8:00 AM</option>
+                                        <option value="09:00">9:00 AM</option>
+                                        <option value="10:00">10:00 AM</option>
+                                        <option value="11:00">11:00 AM</option>
+                                        <option value="13:00">1:00 PM</option>
+                                        <option value="14:00">2:00 PM</option>
+                                        <option value="15:00">3:00 PM</option>
+                                        <option value="16:00">4:00 PM</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="reason" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Reason for Visit</label>
+                                    <select id="reason" name="reason" class="form-input w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:border-transparent bg-gray-50 dark:bg-gray-800">
+                                        <option value="" disabled selected>Select a reason</option>
+                                        <option value="consultation">Initial Consultation</option>
+                                        <option value="follow-up">Follow-up Visit</option>
+                                        <option value="pain">Joint Pain</option>
+                                        <option value="injury">Sports Injury</option>
+                                        <option value="surgery">Pre-Surgical Evaluation</option>
+                                        <option value="post-op">Post-Operative Care</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Services Section -->
+                        <div class="mt-8">
+                            <h3 class="text-xl font-heading font-semibold mb-4">Select Services</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                <!-- Service Card 1 -->
+                                <div class="service-card group p-4 border border-gray-200 dark:border-gray-700 rounded-xl hover:border-primary-light dark:hover:border-primary-dark">
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0 h-10 w-10 rounded-lg bg-primary-light/10 dark:bg-primary-dark/10 flex items-center justify-center">
+                                            <i class="fas fa-bone text-primary-light dark:text-primary-dark"></i>
+                                        </div>
+                                        <div class="ml-4">
+                                            <label class="block">
+                                                <input type="checkbox" name="service" value="fracture-care" class="sr-only peer">
+                                                <span class="font-medium text-gray-900 dark:text-white">Fracture Care</span>
+                                                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Evaluation and treatment of bone fractures</p>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Service Card 2 -->
+                                <div class="service-card group p-4 border border-gray-200 dark:border-gray-700 rounded-xl hover:border-primary-light dark:hover:border-primary-dark">
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0 h-10 w-10 rounded-lg bg-primary-light/10 dark:bg-primary-dark/10 flex items-center justify-center">
+                                            <i class="fas fa-running text-primary-light dark:text-primary-dark"></i>
+                                        </div>
+                                        <div class="ml-4">
+                                            <label class="block">
+                                                <input type="checkbox" name="service" value="sports-medicine" class="sr-only peer">
+                                                <span class="font-medium text-gray-900 dark:text-white">Sports Medicine</span>
+                                                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Injury prevention and treatment for athletes</p>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Service Card 3 -->
+                                <div class="service-card group p-4 border border-gray-200 dark:border-gray-700 rounded-xl hover:border-primary-light dark:hover:border-primary-dark">
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0 h-10 w-10 rounded-lg bg-primary-light/10 dark:bg-primary-dark/10 flex items-center justify-center">
+                                            <i class="fas fa-wheelchair text-primary-light dark:text-primary-dark"></i>
+                                        </div>
+                                        <div class="ml-4">
+                                            <label class="block">
+                                                <input type="checkbox" name="service" value="joint-replacement" class="sr-only peer">
+                                                <span class="font-medium text-gray-900 dark:text-white">Joint Replacement</span>
+                                                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Hip, knee, and shoulder replacement options</p>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Additional Notes -->
+                        <div class="mt-8">
+                            <label for="notes" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Additional Notes</label>
+                            <textarea id="notes" name="notes" rows="3" class="form-input w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:border-transparent bg-gray-50 dark:bg-gray-800"></textarea>
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <div class="mt-10">
+                            <button type="submit" class="btn-gradient w-full text-white py-4 rounded-lg font-medium text-lg shadow-lg hover:shadow-xl transition-all duration-300">
+                                Book Appointment
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <!-- Confirmation Message (Hidden Initially) -->
+                    <div id="confirmation-message" class="appointment-confirm mt-8 p-6 rounded-lg bg-gradient-to-br from-green-50 to-blue-50 dark:from-gray-800 dark:to-gray-700 border border-green-200 dark:border-gray-600">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <div class="h-12 w-12 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                                    <i class="fas fa-check text-green-600 dark:text-green-400 text-xl"></i>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-xl font-heading font-semibold text-gray-900 dark:text-white">Appointment Confirmed!</h3>
+                                <div class="mt-2 text-gray-600 dark:text-gray-300">
+                                    <p>Thank you for booking your appointment. We've sent a confirmation to your email with all the details.</p>
+                                    <p class="mt-2 font-medium">Looking forward to seeing you!</p>
+                                </div>
+                                <div class="mt-4">
+                                    <button id="new-appointment" class="text-primary-light dark:text-primary-dark font-medium hover:underline">
+                                        Book another appointment
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Specialists Section -->
+    <section id="our-specialists" class="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-800/50 section">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-heading font-bold mb-4">Meet Our <span class="text-primary-light dark:text-primary-dark">Specialists</span></h2>
+                <p class="text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Our board-certified orthopaedic surgeons bring decades of combined experience in treating musculoskeletal conditions.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Doctor 1 -->
+                <div class="doctor-card bg-white dark:bg-gray-900 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:shadow-xl">
+                    <div class="relative h-64 bg-gray-100 dark:bg-gray-700 overflow-hidden">
+                        <img src="https://placehold.co/600x600" alt="Dr. Sarah Chen, orthopaedic surgeon with short brown hair wearing a white coat and smiling" class="absolute inset-0 w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900/70 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <h3 class="text-xl font-heading font-semibold">Dr. George Maingi</h3>
+                            <p class="text-sm opacity-90">Orthopaedic Surgeon</p>
+                        </div>
+                        <div class="absolute top-4 right-4">
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary-light/90 text-white">
+                                <i class="fas fa-star mr-1"></i> 4.9
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-3">
+                            <div class="flex items-center text-yellow-500 mr-2">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="text-sm text-gray-500 dark:text-gray-400">127 reviews</span>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">
+                            Specializes in minimally invasive joint replacement and sports injuries. Board certified with 15+ years of experience.
+                        </p>
+                        <div class="flex justify-between items-center">
+                            <button onclick="bookWithDoctor('Dr. Sarah Chen')" class="text-primary-light dark:text-primary-dark font-medium hover:underline">
+                                Book with Dr. Maingi
+                            </button>
+                            <div class="flex space-x-2">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200">
+                                    <i class="fas fa-calendar-check mr-1"></i> Next: Tomorrow
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Doctor 2 -->
+                <div class="doctor-card bg-white dark:bg-gray-900 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:shadow-xl">
+                    <div class="relative h-64 bg-gray-100 dark:bg-gray-700 overflow-hidden">
+                        <img src="https://placehold.co/600x600" alt="Dr. Michael Rodriguez, experienced orthopaedic specialist with glasses and a confident expression" class="absolute inset-0 w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900/70 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <h3 class="text-xl font-heading font-semibold">Dr. James Mwangi</h3>
+                            <p class="text-sm opacity-90">Paediatrics</p>
+                        </div>
+                        <div class="absolute top-4 right-4">
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary-light/90 text-white">
+                                <i class="fas fa-star mr-1"></i> 4.8
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-3">
+                            <div class="flex items-center text-yellow-500 mr-2">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="text-sm text-gray-500 dark:text-gray-400">94 reviews</span>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">
+                            Expert in spinal disorders, degenerative conditions, and innovative non-surgical treatments.
+                        </p>
+                        <div class="flex justify-between items-center">
+                            <button onclick="bookWithDoctor('Dr. Michael Rodriguez')" class="text-primary-light dark:text-primary-dark font-medium hover:underline">
+                                Book with Dr. Mwangi
+                            </button>
+                            <div class="flex space-x-2">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200">
+                                    <i class="fas fa-calendar-check mr-1"></i> Next: Today
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Doctor 3 -->
+                <div class="doctor-card bg-white dark:bg-gray-900 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:shadow-xl">
+                    <div class="relative h-64 bg-gray-100 dark:bg-gray-700 overflow-hidden">
+                        <img src="https://placehold.co/600x600" alt="Dr. Aisha Johnson, young talented orthopaedic surgeon with curly hair and warm smile" class="absolute inset-0 w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900/70 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <h3 class="text-xl font-heading font-semibold">Dr. Aisha Wangari</h3>
+                            <p class="text-sm opacity-90">Pediatric Orthopedics</p>
+                        </div>
+                        <div class="absolute top-4 right-4">
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary-light/90 text-white">
+                                <i class="fas fa-star mr-1"></i> 5.0
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-3">
+                            <div class="flex items-center text-yellow-500 mr-2">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="text-sm text-gray-500 dark:text-gray-400">142 reviews</span>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">
+                            Specializes in congenital and developmental orthopaedic conditions in children and adolescents.
+                        </p>
+                        <div class="flex justify-between items-center">
+                            <button onclick="bookWithDoctor('Dr. Aisha Johnson')" class="text-primary-light dark:text-primary-dark font-medium hover:underline">
+                                Book with Dr. Wangari
+                            </button>
+                            <div class="flex space-x-2">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200">
+                                    <i class="fas fa-calendar-check mr-1"></i> Next: Tomorrow
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 section">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-heading font-bold mb-4">Why Choose <span class="text-primary-light dark:text-primary-dark">Our Clinic</span></h2>
+                <p class="text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    We combine cutting-edge technology with compassionate care to deliver exceptional orthopaedic outcomes.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center p-6 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-300">
+                    <div class="flex justify-center mb-4">
+                        <div class="h-16 w-16 rounded-full bg-primary-light/10 dark:bg-primary-dark/10 flex items-center justify-center">
+                            <i class="fas fa-microscope text-2xl text-primary-light dark:text-primary-dark"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-heading font-semibold mb-2">Advanced Diagnostics</h3>
+                    <p class="text-gray-600 dark:text-gray-400">
+                        State-of-the-art imaging and diagnostic tools for precise assessments.
+                    </p>
+                </div>
+                
+                <div class="text-center p-6 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-300">
+                    <div class="flex justify-center mb-4">
+                        <div class="h-16 w-16 rounded-full bg-primary-light/10 dark:bg-primary-dark/10 flex items-center justify-center">
+                            <i class="fas fa-user-md text-2xl text-primary-light dark:text-primary-dark"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-heading font-semibold mb-2">Expert Surgeons</h3>
+                    <p class="text-gray-600 dark:text-gray-400">
+                        Board-certified specialists with fellowship training in orthopaedic subspecialties.
+                    </p>
+                </div>
+                
+                <div class="text-center p-6 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-300">
+                    <div class="flex justify-center mb-4">
+                        <div class="h-16 w-16 rounded-full bg-primary-light/10 dark:bg-primary-dark/10 flex items-center justify-center">
+                            <i class="fas fa-procedures text-2xl text-primary-light dark:text-primary-dark"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-heading font-semibold mb-2">Minimally Invasive</h3>
+                    <p class="text-gray-600 dark:text-gray-400">
+                        Smaller incisions, less pain, and faster recovery times with robotic-assisted techniques.
+                    </p>
+                </div>
+                
+                <div class="text-center p-6 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-300">
+                    <div class="flex justify-center mb-4">
+                        <div class="h-16 w-16 rounded-full bg-primary-light/10 dark:bg-primary-dark/10 flex items-center justify-center">
+                            <i class="fas fa-heartbeat text-2xl text-primary-light dark:text-primary-dark"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-heading font-semibold mb-2">Personalized Care</h3>
+                    <p class="text-gray-600 dark:text-gray-400">
+                        Custom treatment plans tailored to your specific condition and lifestyle.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-800/50 section">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-heading font-bold mb-4">Patient <span class="text-primary-light dark:text-primary-dark">Testimonials</span></h2>
+                <p class="text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Hear from patients who've regained their mobility and quality of life through our care.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-white dark:bg-gray-900 p-8 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+                    <div class="flex items-center mb-4">
+                        <div class="flex items-center text-yellow-500 mr-2">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span class="text-sm text-gray-500 dark:text-gray-400">2 weeks ago</span>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 italic mb-6">
+                        "After my knee replacement, I was walking within 24 hours. Dr. Maingi's surgical skill and the team's rehabilitation guidance got me back to hiking in 8 weeks. Life-changing experience!"
+                    </p>
+                    <div class="flex items-center">
+                        <img src="https://placehold.co/80x80" alt="Marcus Thompson, middle-aged man smiling after successful knee surgery" class="h-12 w-12 rounded-full object-cover">
+                        <div class="ml-4">
+                            <h4 class="font-medium text-gray-900 dark:text-white">Marcus Muriuki</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Knee Replacement Patient</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="bg-white dark:bg-gray-900 p-8 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+                    <div class="flex items-center mb-4">
+                        <div class="flex items-center text-yellow-500 mr-2">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span class="text-sm text-gray-500 dark:text-gray-400">1 month ago</span>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 italic mb-6">
+                        "As a college athlete, my shoulder injury threatened my career. The sports medicine team created a rehabilitation program that had me back on the field stronger than before."
+                    </p>
+                    <div class="flex items-center">
+                        <img src="https://placehold.co/80x80" alt="Sophia Martinez, young female athlete in sports clothing" class="h-12 w-12 rounded-full object-cover">
+                        <div class="ml-4">
+                            <h4 class="font-medium text-gray-900 dark:text-white">Sophia Wangui</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">College Athlete</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="bg-white dark:bg-gray-900 p-8 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+                    <div class="flex items-center mb-4">
+                        <div class="flex items-center text-yellow-500 mr-2">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <span class="text-sm text-gray-500 dark:text-gray-400">3 months ago</span>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 italic mb-6">
+                        "Living with scoliosis was painful until I met Dr. Rodriguez. His non-surgical approach to spinal alignment has given me my life back. The staff makes every visit comfortable."
+                    </p>
+                    <div class="flex items-center">
+                        <img src="https://placehold.co/80x80" alt="Elena Petrova, mature woman standing straight after spinal treatment" class="h-12 w-12 rounded-full object-cover">
+                        <div class="ml-4">
+                            <h4 class="font-medium text-gray-900 dark:text-white">Elena Awiti</h4>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Spinal Care Patient</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 section">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-heading font-bold mb-4">Frequently Asked <span class="text-primary-light dark:text-primary-dark">Questions</span></h2>
+                <p class="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                    Quick answers to common questions about our orthopaedic services and appointment process.
+                </p>
+            </div>
+            
+            <div class="space-y-6">
+                <!-- FAQ Item 1 -->
+                <div x-data="{ open: false }" class="border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden">
+                    <button @click="open = !open" class="w-full px-6 py-5 text-left flex justify-between items-center bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
+                        <h3 class="font-heading font-semibold text-lg">What should I bring to my first appointment?</h3>
+                        <span x-text="open ? '−' : '+'"></span>
+                    </button>
+                    <div x-show="open" x-collapse class="px-6 py-4 bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-300 border-t border-gray-200 dark:border-gray-700">
+                        <p class="mb-3">Please bring:</p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Your insurance card and photo ID</li>
+                            <li>Completed intake forms (if not submitted online)</li>
+                            <li>Medical records related to your condition</li>
+                            <li>List of current medications and supplements</li>
+                            <li>Recent imaging studies (X-rays, MRIs) on CD or USB</li>
+                            <li>Comfortable clothing to allow examination of affected area</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 2 -->
+                <div x-data="{ open: false }" class="border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden">
+                    <button @click="open = !open" class="w-full px-6 py-5 text-left flex justify-between items-center bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
+                        <h3 class="font-heading font-semibold text-lg">How soon can I get an appointment?</h3>
+                        <span x-text="open ? '−' : '+'"></span>
+                    </button>
+                    <div x-show="open" x-collapse class="px-6 py-4 bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-300 border-t border-gray-200 dark:border-gray-700">
+                        <p>We prioritize urgent cases and typically offer appointments within 48 hours for acute injuries or pain. Routine consultations are usually scheduled within 5-7 days. Check our online booking system for real-time availability across all providers.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 3 -->
+                <div x-data="{ open: false }" class="border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden">
+                    <button @click="open = !open" class="w-full px-6 py-5 text-left flex justify-between items-center bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
+                        <h3 class="font-heading font-semibold text-lg">Do you accept my insurance?</h3>
+                        <span x-text="open ? '−' : '+'"></span>
+                    </button>
+                    <div x-show="open" x-collapse class="px-6 py-4 bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-300 border-t border-gray-200 dark:border-gray-700">
+                        <p>We participate with most major insurance plans including Medicare, Blue Cross Blue Shield, Aetna, Cigna, UnitedHealthcare, and Tricare. Our team will verify your benefits prior to your visit and explain any out-of-pocket costs. We also offer self-pay options and payment plans for patients without insurance coverage.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 4 -->
+                <div x-data="{ open: false }" class="border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden">
+                    <button @click="open = !open" class="w-full px-6 py-5 text-left flex justify-between items-center bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
+                        <h3 class="font-heading font-semibold text-lg">What COVID-19 safety measures are in place?</h3>
+                        <span x-text="open ? '−' : '+'"></span>
+                    </button>
+                    <div x-show="open" x-collapse class="px-6 py-4 bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-300 border-t border-gray-200 dark:border-gray-700">
+                        <p>We maintain strict infection control protocols including:</p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>HEPA air filtration in all clinical areas</li>
+                            <li>Enhanced cleaning between patients</li>
+                            <li>Optional telehealth appointments</li>
+                            <li>Screening for symptoms upon arrival</li>
+                            <li>Masking requirements aligned with CDC guidelines</li>
+                            <li>Vaccinated clinical staff</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 5 -->
+                <div x-data="{ open: false }" class="border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden">
+                    <button @click="open = !open" class="w-full px-6 py-5 text-left flex justify-between items-center bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
+                        <h3 class="font-heading font-semibold text-lg">What's the recovery time after arthroscopic surgery?</h3>
+                        <span x-text="open ? '−' : '+'"></span>
+                    </button>
+                    <div x-show="open" x-collapse class="px-6 py-4 bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-300 border-t border-gray-200 dark:border-gray-700">
+                        <p>Recovery varies by procedure and individual factors:</p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li><strong>Knee arthroscopy:</strong> 4-6 weeks for full recovery</li>
+                            <li><strong>Shoulder arthroscopy:</strong> 6-8 weeks typically</li>
+                            <li><strong>Wrist/hand procedures:</strong> 3-4 weeks usually</li>
+                            <li><strong>Small joint procedures:</strong> 2-3 weeks commonly</li>
+                        </ul>
+                        <p class="mt-3">Most patients resume light activities within 2-3 days and office work within a week. Your surgeon will provide a personalized recovery plan.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary-light to-primary-dark text-white section">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-heading font-bold mb-6">{ Living Without Pain Starts Here }</h2>
+            <p class="text-lg opacity-90 max-w-2xl mx-auto mb-8">
+                Don't let joint pain limit your life. Schedule your consultation today and take the first step toward better mobility.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#book-appointment" class="bg-white text-primary-light px-8 py-4 rounded-full font-medium text-lg shadow-lg hover:shadow-xl transition-all duration-300">
+                    Book Online Now
+                </a>
+                <a href="tel:+18005551234" class="bg-white/10 hover:bg-white/20 border border-white px-8 py-4 rounded-full font-medium text-lg transition-all duration-300 backdrop-blur-sm">
+                    <i class="fas fa-phone mr-2"></i> Call Us: (254) 123-1234
+                </a>
+            </div>
+        </div>
+    </section>
+<!-- Nav Bar Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Register ScrollTrigger plugin
+            gsap.registerPlugin(ScrollTrigger);
+            
+            // Navbar scroll effect with debouncing
+            const navbar = document.querySelector('.navbar');
+            let scrollTimer;
+            
+            // Initial check on page load
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            }
+            
+            window.addEventListener('scroll', () => {
+                // Clear the previous timer
+                clearTimeout(scrollTimer);
+                
+                // Set a new timer
+                scrollTimer = setTimeout(() => {
+                    if (window.scrollY > 50) {
+                        navbar.classList.add('scrolled');
+                    } else {
+                        navbar.classList.remove('scrolled');
+                    }
+                }, 10); // Small delay for better performance
+            });
+            
+            // Navbar animations with GSAP
+            gsap.from('.navbar', {
+                y: -100,
+                opacity: 0,
+                duration: 1,
+                ease: 'power3.out',
+                delay: 0.2,
+                clearProps: 'all' // Clean up after animation
+            });
+            
+            // Mobile menu elements
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const closeMenuBtn = document.querySelector('.close-menu');
+            const navLinks = document.querySelector('.nav-links');
+            const overlay = document.querySelector('.menu-overlay');
+            const dropdowns = document.querySelectorAll('.dropdown');
+            
+            // Open mobile menu
+            mobileMenuBtn.addEventListener('click', () => {
+                navLinks.classList.add('active');
+                overlay.classList.add('active');
+                document.querySelector('.mobile-menu-btn').style.visibility = 'hidden';
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            });
+            
+            // Close mobile menu function
+            const closeMenu = () => {
+                navLinks.classList.remove('active');
+                overlay.classList.remove('active');
+                document.querySelector('.mobile-menu-btn').style.visibility = 'visible';
+                document.body.style.overflow = ''; // Re-enable scrolling
+            };
+            
+            // Close menu events
+            closeMenuBtn.addEventListener('click', closeMenu);
+            overlay.addEventListener('click', closeMenu);
+            
+            // Handle dropdowns
+            dropdowns.forEach(dropdown => {
+                const dropdownToggle = dropdown.querySelector('.dropdown-toggle');
+                const dropdownChevron = dropdown.querySelector('.dropdown-chevron');
+                
+                // Only for mobile
+                if (window.innerWidth <= 768) {
+                    // Make the main link navigate and chevron toggle dropdown
+                    dropdownChevron.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        // Close other open dropdowns
+                        dropdowns.forEach(otherDropdown => {
+                            if (otherDropdown !== dropdown && otherDropdown.classList.contains('active')) {
+                                otherDropdown.classList.remove('active');
+                            }
+                        });
+                        
+                        // Toggle current dropdown
+                        dropdown.classList.toggle('active');
+                        
+                        // Rotate chevron
+                        const icon = dropdownChevron.querySelector('i');
+                        if (dropdown.classList.contains('active')) {
+                            icon.style.transform = 'rotate(180deg)';
+                        } else {
+                            icon.style.transform = 'rotate(0)';
+                        }
+                    });
+                }
+            });
+            
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768) {
+                    // Reset mobile menu state when switching to desktop
+                    navLinks.classList.remove('active');
+                    overlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                    
+                    // Reset all dropdowns
+                    dropdowns.forEach(dropdown => {
+                        dropdown.classList.remove('active');
+                        const icon = dropdown.querySelector('.dropdown-chevron i');
+                        if (icon) icon.style.transform = 'rotate(0)';
+                    });
+                }
+            });
+        });
+    </script>
+    <script>
+        // Set minimum date to today
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set min date for appointment
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('appointment-date').min = today;
+            
+            // Scroll animation
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            document.querySelectorAll('.section').forEach(section => {
+                observer.observe(section);
+            });
+            
+            // Form submission
+            const form = document.getElementById('appointment-form');
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                form.style.opacity = '0.5';
+                form.style.pointerEvents = 'none';
+                
+                // Simulate submission
+                setTimeout(() => {
+                    document.getElementById('confirmation-message').classList.add('active');
+                    window.scrollTo({
+                        top: document.getElementById('confirmation-message').offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }, 1500);
+            });
+            
+            // New appointment button
+            document.getElementById('new-appointment').addEventListener('click', function() {
+                form.reset();
+                form.style.opacity = '1';
+                form.style.pointerEvents = 'auto';
+                document.getElementById('confirmation-message').classList.remove('active');
+                window.scrollTo({
+                    top: form.offsetTop - 100,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Theme toggle
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeIcon = document.getElementById('theme-icon');
+            
+            if (localStorage.getItem('theme') === 'dark') {
+                document.documentElement.classList.add('dark');
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
+                themeIcon.classList.add('text-yellow-300');
+            }
+            
+            themeToggle.addEventListener('click', function() {
+                const htmlClasses = document.documentElement.classList;
+                if (htmlClasses.contains('dark')) {
+                    htmlClasses.remove('dark');
+                    localStorage.setItem('theme', 'light');
+                    themeIcon.classList.replace('fa-moon', 'fa-sun');
+                    themeIcon.classList.remove('text-yellow-300');
+                } else {
+                    htmlClasses.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                    themeIcon.classList.replace('fa-sun', 'fa-moon');
+                    themeIcon.classList.add('text-yellow-300');
+                }
+            });
+        });
+        
+        function bookWithDoctor(doctorName) {
+            document.getElementById('full-name').focus();
+            window.scrollTo({
+                top: document.getElementById('book-appointment').offsetTop - 100,
+                behavior: 'smooth'
+            });
+            
+            // You could also auto-fill a "reason" field here with the doctor's specialization
+        }
+    </script>
+</body>
+</html>

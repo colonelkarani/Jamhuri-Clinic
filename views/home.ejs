@@ -405,7 +405,7 @@
       transition:all .5s cubic-bezier(.23,1,.32,1);
       overflow:hidden;
       z-index:1;
-      opacity:0;
+      opacity:1;
       transform:translateY(30px);
     }
     .btn::before{
@@ -1469,29 +1469,29 @@
                     <i class="fas fa-times"></i>
                 </button>
                 <li class="nav-item">
-                    <a href="#" class="nav-link active">Home</a>
+                    <a href="/home" class="nav-link active">Home</a>
                 </li>
                
                
                 <li class="nav-item">
-                    <a href="#services" class="nav-link">Services</a>
+                    <a href="/services" class="nav-link">Services</a>
                 </li>
                  <li class="nav-item">
-                    <a href="#" class="nav-link">Free Resources</a>
+                    <a href="/resources" class="nav-link">Free Resources</a>
                 </li> <li class="nav-item">
-                    <a href="#" class="nav-link">Our Team</a>
+                    <a href="/team" class="nav-link">Our Team</a>
                 </li>
                 
       
 
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Contact</a>
+                    <a href="/contact" class="nav-link">Contact</a>
                 </li>
                  <li class="nav-item">
-                    <a href="#" class="nav-link">Appointments</a>
+                    <a href="/appointments" class="nav-link">Appointments</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Login</a>
+                    <a href="/login" class="nav-link">Login</a>
                 </li>
             </ul>
         </div>
@@ -1652,22 +1652,22 @@
             </div>
 
             <div class="contact-form">
-                <form id="appointmentForm">
+                <form id="appointmentForm" method="POST" action="/contact">
                     <div class="form-group">
                         <label for="name" class="form-label">Full Name</label>
-                        <input type="text" id="name" class="form-input" required>
+                        <input type="text" id="name" name="name" class="form-input" required>
                     </div>
                     <div class="form-group">
                         <label for="email" class="form-label">Email</label>
-                        <input type="email" id="email" class="form-input" required>
+                        <input type="email" id="email" name="email" class="form-input" required>
                     </div>
                     <div class="form-group">
                         <label for="phone" class="form-label">Phone</label>
-                        <input type="tel" id="phone" class="form-input" required>
+                        <input type="tel" id="phone" name="phone" class="form-input" required>
                     </div>
                     <div class="form-group">
                         <label for="service" class="form-label">Service Needed</label>
-                        <select id="service" class="form-input" required>
+                        <select id="service" name="service" class="form-input" required>
                             <option value="">Select a service</option>
                             <option value="primary">Primary Care</option>
                             <option value="specialty">Specialty Care</option>
@@ -1677,14 +1677,14 @@
                     </div>
                     <div class="form-group">
                         <label for="message" class="form-label">Message</label>
-                        <textarea id="message" class="form-input form-textarea"></textarea>
+                        <textarea id="message" name="message" class="form-input form-textarea"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary" style="width: 100%;">Request Appointment</button>
+                    <button type="submit" class="btn btn-primary" style="width: 80%;">Request Appointment</button>
                 </form>
             </div>
         </div>
     </section>
-
+80
   <!--  AWWWARDS-WORTHY FOOTER  -->
   <footer id="site-footer">
     <div class="footer-inner">
@@ -1720,8 +1720,8 @@
         <!-- Column 4: Social / Newsletter -->
         <div class="footer-social">
           <h3>Leave a Feedback</h3>
-          <form class="newsletter">
-            <input type="text" placeholder="Feedback" required/>
+          <form class="newsletter" method="post" action="/feedback">
+            <input type="text" placeholder="Feedback" name="feedback" required/>
             <button type="submit">→</button>
           </form>
          
@@ -2022,25 +2022,25 @@ gsap.from('.service-card',{
   </script>
     <script>
         // Form submission handler
-        document.getElementById('appointmentForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+        // document.getElementById('appointmentForm').addEventListener('submit', function(e) {
+        //     //e.preventDefault();
             
-            // Get form values
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
-            const service = document.getElementById('service').value;
-            const message = document.getElementById('message').value;
+        //     // Get form values
+        //     const name = document.getElementById('name').value;
+        //     const email = document.getElementById('email').value;
+        //     const phone = document.getElementById('phone').value;
+        //     const service = document.getElementById('service').value;
+        //     const message = document.getElementById('message').value;
             
-            // Here you would typically send this data to a server
-            console.log('Appointment Request:', { name, email, phone, service, message });
+        //     // Here you would typically send this data to a server
+        //     console.log('Appointment Request:', { name, email, phone, service, message });
             
-            // Show confirmation (in a real app, you'd replace this with actual submission logic)
-            alert(`Thank you, ${name}! Your appointment request has been received. We'll contact you shortly to confirm.`);
+        //     // Show confirmation (in a real app, you'd replace this with actual submission logic)
+        //     //alert(`Thank you, ${name}! Your appointment request has been received. We'll contact you shortly to confirm.`);
             
-            // Reset form
-            this.reset();
-        });
+        //     // Reset form
+        //     this.reset();
+        // });
 
         // Simple animation on scroll
         document.addEventListener('DOMContentLoaded', function() {
