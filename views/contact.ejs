@@ -476,9 +476,92 @@
         }
         
     </style>
+    <!-- Hero styling -->
+     <style>
+          .hero-section {
+            position: relative;
+            height: 100vh;
+            background: linear-gradient(135deg, #3E848C, #C4EEF2), 
+                        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><rect fill="%23f0f4f8" width="1200" height="800"/><path fill="%23e8f2e8" d="M0 400h1200v400H0z"/><circle cx="300" cy="200" r="80" fill="%23d4a574" opacity="0.3"/><circle cx="900" cy="600" r="120" fill="%2397bc62" opacity="0.2"/></svg>');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--white);
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 0 20px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .hero-date {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--accent-color);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-5px);
+            }
+        }
+        .hero-section {
+    background: url("images/background.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+  background-attachment: fixed;   /* keeps hero in place */
+  color: #ffffff;
+}
+
+     </style>
 </head>
 <body>
-     <!-- Navbar -->
+    <!-- Navbar -->
     <nav class="navbar">
         <div class="navbar-container">
             <a href="#" class="logo">
@@ -495,53 +578,42 @@
                     <i class="fas fa-times"></i>
                 </button>
                 <li class="nav-item">
-                    <a href="#" class="nav-link active">Home</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle">
-                        About <span class="dropdown-chevron"><i class="fas fa-chevron-down"></i></span>
-                    </a>
-                    <div class="dropdown-menu">
-                        <a href="#" class="dropdown-item">Our Legacy</a>
-                        <a href="#" class="dropdown-item">Our Team</a>
-                    </div>
+                    <a href="/home" class="nav-link ">Home</a>
                 </li>
                
+               
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Free Resources</a>
-                </li>
-                
-                <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle">
-                        Services<span class="dropdown-chevron"><i class="fas fa-chevron-down"></i></span>
-                    </a>
-                    <div class="dropdown-menu">
-                        <a href="#" class="dropdown-item">Primary Care</a>
-                        <a href="#" class="dropdown-item">Special Care ( Orthopaedics )</a>
-                        <a href="#" class="dropdown-item">Diagnostic & Lab Services</a>
-                        <a href="#" class="dropdown-item">Urgent Care</a>
-                        <a href="#" class="dropdown-item">Health Education</a>
-                    </div>
-                </li>
-
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Contact</a>
+                    <a href="/services" class="nav-link">Services</a>
                 </li>
                  <li class="nav-item">
-                    <a href="#" class="nav-link">Appointments</a>
+                    <a href="/resources" class="nav-link">Free Resources</a>
+                </li> <li class="nav-item">
+                    <a href="/team" class="nav-link">Our Team</a>
+                </li>
+                
+      
+
+                <li class="nav-item">
+                    <a href="/contact" class="nav-link active">Contact</a>
+                </li>
+                 <li class="nav-item">
+                    <a href="/appointments" class="nav-link">Appointments</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Login</a>
+                    <a href="/login" class="nav-link">Login</a>
                 </li>
             </ul>
         </div>
     </nav>
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-bg"></div>
+    <!-- Hero section -->
+     <section class="hero-section">
         <div class="hero-content">
-            <h1 class="hero-title">Let's Talk</h1>
-            <p class="hero-subtitle">Your journey to pain-free movement starts with a single message.</p>
+            <h1 class="hero-title">Get In Touch With Us</h1>
+            <p class="hero-subtitle">We’re here to answer your questions and provide the care you need.</p>
+            <p class="hero-date">Est. 2002</p>
+        </div>
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down" style="font-size: 2rem;"></i>
         </div>
     </section>
 
@@ -763,6 +835,12 @@
         });
     </script>
     <script>
+        // Smooth scrolling for scroll indicator
+        document.querySelector('.scroll-indicator').addEventListener('click', () => {
+            document.querySelector('.contact-section').scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
         gsap.registerPlugin(ScrollTrigger);
 
         // Page load animations
