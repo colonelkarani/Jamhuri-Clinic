@@ -38,6 +38,14 @@ const respRateSchema = new mongoose.Schema(
 }
 )
 
+const oxygenSaturationSchema = new mongoose.Schema(
+{
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    oxygenSaturation : Number,
+  date: { type: Date, default: Date.now }
+}
+)
+
 const bloodSugarSchema = new mongoose.Schema(
 {
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
@@ -69,20 +77,24 @@ const appointmentSchema = new mongoose.Schema(
 }
 )
 
-const BPReading = mongoose.model('BPReading', BPReadingSchema);
-const respRate = mongoose.model('respRate', respRateSchema);
-const weight = mongoose.model('weight', weightSchema);
-const temperature = mongoose.model('temperature', temperatureSchema);
-const medication = mongoose.model('medication', medicationSchema);
-const bloodSugar = mongoose.model('bloodSugar', bloodSugarSchema);
-const appointment = mongoose.model('appointment', appointmentSchema);
+const BPReadingModel = mongoose.model('BPReading', BPReadingSchema);
+const respRateModel = mongoose.model('respRate', respRateSchema);
+const heartRateModel = mongoose.model('heartRate', heartRateSchema);
+const weightModel = mongoose.model('weight', weightSchema);
+const temperatureModel = mongoose.model('temperature', temperatureSchema);
+const medicationModel = mongoose.model('medication', medicationSchema);
+const bloodSugarModel = mongoose.model('bloodSugar', bloodSugarSchema);
+const appointmentModel = mongoose.model('appointment', appointmentSchema);
+const oxygenSaturationModel = mongoose.model('oxygenSaturation', oxygenSaturationSchema);
 
 module.exports = {
-  BPReading,
-  respRate,
-  weight,
-  temperature,
-  medication,
-  bloodSugar,
-  appointment,
+  BPReadingModel,
+  respRateModel,
+  weightModel,
+  heartRateModel, 
+  temperatureModel,
+  medicationModel,
+  oxygenSaturationModel,
+  bloodSugarModel,
+  appointmentModel,
 };

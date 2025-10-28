@@ -13,13 +13,15 @@ const path = require('path');
 const bodyParser = require("body-parser")
 
 const { 
-  BPReading,
-  respRate,
-  weight,
-  temperature,
-  medication,
-  bloodSugar,
-  appointment
+  BPReadingModel,
+  respRateModel,
+  heartRateModel,
+  oxygenSaturationModel,
+  weightModel,
+  temperatureModel,
+  medicationModel,
+  bloodSugarModel,
+  appointmentModel
 } = require('./models/healthTracker_model.js'); // replace './models' with your actual file path if different
 
 
@@ -34,7 +36,6 @@ const contactModel = require("./models/contact_model.js")
 
 
 const port = 3000
-const users = []
 
 const initializePassport = require('./passport_config')
 initializePassport(
@@ -122,8 +123,6 @@ app.post("/feedback", async (req, res) => {
 
 app.post("/contact", async (req, res) => {
   try {
-    
-    
     const newContact = new contactModel({ 
       name: req.body.name
       , email: req.body.email
@@ -132,13 +131,92 @@ app.post("/contact", async (req, res) => {
       , message: req.body.message
      });
     await newContact.save();
-
     console.log("Contact saved to MongoDB");
     res.redirect("/")
   } catch (error) {
     console.error("Error saving contact:", error);
   }
 });
+
+app.post("/vitals", checkAuthenticated,async (req, res) => {
+  try {
+    const fullBP = `${req.body.bloodPressure}`
+    const respRate = req.body.respRate
+    const heartRate = req.body.heartRate
+    const oxygenSaturation = req.body.oxygenSaturation
+    const temperature = req.body.temperature
+    const weight = req.body.weight
+
+    if (fullBP) {
+      const [systolic,diastolic] = fullBP.split("/")
+    const newBP = new BPReadingModel({
+      user: req.user._id,
+       systolic: parseInt(systolic),
+  diastolic: parseInt(diastolic),
+  date: Date.now()
+    });
+    await newBP.save();
+    console.log("BP saved to MongoDB");
+    }
+
+       if (respRate) {
+    const newRespRate = new respRateModel({
+      user: req.user._id,
+       respRate: parseInt(respRate),
+  date: Date.now()
+    });
+    await newRespRate.save();
+    console.log("Resp Rate saved to MongoDB");
+    }
+    
+
+       if (temperature) {
+    const newTemperature = new temperatureModel({
+      user: req.user._id,
+       temperature: parseFloat(temperature),
+  date: Date.now()
+    });
+    await newTemperature.save();
+    console.log("Temperature saved to MongoDB");
+    }
+
+    
+       if (heartRate) {
+    const newHeartRate = new heartRateModel({
+      user: req.user._id,
+       heartRate: parseInt(heartRate),
+  date: Date.now()
+    });
+    await newHeartRate.save();
+    console.log("Heart Rate saved to MongoDB");
+    }
+
+  if (oxygenSaturation) {
+    const newOxygenSaturation = new oxygenSaturationModel({
+      user: req.user._id,
+       oxygenSaturation: parseInt(oxygenSaturation),
+  date: Date.now()
+    });
+    await newOxygenSaturation.save();
+    console.log("Oxygen Sat saved to MongoDB");
+    }
+
+         if (weight) {
+    const newWeight = new weightModel({
+      user: req.user._id,
+       weight: parseInt(weight),
+  date: Date.now()
+    });
+    await newWeight.save();
+    console.log("Weight saved to MongoDB");
+    }
+
+    res.redirect("/user")
+  } catch (error) {
+    console.error("Error saving vital:", error);
+  }
+});
+
 
 app.get('/signup', checkNotAuthenticated, (req, res) => {
   res.render('signup.ejs')
