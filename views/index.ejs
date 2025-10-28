@@ -378,6 +378,72 @@
             box-shadow: 0 6px 8px rgba(0,0,0,0.15);
         }
         
+
+        /* added appontments section */
+         #appointmentForm input,
+  #appointmentForm select {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+  }
+  #appointmentForm input:focus,
+  #appointmentForm select:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+  }
+  .save-btn {
+    background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s;
+  }
+  .save-btn:hover {
+    transform: translateY(-2px);
+  }
+
+/* added medications section */
+#medicationForm input,
+  #medicationForm select {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+  }
+  #medicationForm input:focus,
+  #medicationForm select:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+  }
+  .save-btn {
+    background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s;
+  }
+  .save-btn:hover {
+    transform: translateY(-2px);
+  }
+
+
         .stats-cards {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -531,8 +597,8 @@
                                 <input type="number" class="form-control" id="heart-rate" placeholder="e.g., 72">
                             </div>
                             <div class="form-group">
-                                <label for="temperature">Temperature (°F)</label>
-                                <input type="number" class="form-control" id="temperature" placeholder="e.g., 98.6" step="0.1">
+                                <label for="temperature">Temperature (°C)</label>
+                                <input type="number" class="form-control" id="temperature" placeholder="e.g., 37.6" step="0.1">
                             </div>
                             <div class="form-group">
                                 <label for="respiratory-rate">Respiratory Rate (breaths/min)</label>
@@ -543,7 +609,7 @@
                                 <input type="number" class="form-control" id="oxygen-saturation" placeholder="e.g., 98" min="0" max="100">
                             </div>
                             <div class="form-group">
-                                <label for="weight">Weight (lbs)</label>
+                                <label for="weight">Weight (kgs)</label>
                                 <input type="number" class="form-control" id="weight" placeholder="e.g., 150" step="0.1">
                             </div>
                             <button type="submit" class="save-btn">Save Vital Signs</button>
@@ -555,8 +621,8 @@
                         <h2 class="section-title"><i>🩸</i> Blood Sugar Tracking</h2>
                         <form class="vital-signs-form">
                             <div class="form-group">
-                                <label for="blood-sugar-level">Blood Sugar Level (mg/dL)</label>
-                                <input type="number" class="form-control" id="blood-sugar-level" placeholder="e.g., 95">
+                                <label for="blood-sugar-level">Blood Sugar Level (mmol/L)</label>
+                                <input type="number" class="form-control" id="blood-sugar-level" placeholder="e.g., 5.1">
                             </div>
                             <div class="form-group">
                                 <label for="measurement-time">Time of Measurement</label>
@@ -605,7 +671,18 @@
                                 <div class="medication-status status-active">Active</div>
                             </li>
                         </ul>
-                        <button class="add-btn">+ Add New Medication</button>
+                         <!-- Add Medication Form -->
+  <form id="medicationForm" class="medication-form" style="display:none; margin-top:15px;">
+    <input type="text" id="medicationName" placeholder="Medication Name" required>
+    <input type="text" id="medicationDose" placeholder="Dosage & Frequency (e.g., 10mg, Once daily)" required>
+    <select id="medicationStatus">
+      <option value="Active">Active</option>
+      <option value="Stopped">Stopped</option>
+    </select>
+    <button type="submit" class="save-btn">Add Medication</button>
+  </form>
+
+  <button class="add-btn" id="addMedicationBtn">+ Add New Medication</button>
                     </section>
                     
                     <!-- Appointments Section -->
@@ -634,7 +711,18 @@
                                 <div class="appointment-status status-completed">Completed</div>
                             </li>
                         </ul>
-                        <button class="add-btn">+ Schedule New Appointment</button>
+                         <form id="appointmentForm" class="appointment-form" style="display:none; margin-top:15px;">
+    <input type="text" id="appointmentTitle" placeholder="Appointment Title" required>
+    <input type="text" id="appointmentDoctor" placeholder="Doctor's Name" required>
+    <input type="date" id="appointmentDate" required>
+    <input type="time" id="appointmentTime" required>
+    <select id="appointmentStatus">
+      <option value="Upcoming">Upcoming</option>
+      <option value="Completed">Completed</option>
+    </select>
+    <button type="submit" class="save-btn">Add Appointment</button>
+  </form>
+                       <button class="add-btn" id="addAppointmentBtn">+ Schedule New Appointment</button>
                     </section>
                     
                     <!-- Graphs Section -->
@@ -655,12 +743,12 @@
                             <div class="stat-card">
                                 <div class="stat-label">Weight</div>
                                 <div class="stat-value weight">152.3</div>
-                                <div class="stat-unit">lbs</div>
+                                <div class="stat-unit">kgs</div>
                             </div>
                             <div class="stat-card">
                                 <div class="stat-label">Blood Sugar</div>
-                                <div class="stat-value blood-sugar">98</div>
-                                <div class="stat-unit">mg/dL</div>
+                                <div class="stat-value blood-sugar">4.9</div>
+                                <div class="stat-unit">mmol/L</div>
                             </div>
                             <div class="stat-card">
                                 <div class="stat-label">Oxygen Sat.</div>
@@ -670,7 +758,7 @@
                             <div class="stat-card">
                                 <div class="stat-label">Temperature</div>
                                 <div class="stat-value">98.6</div>
-                                <div class="stat-unit">°F</div>
+                                <div class="stat-unit">°C</div>
                             </div>
                         </div>
                         
@@ -718,12 +806,12 @@
                         </div>
                         <div class="reading-item">
                             <div class="reading-type">Weight</div>
-                            <div class="reading-value">152.3 lbs</div>
+                            <div class="reading-value">152.3 kgs</div>
                             <div class="reading-date">2 days ago</div>
                         </div>
                         <div class="reading-item">
                             <div class="reading-type">Blood Sugar</div>
-                            <div class="reading-value">98 mg/dL</div>
+                            <div class="reading-value">4.9 mmol/L</div>
                             <div class="reading-date">3 days ago</div>
                         </div>
                         <div class="reading-item">
@@ -809,7 +897,7 @@
                     weightReading.className = 'reading-item';
                     weightReading.innerHTML = `
                         <div class="reading-type">Weight</div>
-                        <div class="reading-value">${weight} lbs</div>
+                        <div class="reading-value">${weight} kgs</div>
                         <div class="reading-date">Just now</div>
                     `;
                     readingsList.prepend(weightReading);
@@ -845,7 +933,7 @@
                     datasets: [
                         {
                             label: 'Systolic',
-                            data: [125, 122, 120, 118, 121, 119, 122],
+                            data: [125, 122, null, 118, 121, null, 122],
                             borderColor: '#3498db',
                             backgroundColor: 'rgba(52, 152, 219, 0.1)',
                             tension: 0.4,
@@ -853,7 +941,7 @@
                         },
                         {
                             label: 'Diastolic',
-                            data: [82, 80, 78, 76, 79, 77, 78],
+                            data: [82, 80, null, 76, 79, null, 78],
                             borderColor: '#9b59b6',
                             backgroundColor: 'rgba(155, 89, 182, 0.1)',
                             tension: 0.4,
@@ -950,7 +1038,7 @@
                             beginAtZero: false,
                             title: {
                                 display: true,
-                                text: 'lbs'
+                                text: 'kgs'
                             }
                         }
                     }
@@ -965,11 +1053,11 @@
                     labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
                     datasets: [{
                         label: 'Fasting',
-                        data: [95, 98, 92, 101, 97, 99, 96],
+                        data: [4.8, 4.0, 3.5, 3.8, 4.0, 3.7, 4.9],
                         backgroundColor: 'rgba(243, 156, 18, 0.7)',
                     }, {
                         label: 'After Meal',
-                        data: [125, 130, 118, 135, 128, 132, 127],
+                        data: [5.8, 5.0, 5.5, 4.8, 5.0, 4.7, 5.9],
                         backgroundColor: 'rgba(231, 76, 60, 0.7)',
                     }]
                 },
@@ -986,7 +1074,7 @@
                             beginAtZero: true,
                             title: {
                                 display: true,
-                                text: 'mg/dL'
+                                text: 'mmol/L'
                             }
                         }
                     }
@@ -1001,7 +1089,7 @@
                     labels: ['6 AM', '9 AM', '12 PM', '3 PM', '6 PM', '9 PM', '12 AM'],
                     datasets: [{
                         label: 'Temperature',
-                        data: [98.2, 98.4, 98.6, 98.7, 98.5, 98.3, 98.1],
+                        data: [38.2, 38.4, 38.6, 38.7, 38.5, 38.3, 38.1],
                         borderColor: '#3498db',
                         backgroundColor: 'rgba(52, 152, 219, 0.1)',
                         tension: 0.4,
@@ -1022,7 +1110,7 @@
                             min: 97.5,
                             title: {
                                 display: true,
-                                text: '°F'
+                                text: '°C'
                             }
                         }
                     }
@@ -1065,6 +1153,71 @@
                 }
             });
         }
+
+        // Appointments
+        const addBtn = document.getElementById('addAppointmentBtn');
+  const form = document.getElementById('appointmentForm');
+  const list = document.getElementById('appointmentList');
+
+  addBtn.addEventListener('click', () => {
+    form.style.display = form.style.display === 'none' ? 'block' : 'none';
+  });
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const title = document.getElementById('appointmentTitle').value;
+    const doctor = document.getElementById('appointmentDoctor').value;
+    const date = document.getElementById('appointmentDate').value;
+    const time = document.getElementById('appointmentTime').value;
+    const status = document.getElementById('appointmentStatus').value;
+
+    const li = document.createElement('li');
+    li.classList.add('appointment-item');
+
+    li.innerHTML = `
+      <div>
+        <div class="appointment-title">${title}</div>
+        <div class="appointment-details">${doctor} - ${date} - ${time}</div>
+      </div>
+      <div class="appointment-status status-${status.toLowerCase()}">${status}</div>
+    `;
+
+    list.appendChild(li);
+    form.reset();
+    form.style.display = 'none';
+  });
+
+  //medications
+  const addMedicationBtn = document.getElementById('addMedicationBtn');
+  const medicationForm = document.getElementById('medicationForm');
+  const medicationList = document.getElementById('medicationList');
+
+  addMedicationBtn.addEventListener('click', () => {
+    medicationForm.style.display = medicationForm.style.display === 'none' ? 'block' : 'none';
+  });
+
+  medicationForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const name = document.getElementById('medicationName').value;
+    const dose = document.getElementById('medicationDose').value;
+    const status = document.getElementById('medicationStatus').value;
+
+    const li = document.createElement('li');
+    li.classList.add('medication-item');
+
+    li.innerHTML = `
+      <div>
+        <div class="medication-name">${name}</div>
+        <div class="medication-details">${dose}</div>
+      </div>
+      <div class="medication-status status-${status.toLowerCase()}">${status}</div>
+    `;
+
+    medicationList.appendChild(li);
+    medicationForm.reset();
+    medicationForm.style.display = 'none';
+  });
+
     </script>
 </body>
 </html>

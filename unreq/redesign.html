@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Health Sphere – Personal Tracker</title>
+<meta name="theme-color" content="#00c6ff">
+<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiSGVhbHRoIFNwaGVyZSIsInNob3J0X25hbWUiOiJIZWFsdGgiLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjZmZmZmZmIiwidGhlbWVfY29sb3IiOiIjMDBjNmZmIn0=">
+<style>
+/* ---------- RESET ---------- */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#f0f4f8;color:#222;transition:background .3s,color .3s;line-height:1.6}
+img{max-width:100%;display:block}
+/* ---------- THEME ---------- */
+:root{
+  --primary:#00c6ff; --secondary:#0072ff; --danger:#ff416c; --success:#00d2a9;
+  --gray:#94a3b8; --dark:#0f172a; --light:#f8fafc;
+  --shadow:0 8px 32px rgba(0,0,0,.1); --radius:16px; --transition:.3s ease;
+}
+[data-theme="dark"]{
+  --light:#0f172a; --dark:#f8fafc; --gray:#64748b;
+  background:#0f172a; color:#f8fafc;
+}
+/* ---------- GLASSMORPHISM ---------- */
+.glass{
+  background:rgba(255,255,255,.55);
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.3);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:1.5rem;
+}
+[data-theme="dark"] .glass{
+  background:rgba(15,23,42,.55);
+  border:1px solid rgba(255,255,255,.1);
+}
+/* ---------- LAYOUT ---------- */
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem}
+header h1{font-size:1.5rem;font-weight:700;background:linear-gradient(90deg,var(--primary),var(--secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+main{display:grid;grid-template-columns:260px 1fr 300px;gap:1.5rem}
+aside{position:sticky;top:1.5rem;height:fit-content}
+nav{display:flex;flex-direction:column;gap:.5rem}
+nav button{width:100%;text-align:left;border:none;background:transparent;padding:.75rem 1rem;border-radius:var(--radius);cursor:pointer;font-size:1rem;display:flex;align-items:center;gap:.75rem;transition:var(--transition)}
+nav button:hover{background:rgba(0,114,255,.1)}
+nav button.active{background:linear-gradient(90deg,var(--primary),var(--secondary));color:#fff}
+.section{display:none;animation:fadeIn .5s}
+.section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}}
+/* ---------- FORMS ---------- */
+form{display:grid;gap:1rem}
+input,select,textarea{width:100%;padding:.75rem;border:1px solid var(--gray);border-radius:8px;background:var(--light);color:var(--dark);transition:border .3s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)}
+label{font-weight:600;font-size:.9rem;margin-bottom:.25rem;display:block}
+.btn{background:linear-gradient(90deg,var(--primary),var(--secondary));color:#fff;border:none;padding:.75rem 1.25rem;border-radius:8px;font-weight:600;cursor:pointer;transition:var(--transition)}
+.btn:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+/* ---------- CARDS ---------- */
+.card{margin-bottom:1rem}
+.card h3{margin-bottom:.5rem;font-size:1.1rem}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem;margin-bottom:1.5rem}
+.stat-card{text-align:center;padding:1rem;border-radius:var(--radius);background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff}
+.stat-card .num{font-size:2rem;font-weight:700}
+/* ---------- CHARTS ---------- */
+.chart-box{height:220px;margin-bottom:1rem}
+/* ---------- REMINDERS ---------- */
+.reminders{list-style:none;display:flex;flex-direction:column;gap:.5rem}
+.reminders li{padding:.75rem;border-left:4px solid var(--primary);background:rgba(0,114,255,.05);border-radius:4px;display:flex;justify-content:space-between;align-items:center}
+/* ---------- TOAST ---------- */
+#toast{position:fixed;bottom:2rem;right:2rem;background:var(--success);color:#fff;padding:1rem 1.5rem;border-radius:var(--radius);box-shadow:var(--shadow);transform:translateY(200%);transition:transform .3s}
+#toast.show{transform:translateY(0)}
+/* ---------- RESPONSIVE ---------- */
+@media(max-width:1024px){main{grid-template-columns:1fr}aside{position:relative}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Health Sphere</h1>
+  <div style="display:flex;align-items:center;gap:1rem">
+    <button id="themeToggle" class="btn">🌓</button>
+    <button id="exportCsv" class="btn">📥 CSV</button>
+    <button id="logoutBtn" class="btn">Logout</button>
+  </div>
+</header>
+
+<main>
+<aside class="glass">
+  <nav id="nav">
+    <button data-sec="dashboard" class="active">📊 Dashboard</button>
+    <button data-sec="vitals">❤️ Vitals</button>
+    <button data-sec="sugar">🩸 Sugar</button>
+    <button data-sec="meds">💊 Medications</button>
+    <button data-sec="appts">📅 Appointments</button>
+  </nav>
+</aside>
+
+<section id="dashboard" class="section active">
+  <div class="stats">
+    <div class="stat-card"><div class="num" id="statSys">122</div><div>Systolic</div></div>
+    <div class="stat-card"><div class="num" id="statDia">78</div><div>Diastolic</div></div>
+    <div class="stat-card"><div class="num" id="statHr">72</div><div>HR</div></div>
+    <div class="stat-card"><div class="num" id="statWt">152.3</div><div>kg</div></div>
+  </div>
+  <div class="glass chart-box"><canvas id="dashChart"></canvas></div>
+  <ul class="reminders" id="reminders"></ul>
+</section>
+
+<section id="vitals" class="section">
+  <form id="vitalsForm">
+    <div class="glass card">
+      <h3>Blood Pressure</h3>
+      <input type="text" id="bp" placeholder="120/80" pattern="\d{2,3}/\d{2,3}" required>
+    </div>
+    <div class="glass card">
+      <h3>Heart Rate</h3>
+      <input type="number" id="hr" placeholder="72" min="40" max="200">
+    </div>
+    <div class="glass card">
+      <h3>Weight (kg)</h3>
+      <input type="number" id="wt" step="0.1" placeholder="152.3">
+    </div>
+    <div class="glass card">
+      <h3>Oxygen Saturation (%)</h3>
+      <input type="number" id="oxy" min="70" max="100" placeholder="98">
+    </div>
+    <button class="btn">Save Vitals</button>
+  </form>
+</section>
+
+<section id="sugar" class="section">
+  <form id="sugarForm">
+    <div class="glass card">
+      <h3>Level (mg/dL)</h3>
+      <input type="number" id="sugarLevel" min="50" max="400" required>
+    </div>
+    <div class="glass card">
+      <h3>Meal Timing</h3>
+      <select id="sugarMeal"><option>Fasting</option><option>Before Meal</option><option>After Meal</option><option>Bedtime</option></select>
+    </div>
+    <button class="btn">Save Sugar</button>
+  </form>
+</section>
+
+<section id="meds" class="section">
+  <form id="medsForm">
+    <input id="medName" placeholder="Medication name" required>
+    <input id="medDose" placeholder="Dose & frequency" required>
+    <button class="btn">Add Medication</button>
+  </form>
+  <ul id="medsList" class="reminders"></ul>
+</section>
+
+<section id="appts" class="section">
+  <form id="apptForm">
+    <input id="apptTitle" placeholder="Title" required>
+    <input id="apptDoc" placeholder="Doctor" required>
+    <input type="date" id="apptDate" required>
+    <input type="time" id="apptTime" required>
+    <button class="btn">Schedule</button>
+  </form>
+  <ul id="apptList" class="reminders"></ul>
+</section>
+</main>
+
+<div id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+/* ---------- THEME ---------- */
+const theme=localStorage.getItem('theme')||'light'; document.documentElement.setAttribute('data-theme',theme);
+document.getElementById('themeToggle').onclick=()=>{
+  const next= document.documentElement.getAttribute('data-theme')==='light'?'dark':'light';
+  document.documentElement.setAttribute('data-theme',next); localStorage.setItem('theme',next);
+};
+/* ---------- NAV ---------- */
+document.querySelectorAll('nav button').forEach(b=>b.onclick=function(){
+  document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));
+  this.classList.add('active'); document.getElementById(this.dataset.sec).classList.add('active');
+});
+/* ---------- CHART ---------- */
+const ctx=document.getElementById('dashChart').getContext('2d');
+window.myChart=new Chart(ctx,{type:'line',data:{labels:[],datasets:[{label:'Systolic',data:[],borderColor:'#00c6ff',fill:false},{label:'Diastolic',data:[],borderColor:'#0072ff',fill:false}]},options:{responsive:true,maintainAspectRatio:false}});
+/* ---------- LOCAL STORAGE ---------- */
+const db=(k,v)=>v?localStorage.setItem(k,JSON.stringify(v)):JSON.parse(localStorage.getItem(k)||'[]');
+/* ---------- TOAST ---------- */
+function toast(msg){
+  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2000);
+}
+/* ---------- FORMS ---------- */
+document.getElementById('vitalsForm').onsubmit=e=>{
+  e.preventDefault(); const [bp,hr,wt,oxy]=['bp','hr','wt','oxy'].map(id=>document.getElementById(id).value);
+  const [s,d]=bp.split('/'); db('vitals',db('vitals').concat({s,d,hr,wt,oxy,date:new Date().toISOString()}));
+  updateDashboard(); toast('Vitals saved'); e.target.reset();
+};
+document.getElementById('sugarForm').onsubmit=e=>{
+  e.preventDefault(); db('sugar',db('sugar').concat({level:document.getElementById('sugarLevel').value,meal:document.getElementById('sugarMeal').value,date:new Date().toISOString()}));
+  toast('Sugar saved'); e.target.reset();
+};
+document.getElementById('medsForm').onsubmit=e=>{
+  e.preventDefault(); const name=document.getElementById('medName').value; const dose=document.getElementById('medDose').value;
+  db('meds',db('meds').concat({name,dose})); renderMeds(); toast('Medication added'); e.target.reset();
+};
+document.getElementById('apptForm').onsubmit=e=>{
+  e.preventDefault(); const [title,doc,date,time]=['apptTitle','apptDoc','apptDate','apptTime'].map(id=>document.getElementById(id).value);
+  db('appts',db('appts').concat({title,doc,date,time})); renderAppts(); toast('Appointment scheduled'); e.target.reset();
+};
+/* ---------- RENDER ---------- */
+function updateDashboard(){
+  const v=db('vitals'); if(!v.length)return;
+  const latest=v[v.length-1];
+  document.getElementById('statSys').textContent=latest.s;
+  document.getElementById('statDia').textContent=latest.d;
+  document.getElementById('statHr').textContent=latest.hr;
+  document.getElementById('statWt').textContent=latest.wt;
+  // chart
+  const labels=v.map(x=>new Date(x.date).toLocaleDateString()).slice(-7);
+  const sys=v.map(x=>x.s).slice(-7);
+  const dia=v.map(x=>x.d).slice(-7);
+  myChart.data.labels=labels; myChart.data.datasets[0].data=sys; myChart.data.datasets[1].data=dia; myChart.update();
+  // reminders
+  const rem=[]; if(latest.s>130||latest.d>80)rem.push('High BP detected – schedule a follow-up.');
+  document.getElementById('reminders').innerHTML=rem.map(r=>`<li>${r}</li>`).join('');
+}
+function renderMeds(){ const m=db('meds'); document.getElementById('medsList').innerHTML=m.map((x,i)=>`<li>${x.name} – ${x.dose} <button onclick="db('meds',db('meds').filter((_,j)=>j!==i));renderMeds()">✕</button></li>`).join(''); }
+function renderAppts(){ const a=db('appts'); document.getElementById('apptList').innerHTML=a.map((x,i)=>`<li>${x.title} with ${x.doc} on ${x.date} at ${x.time} <button onclick="db('appts',db('appts').filter((_,j)=>j!==i));renderAppts()">✕</button></li>`).join(''); }
+/* ---------- EXPORT CSV ---------- */
+document.getElementById('exportCsv').onclick=()=>{
+  const v=db('vitals'); if(!v.length)return toast('No data');
+  const rows=[['Date','Systolic','Diastolic','HR','Weight']].concat(v.map(x=>[new Date(x.date).toLocaleDateString(),x.s,x.d,x.hr,x.wt]));
+  const csv=rows.map(r=>r.join(',')).join('\n');
+  const blob=new Blob([csv],{type:'text/csv'}); const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.download='health.csv'; a.click();
+};
+/* ---------- LOGOUT ---------- */
+document.getElementById('logoutBtn').onclick=()=>{ if(confirm('Logout?')){ localStorage.clear(); location.reload(); } };
+/* ---------- INIT ---------- */
+updateDashboard(); renderMeds(); renderAppts();
+/* ---------- PWA ---------- */
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('data:text/javascript,self.addEventListener("fetch",e=>{}));'); }
+</script>
+</body>
+</html>

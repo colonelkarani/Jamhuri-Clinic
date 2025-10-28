@@ -12,6 +12,15 @@ const {connectDB} = require("./db/connectDB.js");
 const path = require('path');
 const bodyParser = require("body-parser")
 
+const { 
+  BPReading,
+  respRate,
+  weight,
+  temperature,
+  medication,
+  bloodSugar,
+  appointment
+} = require('./models/healthTracker_model.js'); // replace './models' with your actual file path if different
 
 
 const DATABASE_URL =
