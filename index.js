@@ -121,6 +121,43 @@ app.post("/feedback", async (req, res) => {
   }
 });
 
+app.post("/meds", checkAuthenticated,async(req,res)=>{
+  try {
+    const newMedication = new medicationModel({
+      user: req.user._id,
+      name: req.body.medicationName,
+      dosage: req.body.dosage,
+      status: req.body.status
+    })
+    await newMedication.save()
+    console.log("Medication saved to database")
+    res.redirect("/user")
+    
+  } catch (error) {
+    console.error("Error saving new medication: ", error)
+  }
+})
+
+app.post("/user-appointments", checkAuthenticated,async(req,res)=>{
+  try {
+    const newAppointment = new appointmentModel({
+      user: req.user._id,
+      name: req.user.signupName,
+      title: req.body.title,
+      drName: req.body.drName,
+      status: req.body.status,
+      time: req.body.time,
+      date: req.body.date
+    })
+    await newAppointment.save()
+    console.log("Appointment saved to database")
+    res.redirect("/user")
+    
+  } catch (error) {
+    console.error("Error saving new appointment: ", error)
+  }
+})
+
 app.post("/contact", async (req, res) => {
   try {
     const newContact = new contactModel({ 
@@ -137,6 +174,32 @@ app.post("/contact", async (req, res) => {
     console.error("Error saving contact:", error);
   }
 });
+
+app.post("/blood-sugar", checkAuthenticated,async (req,res)=>{
+try {
+
+  const bloodSugar = req.body.bloodSugar
+  const measurementTime = req.body.measurementTime
+  const date = req.body.date
+  const notes = req.body.notes
+
+  const newBloodSugar= new bloodSugarModel({
+    user: req.user._id,
+    bloodSugar: parseFloat(bloodSugar),
+    measurementTime: measurementTime,
+    notes: notes,
+    date: date
+  })
+ 
+  await newBloodSugar.save()
+  console.log("Blood sugar saved to database")
+
+    res.redirect("/user")
+
+} catch (error) {
+  console.error("Error saving blood Sugar ", error)
+}
+})
 
 app.post("/vitals", checkAuthenticated,async (req, res) => {
   try {

@@ -619,14 +619,14 @@
                     <!-- Blood Sugar Section -->
                     <section id="blood-sugar" class="section">
                         <h2 class="section-title"><i>🩸</i> Blood Sugar Tracking</h2>
-                        <form class="vital-signs-form">
+                        <form class="vital-signs-form" method="POST" action="/blood-sugar">
                             <div class="form-group">
                                 <label for="blood-sugar-level">Blood Sugar Level (mmol/L)</label>
-                                <input type="number" class="form-control" id="blood-sugar-level" placeholder="e.g., 5.1">
+                                <input type="number" name="bloodSugar" class="form-control" id="blood-sugar-level" step="0.1" placeholder="e.g., 5.1">
                             </div>
                             <div class="form-group">
                                 <label for="measurement-time">Time of Measurement</label>
-                                <select class="form-control" id="measurement-time">
+                                <select class="form-control" name="measurementTime" id="measurement-time">
                                     <option value="fasting">Fasting</option>
                                     <option value="before-meal">Before Meal</option>
                                     <option value="after-meal">After Meal</option>
@@ -635,11 +635,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="blood-sugar-date">Date</label>
-                                <input type="date" class="form-control" id="blood-sugar-date">
+                                <input type="date" name="date" class="form-control" id="blood-sugar-date">
                             </div>
                             <div class="form-group">
                                 <label for="blood-sugar-notes">Notes</label>
-                                <textarea class="form-control" id="blood-sugar-notes" rows="3" placeholder="Any additional notes..."></textarea>
+                                <textarea class="form-control" id="blood-sugar-notes" name="notes" rows="2" placeholder="Any additional notes..."></textarea>
                             </div>
                             <button type="submit" class="save-btn">Save Blood Sugar Reading</button>
                         </form>
@@ -672,17 +672,17 @@
                             </li>
                         </ul>
                          <!-- Add Medication Form -->
-  <form id="medicationForm" class="medication-form" style="display:none; margin-top:15px;">
-    <input type="text" id="medicationName" placeholder="Medication Name" required>
-    <input type="text" id="medicationDose" placeholder="Dosage & Frequency (e.g., 10mg, Once daily)" required>
-    <select id="medicationStatus">
+  <form id="medicationForm" class="medication-form" style=" margin-top:15px;" action="/meds" method="POST">
+    <input type="text" id="medicationName" name="medicationName" placeholder="Medication Name" required>
+    <input type="text" id="medicationDose" name="dosage" placeholder="Dosage & Frequency (e.g., 10mg, Once daily)" required>
+    <select id="medicationStatus" name="status">
       <option value="Active">Active</option>
       <option value="Stopped">Stopped</option>
     </select>
     <button type="submit" class="save-btn">Add Medication</button>
   </form>
 
-  <button class="add-btn" id="addMedicationBtn">+ Add New Medication</button>
+ 
                     </section>
                     
                     <!-- Appointments Section -->
@@ -692,37 +692,36 @@
                             <li class="appointment-item">
                                 <div>
                                     <div class="appointment-title">Annual Physical</div>
-                                    <div class="appointment-details">Dr. Johnson - Oct 15, 2023 - 10:00 AM</div>
+                                    <div class="appointment-details">Dr. Johnson - Oct 15, 2025 - 10:00 AM</div>
                                 </div>
                                 <div class="appointment-status status-upcoming">Upcoming</div>
                             </li>
                             <li class="appointment-item">
                                 <div>
                                     <div class="appointment-title">Cardiologist Follow-up</div>
-                                    <div class="appointment-details">Dr. Martinez - Nov 5, 2023 - 2:30 PM</div>
+                                    <div class="appointment-details">Dr. Martinez - Nov 5, 2025 - 2:30 PM</div>
                                 </div>
                                 <div class="appointment-status status-upcoming">Upcoming</div>
                             </li>
                             <li class="appointment-item">
                                 <div>
                                     <div class="appointment-title">Dental Cleaning</div>
-                                    <div class="appointment-details">Dr. Lee - Sep 28, 2023 - 9:15 AM</div>
+                                    <div class="appointment-details">Dr. Lee - Sep 28, 2025 - 9:15 AM</div>
                                 </div>
                                 <div class="appointment-status status-completed">Completed</div>
                             </li>
                         </ul>
-                         <form id="appointmentForm" class="appointment-form" style="display:none; margin-top:15px;">
-    <input type="text" id="appointmentTitle" placeholder="Appointment Title" required>
-    <input type="text" id="appointmentDoctor" placeholder="Doctor's Name" required>
-    <input type="date" id="appointmentDate" required>
-    <input type="time" id="appointmentTime" required>
-    <select id="appointmentStatus">
+                         <form id="appointmentForm" class="appointment-form" method="POST" action="/user-appointments" style=" margin-top:15px;">
+    <input type="text" id="appointmentTitle" name="title" placeholder="Appointment Title" required>
+    <input type="text" id="appointmentDoctor" name="drName" placeholder="Doctor's Name" required>
+    <input type="date" id="appointmentDate" name="date" required>
+    <input type="time" id="appointmentTime" name="time" required>
+    <select id="appointmentStatus" name="status">
       <option value="Upcoming">Upcoming</option>
       <option value="Completed">Completed</option>
     </select>
     <button type="submit" class="save-btn">Add Appointment</button>
   </form>
-                       <button class="add-btn" id="addAppointmentBtn">+ Schedule New Appointment</button>
                     </section>
                     
                     <!-- Graphs Section -->

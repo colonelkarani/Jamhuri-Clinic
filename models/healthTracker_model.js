@@ -61,7 +61,6 @@ const medicationSchema = new mongoose.Schema(
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     name : String,
     dosage : String,
-    frequency : String,
     status: String,
   date: { type: Date, default: Date.now }
 }
@@ -70,8 +69,10 @@ const medicationSchema = new mongoose.Schema(
 const appointmentSchema = new mongoose.Schema(
 {
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  name: String,
     title : String,
     drName : String,
+    time: String,
     status: String,
   date: { type: Date, default: Date.now }
 }

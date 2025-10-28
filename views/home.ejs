@@ -6,6 +6,8 @@
     <title>Jamhuri Afya Health Clinic | Award-Winning Healthcare</title>
     <!-- NavBar Styles -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <script src="https://cdn.tailwindcss.com"></script>
+
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -422,8 +424,7 @@
     <!-- Services -->
     <style>
         :root {
-            --primary: #2b6cb0;
-            --secondary: #4299e1;
+           
             --accent: #f6ad55;
             --light: #f7fafc;
             --dark: #2d3748;
@@ -443,7 +444,37 @@
             overflow-x: hidden;
         }
 
-
+.btn{
+      position:relative;
+      display:inline-block;
+      padding:.9rem 2.2rem;
+      font-size:.95rem;
+      font-weight:600;
+      text-decoration:none;
+      border-radius:50px;
+      transition:all .5s cubic-bezier(.23,1,.32,1);
+      overflow:hidden;
+      z-index:1;
+    }
+     .btn::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      border-radius:50px;
+      background:linear-gradient(135deg,var(--accent),#f9a602);
+      z-index:-1;
+      transform:scaleX(0);
+      transform-origin:left;
+      transition:transform .5s cubic-bezier(.23,1,.32,1);
+    }
+    .btn-primary{
+      background:var(--primary);
+      color:var(--forest);
+    }
+    .btn-primary:hover{
+      color:var(--secondary);
+      box-shadow:0 10px 25px rgba(0,0,0,.3);
+    }
 
         .section {
             padding: 6rem 2rem;
@@ -1381,7 +1412,7 @@
                 <p class="testimonial-quote">The care I received at Jamhuri Afya  was exceptional. Dr. Maingi took the time to really listen to my concerns and developed a treatment plan that actually worked for my lifestyle.</p>
                 <div class="testimonial-author">
                     <div class="testimonial-author-image">
-                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/c2191783-3c73-47f2-a5db-0a27cfb07b11.png" alt="James Wilson, satisfied patient smiling at camera" />
+                        <img src="/images/james.jpg" alt="James Wilson, satisfied patient smiling at camera" />
                     </div>
                     <div class="testimonial-author-info">
                         <div class="testimonial-author-name">James Kirui</div>
