@@ -33,6 +33,7 @@ connectDB(DATABASE_URL);
 const userModel = require("./models/user_model.js")
 const feedbackModel = require("./models/feedback_model.js")
 const contactModel = require("./models/contact_model.js")
+const appointmentMdl = require("./models/appointment_model.js")
 
 
 const port = 3000
@@ -59,8 +60,16 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use(methodOverride('_method'))
 
-app.get('/user', checkAuthenticated, (req, res) => {
-  res.render('index.ejs', { name: req.user.signupName })
+app.get('/user', checkAuthenticated, async (req, res) => {
+    const userID = req.user._id
+
+  try {
+    const userAppointments = await appointmentModel.find({user: userID})
+    const userMedications = await medicationModel.find({user: userID})
+    res.render('index.ejs', { name: req.user.signupName, appointments: userAppointments, medications: userMedications })
+  } catch (error) {
+    console.error("Error fetching data", error)
+  }
 })
 
 app.get("/", (req,res)=>{
@@ -159,9 +168,17 @@ app.post("/user-appointments", checkAuthenticated,async(req,res)=>{
 })
 
 app.post("/contact", async (req, res) => {
+  let name;
+
+  if(req.body.firstName && req.body.lastName){
+     name = `${req.body.firstName} ${req.body.lastName}`
+  } else{
+     name = req.body.name
+  }
+
   try {
     const newContact = new contactModel({ 
-      name: req.body.name
+      name: name
       , email: req.body.email
       , phone: req.body.phone
       , service: req.body.service
@@ -174,6 +191,27 @@ app.post("/contact", async (req, res) => {
     console.error("Error saving contact:", error);
   }
 });
+
+app.post("/appointment", async (req, res) => {
+
+  try {
+    const newAppointment = new appointmentMdl({ 
+      name: req.body.name
+      , email: req.body.email
+      , phone: req.body.phone
+      , date: req.body.date
+      , time: req.body.time
+      , reason: req.body.reason
+      , notes: req.body.notes
+     });
+    await newAppointment.save();
+    console.log("Appointment saved to DB");
+    res.redirect("/")
+  } catch (error) {
+    console.error("Error saving appointment:", error);
+  }
+});
+
 
 app.post("/blood-sugar", checkAuthenticated,async (req,res)=>{
 try {

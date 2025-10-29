@@ -662,7 +662,7 @@
                 </div>
             </div>
 
-            <form class="contact-form" id="contactForm">
+            <form class="contact-form" id="contactForm" method="POST" action="/contact">
                 <div class="form-group">
                     <label class="form-label" for="firstName">First Name *</label>
                     <input type="text" id="firstName" name="firstName" class="form-input" required>
@@ -685,7 +685,7 @@
                 
                 <div class="form-group">
                     <label class="form-label" for="subject">Subject</label>
-                    <select id="subject" name="subject" class="form-input">
+                    <select id="subject" name="service" class="form-input">
                         <option value="">Select a topic</option>
                         <option value="appointment">Schedule an Appointment</option>
                         <option value="consultation">Request Consultation</option>
@@ -864,45 +864,45 @@
             scrollTrigger: {trigger: '.contact-form', start: 'top 95%'}
         });
 
-        // Form handling
-        document.getElementById('contactForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
+        // // Form handling
+        // document.getElementById('contactForm').addEventListener('submit', async (e) => {
+        //     e.preventDefault();
             
-            const form = e.target;
-            const submitBtn = form.querySelector('.form-submit');
-            const formData = new FormData(form);
+        //     const form = e.target;
+        //     const submitBtn = form.querySelector('.form-submit');
+        //     const formData = new FormData(form);
             
-            // Add loading state
-            submitBtn.classList.add('loading');
-            submitBtn.innerHTML = '<span>Sending...</span>';
+        //     // Add loading state
+        //     submitBtn.classList.add('loading');
+        //     submitBtn.innerHTML = '<span>Sending...</span>';
             
-            // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 2000));
+        //     // Simulate API call
+        //     await new Promise(resolve => setTimeout(resolve, 2000));
             
-            // Show success
-            submitBtn.classList.remove('loading');
-            submitBtn.innerHTML = '<span>Send Message</span>';
+        //     // Show success
+        //     submitBtn.classList.remove('loading');
+        //     submitBtn.innerHTML = '<span>Send Message</span>';
             
-            // Animate success message
-            const successMsg = document.getElementById('successMessage');
-            gsap.to(successMsg, {
-                scale: 1,
-                duration: 0.5,
-                ease: "back.out(1.7)"
-            });
+        //     // Animate success message
+        //     const successMsg = document.getElementById('successMessage');
+        //     gsap.to(successMsg, {
+        //         scale: 1,
+        //         duration: 0.5,
+        //         ease: "back.out(1.7)"
+        //     });
             
-            // Reset form
-            form.reset();
+        //     // Reset form
+        //     form.reset();
             
-            // Hide success message after 4 seconds
-            setTimeout(() => {
-                gsap.to(successMsg, {
-                    scale: 0,
-                    duration: 0.3,
-                    ease: "back.in(1.7)"
-                });
-            }, 4000);
-        });
+        //     // Hide success message after 4 seconds
+        //     setTimeout(() => {
+        //         gsap.to(successMsg, {
+        //             scale: 0,
+        //             duration: 0.3,
+        //             ease: "back.in(1.7)"
+        //         });
+        //     }, 4000);
+        // });
 
         // Add hover effects to contact items
         document.querySelectorAll('.contact-item').forEach(item => {

@@ -618,13 +618,13 @@
             
             <div class="bg-white dark:bg-gray-900 rounded-xl shadow-lg overflow-hidden border border-gray-100 dark:border-gray-700 mt-10">
                 <div class="p-6 md:p-8">
-                    <form id="appointment-form">
+                    <form id="appointment-form" method="POST" action="/appointment">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- Personal Information -->
                             <div class="space-y-6">
                                 <div>
                                     <label for="full-name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Full Name</label>
-                                    <input type="text" id="full-name" name="full-name" required class="form-input w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:border-transparent bg-gray-50 dark:bg-gray-800">
+                                    <input type="text" id="full-name" name="name" required class="form-input w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:border-transparent bg-gray-50 dark:bg-gray-800">
                                 </div>
                                 <div>
                                     <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
@@ -640,11 +640,11 @@
                             <div class="space-y-6">
                                 <div>
                                     <label for="appointment-date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Date</label>
-                                    <input type="date" id="appointment-date" name="appointment-date" required min="" class="form-input w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:border-transparent bg-gray-50 dark:bg-gray-800">
+                                    <input type="date" id="appointment-date" name="date" required min="" class="form-input w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:border-transparent bg-gray-50 dark:bg-gray-800">
                                 </div>
                                 <div>
                                     <label for="appointment-time" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Time</label>
-                                    <select id="appointment-time" name="appointment-time" required class="form-input w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:border-transparent bg-gray-50 dark:bg-gray-800">
+                                    <select id="appointment-time" name="time" required class="form-input w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:border-transparent bg-gray-50 dark:bg-gray-800">
                                         <option value="" disabled selected>Select a time</option>
                                         <option value="08:00">8:00 AM</option>
                                         <option value="09:00">9:00 AM</option>
@@ -1075,8 +1075,6 @@
                     <div x-show="open" x-collapse class="px-6 py-4 bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-300 border-t border-gray-200 dark:border-gray-700">
                         <p class="mb-3">Please bring:</p>
                         <ul class="list-disc pl-5 space-y-2">
-                            <li>Your insurance card and photo ID</li>
-                            <li>Completed intake forms (if not submitted online)</li>
                             <li>Medical records related to your condition</li>
                             <li>List of current medications and supplements</li>
                             <li>Recent imaging studies (X-rays, MRIs) on CD or USB</li>
@@ -1092,55 +1090,43 @@
                         <span x-text="open ? '−' : '+'"></span>
                     </button>
                     <div x-show="open" x-collapse class="px-6 py-4 bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-300 border-t border-gray-200 dark:border-gray-700">
-                        <p>We prioritize urgent cases and typically offer appointments within 48 hours for acute injuries or pain. Routine consultations are usually scheduled within 5-7 days. Check our online booking system for real-time availability across all providers.</p>
+                        <p>We prioritize urgent cases and typically offer appointments within 48 hours for acute injuries or pain. </p>
                     </div>
                 </div>
                 
                 <!-- FAQ Item 3 -->
                 <div x-data="{ open: false }" class="border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden">
                     <button @click="open = !open" class="w-full px-6 py-5 text-left flex justify-between items-center bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                        <h3 class="font-heading font-semibold text-lg">Do you accept my insurance?</h3>
+                        <h3 class="font-heading font-semibold text-lg">Can I request a specific doctor?</h3>
                         <span x-text="open ? '−' : '+'"></span>
                     </button>
                     <div x-show="open" x-collapse class="px-6 py-4 bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-300 border-t border-gray-200 dark:border-gray-700">
-                        <p>We participate with most major insurance plans including Medicare, Blue Cross Blue Shield, Aetna, Cigna, UnitedHealthcare, and Tricare. Our team will verify your benefits prior to your visit and explain any out-of-pocket costs. We also offer self-pay options and payment plans for patients without insurance coverage.</p>
+                        <p>Yes! When booking online, you can select your preferred specialist. You can also call our office to check availability with specific doctors. Each of our specialists has different expertise areas listed on their profiles.</p>
                     </div>
                 </div>
                 
                 <!-- FAQ Item 4 -->
                 <div x-data="{ open: false }" class="border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden">
                     <button @click="open = !open" class="w-full px-6 py-5 text-left flex justify-between items-center bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                        <h3 class="font-heading font-semibold text-lg">What COVID-19 safety measures are in place?</h3>
+                        <h3 class="font-heading font-semibold text-lg">What if I am running late for my appointment?</h3>
                         <span x-text="open ? '−' : '+'"></span>
                     </button>
                     <div x-show="open" x-collapse class="px-6 py-4 bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-300 border-t border-gray-200 dark:border-gray-700">
-                        <p>We maintain strict infection control protocols including:</p>
-                        <ul class="list-disc pl-5 space-y-2">
-                            <li>HEPA air filtration in all clinical areas</li>
-                            <li>Enhanced cleaning between patients</li>
-                            <li>Optional telehealth appointments</li>
-                            <li>Screening for symptoms upon arrival</li>
-                            <li>Masking requirements aligned with CDC guidelines</li>
-                            <li>Vaccinated clinical staff</li>
-                        </ul>
+                        <p>Please call us immediately if you're running late. We can typically accommodate delays up to 15 minutes, but longer delays may require rescheduling to ensure other patients aren't affected.</p>
+                        
                     </div>
                 </div>
                 
                 <!-- FAQ Item 5 -->
                 <div x-data="{ open: false }" class="border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden">
                     <button @click="open = !open" class="w-full px-6 py-5 text-left flex justify-between items-center bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                        <h3 class="font-heading font-semibold text-lg">What's the recovery time after arthroscopic surgery?</h3>
+                        <h3 class="font-heading font-semibold text-lg">What non-surgical treatment options do you offer?</h3>
                         <span x-text="open ? '−' : '+'"></span>
                     </button>
                     <div x-show="open" x-collapse class="px-6 py-4 bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-300 border-t border-gray-200 dark:border-gray-700">
-                        <p>Recovery varies by procedure and individual factors:</p>
-                        <ul class="list-disc pl-5 space-y-2">
-                            <li><strong>Knee arthroscopy:</strong> 4-6 weeks for full recovery</li>
-                            <li><strong>Shoulder arthroscopy:</strong> 6-8 weeks typically</li>
-                            <li><strong>Wrist/hand procedures:</strong> 3-4 weeks usually</li>
-                            <li><strong>Small joint procedures:</strong> 2-3 weeks commonly</li>
-                        </ul>
-                        <p class="mt-3">Most patients resume light activities within 2-3 days and office work within a week. Your surgeon will provide a personalized recovery plan.</p>
+                        <p>We provide various non-surgical treatments including corticosteroid injections, physical therapy, bracing, and medication management. We always explore conservative options before recommending surgery.</p>
+                       
+                        
                     </div>
                 </div>
             </div>
@@ -1309,21 +1295,23 @@
             
             // Form submission
             const form = document.getElementById('appointment-form');
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                form.style.opacity = '0.5';
-                form.style.pointerEvents = 'none';
+            // form.addEventListener('submit', function(e) {
+            //     e.preventDefault();
+            //     form.style.opacity = '0.5';
+            //     form.style.pointerEvents = 'none';
                 
-                // Simulate submission
-                setTimeout(() => {
-                    document.getElementById('confirmation-message').classList.add('active');
-                    window.scrollTo({
-                        top: document.getElementById('confirmation-message').offsetTop - 100,
-                        behavior: 'smooth'
-                    });
-                }, 1500);
-            });
+            //     // Simulate submission
+            //     setTimeout(() => {
+            //         document.getElementById('confirmation-message').classList.add('active');
+            //         window.scrollTo({
+            //             top: document.getElementById('confirmation-message').offsetTop - 100,
+            //             behavior: 'smooth'
+            //         });
+            //     }, 1500);
+            // });
             
+
+
             // New appointment button
             document.getElementById('new-appointment').addEventListener('click', function() {
                 form.reset();

@@ -108,7 +108,7 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
             padding: 20px;
             height: fit-content;
-            position: sticky;
+            /* position: sticky; */
             top: 20px;
         }
         
@@ -649,27 +649,15 @@
                     <section id="medications" class="section">
                         <h2 class="section-title"><i>💊</i> Medications</h2>
                         <ul class="medication-list">
+                            <% medications.forEach(function(medication) {%>
                             <li class="medication-item">
                                 <div>
-                                    <div class="medication-name">Lisinopril</div>
-                                    <div class="medication-details">10mg, Once daily</div>
+                                    <div class="medication-name"><%= medication.name%></div>
+                                    <div class="medication-details"><%= medication.dosage%></div>
                                 </div>
-                                <div class="medication-status status-active">Active</div>
+                                <div class="medication-status status-<%= medication.status%>"><%= medication.status%></div>
                             </li>
-                            <li class="medication-item">
-                                <div>
-                                    <div class="medication-name">Metformin</div>
-                                    <div class="medication-details">500mg, Twice daily</div>
-                                </div>
-                                <div class="medication-status status-active">Active</div>
-                            </li>
-                            <li class="medication-item">
-                                <div>
-                                    <div class="medication-name">Atorvastatin</div>
-                                    <div class="medication-details">20mg, Once daily at bedtime</div>
-                                </div>
-                                <div class="medication-status status-active">Active</div>
-                            </li>
+                            <% }) %>
                         </ul>
                          <!-- Add Medication Form -->
   <form id="medicationForm" class="medication-form" style=" margin-top:15px;" action="/meds" method="POST">
@@ -689,14 +677,18 @@
                     <section id="appointments" class="section">
                         <h2 class="section-title"><i>📅</i> Appointments</h2>
                         <ul class="appointment-list">
+                            <% appointments.forEach(function(appointment) {%>
                             <li class="appointment-item">
                                 <div>
-                                    <div class="appointment-title">Annual Physical</div>
-                                    <div class="appointment-details">Dr. Johnson - Oct 15, 2025 - 10:00 AM</div>
+                                    <div class="appointment-title"><%= appointment.title%></div>
+                                    <div class="appointment-details"><%= appointment.drName %> - <%= appointment.date.toDateString() %> - <%= appointment.time %></div>
                                 </div>
-                                <div class="appointment-status status-upcoming">Upcoming</div>
+                                <div class="appointment-status status-<%= appointment.status.toLowerCase() %>">
+        <%= appointment.status %>
+      </div>
                             </li>
-                            <li class="appointment-item">
+                            <% }) %>
+                            <!-- <li class="appointment-item">
                                 <div>
                                     <div class="appointment-title">Cardiologist Follow-up</div>
                                     <div class="appointment-details">Dr. Martinez - Nov 5, 2025 - 2:30 PM</div>
@@ -709,7 +701,7 @@
                                     <div class="appointment-details">Dr. Lee - Sep 28, 2025 - 9:15 AM</div>
                                 </div>
                                 <div class="appointment-status status-completed">Completed</div>
-                            </li>
+                            </li> -->
                         </ul>
                          <form id="appointmentForm" class="appointment-form" method="POST" action="/user-appointments" style=" margin-top:15px;">
     <input type="text" id="appointmentTitle" name="title" placeholder="Appointment Title" required>
