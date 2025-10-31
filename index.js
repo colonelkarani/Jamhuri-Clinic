@@ -104,6 +104,9 @@ app.get("/appointments", (req,res)=>{
   res.render('appointments.ejs')
   })
 
+app.get("/bpGraph", (req,res)=>{
+  res.render('bpGraph.ejs')
+  })
 
 app.get('/login', checkNotAuthenticated, (req, res) => {
   res.render('login.ejs')
@@ -318,7 +321,6 @@ app.post("/vitals", checkAuthenticated,async (req, res) => {
   }
 });
 
-
 app.get('/signup', checkNotAuthenticated, (req, res) => {
   res.render('signup.ejs')
 })
@@ -347,14 +349,12 @@ app.post('/signup', checkNotAuthenticated, async (req, res) => {
   }
 });
 
-
 app.delete('/logout', (req, res, next) => {
   req.logout(function(err) {
     if (err) return next(err);
     res.redirect('/login');
   });
 });
-
 
 function checkAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {

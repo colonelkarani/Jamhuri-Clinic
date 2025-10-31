@@ -288,6 +288,10 @@
             height: 300px;
             position: relative;
         }
+
+        .graph-container:hover{
+            background: #e7edee;
+        }
         
         .graph-title {
             font-size: 1.1rem;
@@ -754,7 +758,7 @@
                         </div>
                         
                         <div class="graph-grid">
-                            <div class="graph-container">
+                            <div class="graph-container" id="bpGraph">
                                 <div class="graph-title"><i>❤️</i> Blood Pressure Trend</div>
                                 <canvas id="bpChart"></canvas>
                             </div>
@@ -817,6 +821,10 @@
     </div>
 
     <script>
+        const bpGraph = document.getElementById("bpGraph")
+        bpGraph.addEventListener("click", ()=>{
+            window.location.href = "/bpGraph";
+        })
         // Navigation between sections
         document.addEventListener('DOMContentLoaded', function() {
             const navLinks = document.querySelectorAll('.nav-link');
