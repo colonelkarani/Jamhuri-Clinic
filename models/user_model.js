@@ -14,7 +14,10 @@ const userSchema = new mongoose.Schema({
   signupPassword: {
     type: String,
     required: true
-  }
+  },
+    otp: { type: String }, // OTP for verification
+    otpExpiry: { type: Date }, // Expiry time for OTP
+    isVerified: { type: Boolean, default: false } // Email verification status
 });
 
 // Hash password before saving

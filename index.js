@@ -10,7 +10,8 @@ const methodOverride = require('method-override')
 const mongoose = require("mongoose")
 const {connectDB} = require("./db/connectDB.js");
 const path = require('path');
-const bodyParser = require("body-parser")
+const nodemailer = require("nodemailer")
+const crypto = require("crypto")
 
 const { 
   BPReadingModel,
@@ -322,32 +323,62 @@ app.post("/vitals", checkAuthenticated,async (req, res) => {
 });
 
 app.get('/signup', checkNotAuthenticated, (req, res) => {
-  res.render('signup.ejs')
+  res.render('signup.ejs', {message: undefined})
 })
+
+//Email Transporter setup
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'quavix0000@gmail.com',
+        pass: 'gsouhuzabzckonkh'
+    }
+});
+
+//Generate OTP
+const generateOTP = () => crypto.randomInt(100000, 999999).toString();
+
 
 app.post('/signup', checkNotAuthenticated, async (req, res) => {
   try {
     const existingUser = await userModel.findOne({ signupEmail: req.body.signupEmail });
     if (existingUser) {
       req.flash('error', 'Email already registered');
-      return res.redirect('/signup');
+      return res.render('signup.ejs', {message: "The email you entered is already registered", status: "error"});
     }
+
+
+        const otp = generateOTP();
+        const otpExpiry = new Date(Date.now() + 10 * 60 * 1000);
 
     const newUser = new userModel({
       signupName: req.body.signupName,
       signupEmail: req.body.signupEmail,
-      signupPassword: req.body.signupPassword
+      signupPassword: req.body.signupPassword,
+      otp: otp,
+      otpExpiry: otpExpiry
     });
 
     await newUser.save();
-    console.log('User saved to MongoDB');
+     await transporter.sendMail({
+            from: 'quavix0000@gmail.com',
+            to: req.body.signupEmail,
+            subject: 'OTP Verification',
+            text: `Your OTP is: ${otp}`
+        });
 
-    res.redirect('/login');
+
+    console.log('User registered. Please verify OTP sent to email');
+
+    res.render("verifyOtp.ejs", {message: undefined, email: req.body.signupEmail})
   } catch (err) {
     console.error('Error signing up user:', err);
-    res.redirect('/signup');
+    res.render('signup.ejs', {message: "Error Signing up user", status: "error"});
   }
 });
+
+// Verify OTP
+app
 
 app.delete('/logout', (req, res, next) => {
   req.logout(function(err) {
