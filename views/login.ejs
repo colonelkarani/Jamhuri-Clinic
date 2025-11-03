@@ -257,7 +257,7 @@
             border-radius: 8px;
             margin-bottom: 20px;
             font-size: 0.9rem;
-            display: none;
+            display: block;
         }
 
         .message.success {
@@ -293,12 +293,9 @@
             <p class="clinic-subtitle">Patient Portal Login</p>
         </div>
 
-        <div class="message" id="message">
-            <% if (messages.error) { %>
-  <%= messages.error %>
-<% } %>
-
-        </div>
+      <% if(message){ %>
+        <div class="message <%=status%>" id="message"><%= message %></div>
+    <% } %>
 
         <div class="tabs">
             <button class="tab active"onclick="window.location.href='./login' " >Login</button>

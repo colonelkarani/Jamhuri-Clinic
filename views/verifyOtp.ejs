@@ -291,9 +291,13 @@
             <p class="clinic-subtitle">Patient Portal Login</p>
         </div>
 
-
+<% if (email){ %>
         <div class="message success" id="message">We sent a message to your email: <%= email %></div>
+<% } %>
     
+<% if (message){ %>
+        <div class="message <%= status %>" id="message"> <%= message %></div>
+<% } %>
         <div class="tabs">
 
         </div>
@@ -310,7 +314,6 @@
 
 
                 <button type="submit" class="btn btn-primary">Confirm OTP</button>
-                <button class="btn btn-primary">Resend OTP</button>
 
             </form>
 

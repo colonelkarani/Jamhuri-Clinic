@@ -29,6 +29,10 @@ const {
 const DATABASE_URL =
   process.env.DATABASE_URL;
 
+const GOOGLE_EMAIL = process.env.GOOGLE_EMAIL
+const GOOGLE_APP_PASSWORD = process.env.GOOGLE_APP_PASSWORD
+
+
 connectDB(DATABASE_URL);
 
 const userModel = require("./models/user_model.js")
@@ -110,7 +114,7 @@ app.get("/bpGraph", (req,res)=>{
   })
 
 app.get('/login', checkNotAuthenticated, (req, res) => {
-  res.render('login.ejs')
+  res.render('login.ejs', {message: undefined, status: undefined})
 })
 
 app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
@@ -322,6 +326,10 @@ app.post("/vitals", checkAuthenticated,async (req, res) => {
   }
 });
 
+
+
+// LOGIN ROUTES
+
 app.get('/signup', checkNotAuthenticated, (req, res) => {
   res.render('signup.ejs', {message: undefined})
 })
@@ -330,8 +338,8 @@ app.get('/signup', checkNotAuthenticated, (req, res) => {
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'quavix0000@gmail.com',
-        pass: 'gsouhuzabzckonkh'
+        user: GOOGLE_EMAIL,
+        pass:  GOOGLE_APP_PASSWORD
     }
 });
 
@@ -347,7 +355,6 @@ app.post('/signup', checkNotAuthenticated, async (req, res) => {
       return res.render('signup.ejs', {message: "The email you entered is already registered", status: "error"});
     }
 
-
         const otp = generateOTP();
         const otpExpiry = new Date(Date.now() + 10 * 60 * 1000);
 
@@ -361,10 +368,10 @@ app.post('/signup', checkNotAuthenticated, async (req, res) => {
 
     await newUser.save();
      await transporter.sendMail({
-            from: 'quavix0000@gmail.com',
+            from: GOOGLE_EMAIL,
             to: req.body.signupEmail,
             subject: 'OTP Verification',
-            text: `Your OTP is: ${otp}`
+            text: `${otp} is your verification code for Jamhuri Afya Health Tracker.\n Please enter it within 10 minutes to verify your account.\n Thank you for choosing us. #${otp}`
         });
 
 
@@ -378,7 +385,32 @@ app.post('/signup', checkNotAuthenticated, async (req, res) => {
 });
 
 // Verify OTP
-app
+app.post("/verifyOtp", async (req, res) => {
+    try {
+        const { email, otp } = req.body;
+      console.log(email)
+        const user = await userModel.findOne({ signupEmail: email });
+        
+
+        if (!user) return     res.render('signup.ejs', {message: "User not found", status: "error"});
+;
+        if (user.isVerified) return   res.render('signup.ejs', {message: "User already verified", status: "error"});
+;
+        if (user.otp !== otp|| user.otpExpiry < new Date()) {
+          await userModel.deleteOne({signupEmail: email})
+            return     res.render('signup.ejs', {message: " Wrong or Expired OTP", status: "error"});;
+        }
+
+        user.isVerified = true;
+        user.otp = undefined;
+        user.otpExpiry = undefined;
+        await user.save();
+
+        return     res.render('login.ejs', {message: "OTP verified you can now log in", status: "success"});;
+    } catch (error) {
+         res.render('signup.ejs', {message: "Error verifying OTP", status: "error"});
+         console.error("Error :", error)
+    }})
 
 app.delete('/logout', (req, res, next) => {
   req.logout(function(err) {
