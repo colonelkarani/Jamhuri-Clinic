@@ -309,31 +309,31 @@
                         <form id="vitalsForm" aria-label="Record vitals"method="POST" action="/vitals">
                             <div class="form-grid">
                                 <div class="form-group">
-                                    <label class="form-label" for="inpHeart">Heart Rate (bpm)</label>
+                                    <label class="form-label" for="heartRate">Heart Rate (bpm)</label>
                                     <input id="inpHeart" type="number" name="heartRate"  class="form-input" min="30" max="220" placeholder="e.g., 72" required>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label" for="inpSugar">Blood Sugar (mmol/L)</label>
+                                    <label class="form-label" for="bloodSugar">Blood Sugar (mmol/L)</label>
                                     <input id="inpSugar" type="number" name="bloodSugar" step="0.1" class="form-input" min="2" max="25" placeholder="e.g., 5.3" >
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label" for="inpSys">Systolic BP (mmHg)</label>
+                                    <label class="form-label" for="systolicBp">Systolic BP (mmHg)</label>
                                     <input id="inpSys" type="number" name="systolicBp" class="form-input" min="70" max="260" placeholder="e.g., 118" >
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label" for="inpDia">Diastolic BP (mmHg)</label>
+                                    <label class="form-label" for="diastolicBp">Diastolic BP (mmHg)</label>
                                     <input id="inpDia" type="number" name="diastolicBp" class="form-input" min="40" max="160" placeholder="e.g., 78" >
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label" for="inpWeight">Weight (kg)</label>
+                                    <label class="form-label" for="weight">Weight (kg)</label>
                                     <input id="inpWeight" type="number" name="weight" step="0.1" class="form-input" min="20" max="300" placeholder="e.g., 79.4" >
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label" for="inpDate">Date</label>
+                                    <label class="form-label" for="date">Date</label>
                                     <input id="inpDate" type="date" name="date" class="form-input" required/>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label" for="inpTime">Time</label>
+                                    <label class="form-label" for="time">Time</label>
                                     <input id="inpTime" type="time" name="time" class="form-input" required/>
                                 </div>
                             </div>
@@ -738,7 +738,18 @@
         const vitalsForm = document.getElementById('vitalsForm');
 
         vitalsForm.addEventListener("submit", (e)=>{
-              showToast('✅ Vitals recorded successfully!');
+
+const filteredFormData = new FormData(vitalsForm);
+for (const [key, value] of formData.entries()) {
+  if (value.trim() !== "") {
+    filteredFormData.append(key, value);
+  }
+}
+
+            fetch("/vitals", {body: filteredFormData, method: "POST"})
+            .then(data=>{showToast('✅ Vitals recorded successfully!')})
+            .catch(err =>{showToast("Error recording data")})
+              
             vitalsForm.reset();
         })
 

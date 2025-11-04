@@ -16,11 +16,9 @@ const crypto = require("crypto")
 
 const { 
   BPReadingModel,
-  respRateModel,
   heartRateModel,
   oxygenSaturationModel,
   weightModel,
-  temperatureModel,
   medicationModel,
   bloodSugarModel,
   appointmentModel
@@ -254,76 +252,56 @@ try {
 
 app.post("/vitals", checkAuthenticated,async (req, res) => {
   try {
-    const fullBP = `${req.body.bloodPressure}`
-    const respRate = req.body.respRate
+    const systolicBp = req.body.systolicBp
+    const diastolicBp = req.body.diastolicBp
     const heartRate = req.body.heartRate
-    const oxygenSaturation = req.body.oxygenSaturation
-    const temperature = req.body.temperature
     const weight = req.body.weight
+const date = req.body.date; // e.g. "2025-11-04"
+const time = req.body.time; // e.g. "14:30"
+  // Combine date and time into one string in ISO format
+  const dateTimeString = `${date}T${time}:00`; // Append seconds if needed
 
-    if (fullBP) {
-      const [systolic,diastolic] = fullBP.split("/")
-    const newBP = new BPReadingModel({
-      user: req.user._id,
-       systolic: parseInt(systolic),
-  diastolic: parseInt(diastolic),
-  date: Date.now()
-    });
-    await newBP.save();
+  // Create Date object from combined string
+  const dateTime = new Date(dateTimeString);
+
+if (systolicBp && diastolicBp) {
+  // Combine date and time into one string in ISO format
+
+
+  const newBP = new BPReadingModel({
+    user: req.user._id,
+    systolic: systolicBp,
+    diastolic: diastolicBp,
+    date: dateTime
+  });
+ 
+  await newBP.save()
     console.log("BP saved to MongoDB");
     }
 
-       if (respRate) {
-    const newRespRate = new respRateModel({
-      user: req.user._id,
-       respRate: parseInt(respRate),
-  date: Date.now()
-    });
-    await newRespRate.save();
-    console.log("Resp Rate saved to MongoDB");
-    }
-    
-
-       if (temperature) {
-    const newTemperature = new temperatureModel({
-      user: req.user._id,
-       temperature: parseFloat(temperature),
-  date: Date.now()
-    });
-    await newTemperature.save();
-    console.log("Temperature saved to MongoDB");
-    }
 
     
        if (heartRate) {
     const newHeartRate = new heartRateModel({
       user: req.user._id,
        heartRate: parseInt(heartRate),
-  date: Date.now()
+  date: dateTime
     });
     await newHeartRate.save();
     console.log("Heart Rate saved to MongoDB");
     }
 
-  if (oxygenSaturation) {
-    const newOxygenSaturation = new oxygenSaturationModel({
-      user: req.user._id,
-       oxygenSaturation: parseInt(oxygenSaturation),
-  date: Date.now()
-    });
-    await newOxygenSaturation.save();
-    console.log("Oxygen Sat saved to MongoDB");
-    }
 
          if (weight) {
     const newWeight = new weightModel({
       user: req.user._id,
        weight: parseInt(weight),
-  date: Date.now()
+  date: dateTime
     });
     await newWeight.save();
     console.log("Weight saved to MongoDB");
     }
+console.log(req.body)
 
     res.redirect("/user")
   } catch (error) {
