@@ -76,7 +76,7 @@ app.get('/user', checkAuthenticated, async (req, res) => {
   try {
     const userAppointments = await appointmentModel.find({user: userID})
     const userMedications = await medicationModel.find({user: userID})
-    res.render('index.ejs', { name: req.user.signupName, appointments: userAppointments, medications: userMedications })
+    res.render('index.ejs', { name: req.user.signupName, appointments: userAppointments, medications: userMedications, email: req.user.signupEmail })
   } catch (error) {
     console.error("Error fetching data", error)
   }
