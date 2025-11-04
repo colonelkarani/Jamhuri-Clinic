@@ -13,6 +13,108 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>    
+    
+    <!-- CTA Section -->
+<style>
+/* -----  CTA BAR  ----- */
+.cta-bar{
+  background: linear-gradient(135deg, #00c853, #d0d7e3);
+  padding: 50px 25px;
+  text-align: center;
+  color: #fff;
+  border-radius: 16px;
+  margin: 40px auto;
+  max-width: 1000px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.15);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.cta-bar h2{
+  font-size: 2rem;
+  margin-bottom: 12px;
+  letter-spacing: .5px;
+}
+.cta-bar p{
+  font-size: 1.1rem;
+  margin-bottom: 25px;
+  opacity: .92;
+}
+.cta-buttons{
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.cta-buttons a{
+  background: #fff;
+  color: #2979ff;
+  padding: 14px 28px;
+  border-radius: 30px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: .3s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,.12);
+}
+.cta-buttons a:hover{
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0,0,0,.18);
+}
+
+/* -----  SERVICES INTRO  ----- */
+.services-intro{
+  max-width: 1000px;
+  margin: 0 auto 50px;
+  padding: 0 25px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.services-intro h3{
+  font-size: 1.7rem;
+  margin-bottom: 15px;
+  color: #005faf;
+  text-align: center;
+}
+.services-intro p{
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: #333;
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 30px;
+}
+.service-cards{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 25px;
+}
+.service-card{
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 16px;
+  padding: 25px 20px;
+  text-align: center;
+  transition: .3s ease;
+  box-shadow: 0 4px 18px rgba(0,0,0,.06);
+}
+.service-card:hover{
+  transform: translateY(-5px);
+  box-shadow: 0 8px 28px rgba(0,0,0,.1);
+}
+.service-card .icon{
+  font-size: 2.4rem;
+  margin-bottom: 12px;
+  color: #2979ff;
+}
+.service-card h4{
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+  color: #005faf;
+}
+.service-card p{
+  font-size: .95rem;
+  color: #555;
+  line-height: 1.5;
+}
+</style>
+
     <style>
         :root {
             --primary: #387373;
@@ -1323,6 +1425,25 @@
             <i class="fas fa-chevron-down" style="font-size: 2rem;"></i>
         </div>
     </section>
+    <!-- ==========  CTA SECTION  ========== -->
+<section class="cta-bar">
+  <h2>Need help right away?</h2>
+  <p>Speak with a care coordinator or schedule your next visit in seconds.</p>
+  <div class="cta-buttons">
+    <a href="tel:+254741480595"><i class="fa fa-phone"></i> Call Us Now</a>
+    <a href="/appointments"><i class="fa fa-calendar-plus"></i> Book Appointment</a>
+  </div>
+</section>
+
+<section class="services-intro">
+  <h3>Our Services</h3>
+  <p>
+    From routine check-ups to chronic-disease management, Jamhuri Afya offers
+    personalised, technology-driven healthcare that fits your life.
+  </p>
+
+ 
+</section>
 
     <!-- Services Section -->
  <div class="services" id="services">
@@ -1714,10 +1835,10 @@ const services = [
     tag:"Acute"
   },
   {
-    title:"Physical Therapy",
-    icon:"fitness_center",
-    desc:"Individualized rehab programs to restore strength, mobility and function after injury or surgery.",
-    tag:"Rehab"
+    title:"Health Tracking",
+    icon:"medication",
+    desc:"Individualized programs to record your health statistics.",
+    tag:"track"
   },
   {
     title:"Pain Management",
@@ -1729,7 +1850,7 @@ const services = [
     title:"Pediatric Orthopedics",
     icon:"child_care",
     desc:"Specialized care for growth-related issues, congenital deformities & sports injuries in children.",
-    tag:"Kids"
+    tag:"Children"
   },
   {
     title:"Non-Operative Treatments",

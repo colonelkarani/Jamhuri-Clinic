@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt')
 const passport = require('passport')
 const flash = require('express-flash')
 const session = require('express-session')
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const methodOverride = require('method-override')
 const mongoose = require("mongoose")
 const {connectDB} = require("./db/connectDB.js");
@@ -32,6 +33,9 @@ const DATABASE_URL =
 const GOOGLE_EMAIL = process.env.GOOGLE_EMAIL
 const GOOGLE_APP_PASSWORD = process.env.GOOGLE_APP_PASSWORD
 
+// const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID
+// const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET
+
 
 connectDB(DATABASE_URL);
 
@@ -44,6 +48,7 @@ const appointmentMdl = require("./models/appointment_model.js")
 const port = 3000
 
 const initializePassport = require('./passport_config')
+// const { name } = require('ejs')
 initializePassport(
   passport,
   async email => await userModel.findOne({ signupEmail: email }),
@@ -371,7 +376,7 @@ app.post('/signup', checkNotAuthenticated, async (req, res) => {
             from: GOOGLE_EMAIL,
             to: req.body.signupEmail,
             subject: 'OTP Verification',
-            text: `${otp} is your verification code for Jamhuri Afya Health Tracker.\n Please enter it within 10 minutes to verify your account.\n Thank you for choosing us. #${otp}`
+            text: `${otp} is your verification code for Jamhuri Afya Health Tracker.\n Please enter it within 10 minutes to verify your account.\n Thank you for choosing us`
         });
 
 
@@ -388,7 +393,6 @@ app.post('/signup', checkNotAuthenticated, async (req, res) => {
 app.post("/verifyOtp", async (req, res) => {
     try {
         const { email, otp } = req.body;
-      console.log(email)
         const user = await userModel.findOne({ signupEmail: email });
         
 
@@ -418,6 +422,24 @@ app.delete('/logout', (req, res, next) => {
     res.redirect('/login');
   });
 });
+
+//Google Authentication
+// app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+// app.get('/auth/google/callback',
+//   passport.authenticate('google', { failureRedirect: '/login-failure' }),
+//   async(req, res) => {
+//     const newUser = new userModel({
+//       signupName: req.user.displayName,
+//       signupEmail: req.user.emails?.[0]?.value,
+//       signupPassword: req.user.id
+//     })
+//     await newUser.save()
+//     res.render('index.ejs', {name: req.user.displayName, medications: undefined}); // Successful login redirect
+//   });
+
+// app.get('/login-failure', (req, res) => res.send('Failed to authenticate.'));
+
 
 function checkAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
