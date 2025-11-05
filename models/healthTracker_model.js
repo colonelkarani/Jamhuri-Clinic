@@ -58,9 +58,8 @@ const appointmentSchema = new mongoose.Schema(
   name: String,
     title : String,
     drName : String,
-    time: String,
-    status: String,
-  date: { type: Date, default: Date.now }
+    notesOrLocation: String,
+  date: { type: Date, required: true }
 }
 )
 

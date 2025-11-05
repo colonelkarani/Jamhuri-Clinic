@@ -17,7 +17,6 @@ const crypto = require("crypto")
 const { 
   BPReadingModel,
   heartRateModel,
-  oxygenSaturationModel,
   weightModel,
   medicationModel,
   bloodSugarModel,
@@ -72,13 +71,88 @@ app.get('/user', checkAuthenticated, async (req, res) => {
     const userID = req.user._id
 
   try {
-    const userAppointments = await appointmentModel.find({user: userID})
-    const userMedications = await medicationModel.find({user: userID})
-    res.render('index.ejs', { name: req.user.signupName, appointments: userAppointments, medications: userMedications, email: req.user.signupEmail })
+    const userAppointments = await appointmentModel.find({user: req.user._id})
+    const userMedications = await medicationModel.find({user: req.user._id})
+    res.render('index.ejs', { name: req.user.signupName, id:req.user._id,appointments: userAppointments, medications: userMedications, email: req.user.signupEmail })
   } catch (error) {
     console.error("Error fetching data", error)
   }
 })
+
+//Vitals api
+app.get('/api/vitals-history/:userID', async (req, res) => {
+  const userID = req.params.userID;
+  try {
+    const heartRates = await heartRateModel.find({ user: userID }).sort({ date: 1 });
+    const bloodSugars = await bloodSugarModel.find({ user: userID }).sort({ date: 1 });
+    const bloodPressures = await BPReadingModel.find({ user: userID }).sort({ date: 1 });
+    const weights = await weightModel.find({ user: userID }).sort({ date: 1 });
+
+    const vitals = heartRates.map((hr, i) => ({
+      ts: hr.date.getTime(),
+      heart: hr.heartRate,
+      sugar: bloodSugars[i]?.bloodSugar,
+      sys: bloodPressures[i]?.systolic,
+      dia: bloodPressures[i]?.diastolic,
+      weight: weights[i]?.weight,
+    }));
+    res.json(vitals);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Delete vitals api
+// Assuming you have imported Vital model
+app.delete('/api/vitals/:ts', async (req, res) => {
+  const ts = Number(req.params.ts);
+  if (!ts) return res.status(400).send('Invalid timestamp');
+
+  const date = new Date(ts);
+
+// Assuming these models represent different collections with possibly the same date field
+const models = [bloodSugarModel, BPReadingModel, heartRateModel, weightModel]; // replace with your actual model names
+
+try {
+  // Run deletes in parallel
+  const deleteResults = await Promise.all(
+    models.map(m => m.deleteMany({ date: date })) // or deleteOne if only one doc per schema
+  );
+
+  res.status(200).json({ message: 'Deleted from all schemas', results: deleteResults });
+} catch (err) {
+  console.error(err);
+  res.status(500).json({ message: 'Error deleting vitals across schemas' });
+}
+});
+
+
+// Appointments APi
+app.get('/api/appointments/:userID', async (req, res) => {
+  const userID = req.params.userID;
+  try {
+     const appointments = await appointmentModel.find({ user: userID }).sort({ date: 1 });
+    res.json(appointments);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Delete Appointments api
+app.delete('/api/appointments/:id', async (req, res) => {
+const id = req.params.id
+
+try {
+appointmentModel.findByIdAndDelete(id).then(()=>{console.log("deleted an appointment")})
+  res.status(200).json({ message: 'Deleted an appointment' });
+  
+} catch (err) {
+  console.error(err);
+  console.log("error deleting appointments")
+  res.status(500).json({ message: 'Error deleting appointments across schemas' });
+}
+});
+
 
 app.get("/", (req,res)=>{
 res.render('home.ejs')
@@ -160,14 +234,21 @@ app.post("/meds", checkAuthenticated,async(req,res)=>{
 
 app.post("/user-appointments", checkAuthenticated,async(req,res)=>{
   try {
+    console.log(req.body)
+    const date = req.body.date; // e.g. "2025-11-04"
+const time = req.body.time; 
+  const dateTimeString = `${date}T${time}:00`; // Append seconds if needed
+
+  // Create Date object from combined string
+  const dateTime = new Date(dateTimeString);
+
     const newAppointment = new appointmentModel({
       user: req.user._id,
       name: req.user.signupName,
       title: req.body.title,
       drName: req.body.drName,
-      status: req.body.status,
-      time: req.body.time,
-      date: req.body.date
+      notesOrLocation: req.body.notesOrLocation,
+      date: dateTime
     })
     await newAppointment.save()
     console.log("Appointment saved to database")

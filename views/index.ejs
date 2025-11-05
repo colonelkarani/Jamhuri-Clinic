@@ -426,7 +426,7 @@
                 <!-- Profile -->
                 <section id="profile" class="page" aria-hidden="true">
                     <div class="profile-header card" style="display:flex; gap:18px; align-items:center;">
-                        <div class="profile-avatar">JD</div>
+                        <div class="profile-avatar"><%= getInitials(name)%></div>
                         <div class="profile-info">
                             <h2 style="margin-bottom:4px"><%= name %></h2>
                             <p class="small">📧 <%= email %></p>
@@ -513,28 +513,28 @@
                 <button id="closeModal" class="btn btn-secondary" aria-label="Close">✕</button>
             </div>
             <div style="margin-top:12px;">
-                <form id="appointmentForm">
+                <form id="appointmentForm" method="post" action="/user-appointments">
                     <div class="form-group">
                         <label class="form-label" for="apptTitle">Title</label>
-                        <input id="apptTitle" class="form-input" type="text" placeholder="e.g., Annual Checkup" required>
+                        <input id="apptTitle" name="title" class="form-input" type="text" placeholder="e.g., Annual Checkup" required>
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="apptDoctor">Doctor / Department</label>
-                        <input id="apptDoctor" class="form-input" type="text" placeholder="e.g., Dr. George Maingi" required>
+                        <input id="apptDoctor" name="drName" class="form-input" type="text" placeholder="e.g., Dr. George Maingi" required>
                     </div>
                     <div style="display:flex; gap:8px;">
                         <div style="flex:1;">
                             <label class="form-label" for="apptDate">Date</label>
-                            <input id="apptDate" class="form-input" type="date" required>
+                            <input id="apptDate" name="date" class="form-input" type="date" required>
                         </div>
                         <div style="flex:1;">
                             <label class="form-label" for="apptTime">Time</label>
-                            <input id="apptTime" class="form-input" type="time" required>
+                            <input id="apptTime" name="time" class="form-input" type="time" required>
                         </div>
                     </div>
                     <div class="form-group" style="margin-top:10px;">
                         <label class="form-label" for="apptNotes">Notes / Location</label>
-                        <input id="apptNotes" class="form-input" type="text" placeholder="Room 305, Lab services...">
+                        <input id="apptNotes" name="notesOrLocation" class="form-input" type="text" placeholder="Room 305, Lab services...">
                     </div>
                     <div style="display:flex; gap:8px; margin-top:12px;">
                         <button type="submit" class="btn btn-primary">Save Appointment</button>
@@ -609,15 +609,15 @@
         function genId(){ return 'id_' + Math.random().toString(36).slice(2,9); }
         function showToast(text, timeout = 3500){
             const wrap = document.getElementById('toastWrap');
-            const t = document.createElement('div');
-            t.className = 'toast';
-            t.textContent = text;
-            wrap.appendChild(t);
-            setTimeout(()=> t.style.opacity = '0.95', 50);
-            setTimeout(()=> { t.style.transform = 'translateY(8px)'; }, 50);
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = text;
+            wrap.appendChild(toast);
+            setTimeout(()=> toast.style.opacity = '0.95', 50);
+            setTimeout(()=> { toast.style.transform = 'translateY(8px)'; }, 50);
             setTimeout(()=> {
-                t.style.opacity = 0;
-                setTimeout(()=> wrap.removeChild(t), 400);
+                toast.style.opacity = 0;
+                setTimeout(()=> wrap.removeChild(toast), 400);
             }, timeout);
         }
 
@@ -712,8 +712,8 @@
         let profile = load(LS_KEYS.profile, { name:'<%= name %>', email:'<%= email %>' });
 
         // Update summary metrics shown on dashboard and averages
-        function updateSummaryMetrics(){
-            if(!vitals.length) return;
+        function updateSummaryMetrics(vitals){
+            if(!vitals || vitals.length === 0) return;
             const last = vitals[vitals.length-1];
             document.getElementById('metricHeart').innerHTML = `${last.heart}<span class="metric-unit"> bpm</span>`;
             document.getElementById('metricSugar').innerHTML = `${last.sugar}<span class="metric-unit"> mmol/L</span>`;
@@ -729,10 +729,29 @@
             document.getElementById('metricWeightAvg').textContent = `Avg: ${avg('weight')} kg`;
             document.getElementById('currentSugar').innerHTML = `${last.sugar}<span class="metric-unit"> mmol/L</span>`;
             // summary text
-            document.getElementById('overviewSummary').textContent = `Last recorded ${new Date(last.ts).toLocaleString()}: HR ${last.heart} bpm • Sugar ${last.sugar} mmol/L • BP ${last.sys}/${last.dia} mmHg • Weight ${last.weight} kg`;
+            let parts = [];
+
+if (last.ts) {
+  parts.push(`Last recorded ${new Date(last.ts).toLocaleString()}`);
+}
+if (last.heart !== undefined) {
+  parts.push(`HR ${last.heart} bpm`);
+}
+if (last.sugar !== undefined) {
+  parts.push(`Sugar ${last.sugar} mmol/L`);
+}
+if (last.sys !== undefined && last.dia !== undefined) {
+  parts.push(`BP ${last.sys}/${last.dia} mmHg`);
+}
+if (last.weight !== undefined) {
+  parts.push(`Weight ${last.weight} kg`);
+}
+
+document.getElementById('overviewSummary').textContent = parts.join(' • ');
+
         }
 
-        updateSummaryMetrics();
+        updateSummaryMetrics(vitals);
 
         // Vitals form handling
         const vitalsForm = document.getElementById('vitalsForm');
@@ -770,10 +789,11 @@ for (const [key, value] of formData.entries()) {
         // });
 
         // Vitals history rendering (collapsible simple table)
-        function renderVitalsHistory(limit = 30){
+        function renderVitalsHistory(vitals, limit = 30){
+
             const wrapper = document.getElementById('vitalsHistoryWrapper');
             wrapper.innerHTML = '';
-            if(!vitals.length) { wrapper.innerHTML = '<div class="card small">No vitals recorded yet.</div>'; return; }
+            if(!vitals || vitals.length === 0) { wrapper.innerHTML = '<div class="card small">No vitals recorded yet.</div>'; return; }
             const card = document.createElement('div');
             card.className = 'card';
             const title = document.createElement('h3'); title.textContent = `Vitals History (${vitals.length})`; title.style.marginBottom = '12px';
@@ -793,7 +813,10 @@ for (const [key, value] of formData.entries()) {
                 item.innerHTML = `
                     <div style="min-width:220px">
                         <div style="font-weight:700">${new Date(v.ts).toLocaleString()}</div>
-                        <div class="small" style="color:var(--text-gray)">${v.heart} bpm • ${v.sugar} mmol/L • ${v.sys}/${v.dia} mmHg • ${v.weight} kg</div>
+                        ${v.heart ?? '-'} bpm • 
+      ${v.sugar ?? '-'} mmol/L • 
+      ${v.sys ?? '-'} / ${v.dia ?? '-'} mmHg • 
+      ${v.weight ?? '-'} kg
                     </div>
                     <div style="display:flex; gap:8px; align-items:center;">
                         <button class="btn btn-secondary small" data-ts="${v.ts}" aria-label="Copy values">Copy</button>
@@ -816,18 +839,45 @@ for (const [key, value] of formData.entries()) {
                     }
                 });
             });
-            card.querySelectorAll('button[data-delete]').forEach(b => {
-                b.addEventListener('click', () => {
-                    const ts = +b.getAttribute('data-delete');
-                    vitals = vitals.filter(x => x.ts !== ts);
-                    save(LS_KEYS.vitals, vitals);
-                    renderVitalsHistory();
-                    updateSummaryMetrics();
-                    showToast('Deleted vitals entry.');
-                });
-            });
+    card.querySelectorAll('button[data-delete]').forEach(b => {
+  b.addEventListener('click', async () => {
+    const ts = +b.getAttribute('data-delete');
+    
+    try {
+      const response = await fetch(`/api/vitals/${ts}`, { method: 'DELETE' });
+      if (!response.ok) throw new Error('Delete failed');
+
+      // Remove from local vitals array only after successful backend deletion
+      vitals = vitals.filter(x => x.ts !== ts);
+      save(LS_KEYS.vitals, vitals);
+      renderVitalsHistory(vitals, 30);
+      updateSummaryMetrics(vitals);
+      showToast('Deleted vitals entry.');
+    } catch (error) {
+      console.error('Failed to delete vitals:', error);
+      showToast('Failed to delete vitals entry.');
+    }
+  });
+});
 
         }
+
+
+async function loadVitalsHistory(userID, limit = 30) {
+  try {
+    const response = await fetch(`/api/vitals-history/${userID}`);
+    if (!response.ok) throw new Error('Network response was not ok');
+    const vitals = await response.json();
+    updateSummaryMetrics(vitals.slice(-limit))
+    renderVitalsHistory(vitals.slice(-limit)); // Pass last `limit` entries to rendering function
+  } catch (err) {
+    console.error('Failed to load vitals:', err);
+  }
+}
+
+// Call this function with the logged-in user's ID to populate the vitals table
+loadVitalsHistory('<%=id %>');
+
 
         // Show/hide history
         document.getElementById('showVitalsHistory').addEventListener('click', ()=>{
@@ -843,7 +893,7 @@ for (const [key, value] of formData.entries()) {
             const rec = { ts: Date.now(), heart: vitals.length ? vitals[vitals.length-1].heart : 72, sugar: val, sys: vitals.length ? vitals[vitals.length-1].sys : 118, dia: vitals.length ? vitals[vitals.length-1].dia : 78, weight: vitals.length ? vitals[vitals.length-1].weight : 79.4 };
             vitals.push(rec);
             save(LS_KEYS.vitals, vitals);
-            updateSummaryMetrics();
+            updateSummaryMetrics(vitals);
             showToast('Quick glucose logged');
             document.getElementById('quickSugar').value = '';
         });
@@ -853,7 +903,7 @@ for (const [key, value] of formData.entries()) {
             vitals = [];
             save(LS_KEYS.vitals, vitals);
             renderVitalsHistory();
-            updateSummaryMetrics();
+            updateSummaryMetrics(vitals);
             showToast('Vitals cleared.');
         });
 
@@ -882,50 +932,70 @@ for (const [key, value] of formData.entries()) {
         document.addEventListener('keydown', (e)=> { if(e.key === 'Escape' && modalBackdrop.classList.contains('active')) closeModalFn(); });
 
         // Save appointment
-        appointmentForm.addEventListener('submit', (e)=>{
-            e.preventDefault();
-            const title = document.getElementById('apptTitle').value.trim();
-            const doctor = document.getElementById('apptDoctor').value.trim();
-            const date = document.getElementById('apptDate').value;
-            const time = document.getElementById('apptTime').value;
-            const notes = document.getElementById('apptNotes').value.trim();
-            if(!title || !date || !time) return showToast('Please fill title, date and time.');
-            const appt = { id: genId(), title, doctor, date, time, notes, status: 'pending' };
-            appointments.push(appt);
-            save(LS_KEYS.appointments, appointments);
-            renderAppointments();
-            closeModalFn();
-            showToast('Appointment saved');
-            appointmentForm.reset();
-        });
+//         appointmentForm.addEventListener('submit', (e)=>{
+//             e.preventDefault();
+
+            
+// const filteredFormData = new FormData(appointmentForm);
+// for (const [key, value] of formData.entries()) {
+//   if (value.trim() !== "") {
+//     filteredFormData.append(key, value);
+//   }
+// }
+
+//             fetch("/user-appointments", {body: filteredFormData, method: "POST"})
+//             .then(data=>{showToast('✅ Appointments recorded successfully!')})
+//             .catch(err =>{showToast("Error recording data")})
+
+//             const title = document.getElementById('apptTitle').value.trim();
+//             const doctor = document.getElementById('apptDoctor').value.trim();
+//             const date = document.getElementById('apptDate').value;
+//             const time = document.getElementById('apptTime').value;
+//             const notes = document.getElementById('apptNotes').value.trim();
+//             if(!title || !date || !time) return showToast('Please fill title, date and time.');
+//             const appt = { id: genId(), title, doctor, date, time, notes, status: 'pending' };
+//             appointments.push(appt);
+//             save(LS_KEYS.appointments, appointments);
+//             renderAppointments();
+//             closeModalFn();
+//             showToast('Appointment saved');
+//             appointmentForm.reset();
+//         });
 
         // Render appointments list
-        function renderAppointments(filter = ''){
+        function renderAppointments(appointments, filter = ''){
             const list = document.getElementById('appointmentsList');
             list.innerHTML = '';
-            if(!appointments.length) { list.innerHTML = '<div class="small">No appointments scheduled.</div>'; return; }
+            if(!appointments || appointments.length===0) { list.innerHTML = '<div class="small">No appointments scheduled.</div>'; return; }
             const wrapper = document.createElement('div');
             appointments.filter(a => {
                 if(!filter) return true;
+                const date = new Date( a.date)
+                const dateString = date.toLocaleDateString(); // e.g., "11/5/2025"
+const timeString = date.toLocaleTimeString(); // e.g., "2:08:00 PM"
                 const term = filter.toLowerCase();
-                return [a.title,a.doctor,a.notes,a.date,a.time].join(' ').toLowerCase().includes(term);
+                return [a.title,a.drName,a.notesOrLocation,dateString,timeString].join(' ').toLowerCase().includes(term);
             }).forEach(a => {
+                const date = new Date(a.date)
+                const dateString = date.toLocaleDateString(); // e.g., "11/5/2025"
+const timeString = date.toLocaleTimeString([], {
+  hour: '2-digit',
+  minute: '2-digit'
+}); // e.g., "2:08:00 PM"
                 const item = document.createElement('div');
                 item.className = 'appointment-item';
                 item.innerHTML = `
                     <div style="display:flex; justify-content:space-between; align-items:center;">
                         <div>
                             <div class="appointment-title">${a.title}</div>
-                            <div class="appointment-doctor">${a.doctor || '—'}</div>
+                            <div class="appointment-doctor">${a.drName || '—'}</div>
                         </div>
                         <div style="display:flex; gap:8px; align-items:center;">
-                            <button class="btn btn-secondary small" data-action="toggle" data-id="${a.id}">${a.status === 'confirmed' ? '✓' : '…'}</button>
-                            <button class="btn btn-secondary small" data-action="edit" data-id="${a.id}">Edit</button>
-                            <button class="btn btn-secondary small" data-action="delete" data-id="${a.id}">Delete</button>
+                            <button class="btn btn-secondary small" data-action="delete" data-id="${a._id}">Delete</button>
                         </div>
                     </div>
                     <div style="margin-top:8px" class="appointment-details">
-                        📅 ${a.date} • ${a.time} <br> 📍 ${a.notes || '—'}
+                        📅 ${dateString} • ${timeString} <br> 📍 ${a.notesOrLocation || '—'}
                     </div>
                 `;
                 wrapper.appendChild(item);
@@ -935,64 +1005,80 @@ for (const [key, value] of formData.entries()) {
 
             // actions
             list.querySelectorAll('button[data-action]').forEach(btn => {
-                btn.addEventListener('click', ()=> {
-                    const id = btn.getAttribute('data-id');
+                btn.addEventListener('click', async()=> {
                     const action = btn.getAttribute('data-action');
                     if(action === 'delete'){
                         if(confirm('Delete appointment?')) {
-                            appointments = appointments.filter(x => x.id !== id);
-                            save(LS_KEYS.appointments, appointments);
-                            renderAppointments();
-                            showToast('Appointment removed');
+                            const idToDelete = btn.getAttribute('data-id');
+      if (!idToDelete) return;
+                        try {
+        const response = await fetch(`/api/appointments/${idToDelete}`, { method: 'DELETE' });
+        if (!response.ok) throw new Error('Delete failed');
+
+        // Update local appointments by removing the deleted one
+        appointments = appointments.filter(appointment => appointment.id !== idToDelete);
+
+        showToast('Deleted appointment entry.');
+        console.log(`Deleted appointment with id: ${idToDelete}`);
+setTimeout(() => {
+loadAppointments('<%=id %>');
+}, 2000);
+
+        
+      } catch (error) {
+        showToast('Failed to delete appointment entry.');
+        console.error('Error deleting appointment:', error);
+      }
+
+                            renderAppointments(appointments);
                         }
-                    } else if(action === 'toggle'){
-                        appointments = appointments.map(x => x.id === id ? {...x, status: x.status === 'confirmed' ? 'pending' : 'confirmed'} : x);
-                        save(LS_KEYS.appointments, appointments);
-                        renderAppointments();
-                        showToast('Status updated');
-                    } else if(action === 'edit'){
-                        const appt = appointments.find(x => x.id === id);
-                        if(!appt) return;
-                        document.getElementById('apptTitle').value = appt.title;
-                        document.getElementById('apptDoctor').value = appt.doctor;
-                        document.getElementById('apptDate').value = appt.date;
-                        document.getElementById('apptTime').value = appt.time;
-                        document.getElementById('apptNotes').value = appt.notes;
-                        // set a temporary attribute to edit existing instead of creating new
-                        appointmentForm.dataset.editId = appt.id;
-                        openModal();
-                    }
+                    } 
                 });
             });
         }
-        renderAppointments();
+
+        async function loadAppointments(userID, limit = 30) {
+  try {
+    const response = await fetch(`/api/appointments/${userID}`);
+    if (!response.ok) throw new Error('Network response was not ok');
+    const appointments = await response.json();
+    console.log(appointments)
+        renderAppointments(appointments);
+    
+} catch (err) {
+    console.error('Failed to load appointments:', err);
+  }
+}
+
+// Call this function with the logged-in user's ID to populate the vitals table
+loadAppointments('<%=id %>');
 
         // Appointment search
         document.getElementById('apptSearch').addEventListener('input', (e) => renderAppointments(e.target.value.trim()));
 
         // If editing an appointment, handle update
-        appointmentForm.addEventListener('submit', (e)=>{
-            // handled above; add edit handling:
-            const editId = appointmentForm.dataset.editId;
-            if(editId){
-                // update existing rather than create new
-                const title = document.getElementById('apptTitle').value.trim();
-                const doctor = document.getElementById('apptDoctor').value.trim();
-                const date = document.getElementById('apptDate').value;
-                const time = document.getElementById('apptTime').value;
-                const notes = document.getElementById('apptNotes').value.trim();
-                const idx = appointments.findIndex(a => a.id === editId);
-                if(idx > -1){
-                    appointments[idx] = { ...appointments[idx], title, doctor, date, time, notes };
-                    save(LS_KEYS.appointments, appointments);
-                    renderAppointments();
-                    showToast('Appointment updated');
-                }
-                appointmentForm.reset();
-                delete appointmentForm.dataset.editId;
-                closeModalFn();
-            }
-        });
+        // appointmentForm.addEventListener('submit', (e)=>{
+        //     // handled above; add edit handling:
+        //     const editId = appointmentForm.dataset.editId;
+        //     if(editId){
+        //         // update existing rather than create new
+        //         const title = document.getElementById('apptTitle').value.trim();
+        //         const doctor = document.getElementById('apptDoctor').value.trim();
+        //         const date = document.getElementById('apptDate').value;
+        //         const time = document.getElementById('apptTime').value;
+        //         const notes = document.getElementById('apptNotes').value.trim();
+        //         const idx = appointments.findIndex(a => a.id === editId);
+        //         if(idx > -1){
+        //             appointments[idx] = { ...appointments[idx], title, doctor, date, time, notes };
+        //             save(LS_KEYS.appointments, appointments);
+        //             renderAppointments();
+        //             showToast('Appointment updated');
+        //         }
+        //         appointmentForm.reset();
+        //         delete appointmentForm.dataset.editId;
+        //         closeModalFn();
+        //     }
+        // });
 
         // Clear all appointments
         document.getElementById('clearAppts').addEventListener('click', ()=>{
@@ -1075,7 +1161,7 @@ for (const [key, value] of formData.entries()) {
             save(LS_KEYS.settings, settings);
             save(LS_KEYS.profile, profile);
             renderAppointments();
-            updateSummaryMetrics();
+            updateSummaryMetrics(vitals);
             showToast('Local data reset');
         });
 
@@ -1205,7 +1291,7 @@ for (const [key, value] of formData.entries()) {
         (function initialRender(){
             renderAppointments();
             renderVitalsHistory();
-            updateSummaryMetrics();
+            updateSummaryMetrics(vitals);
         })();
 
         // Provide small helpers to go to pages from dashboard buttons
@@ -1222,7 +1308,7 @@ for (const [key, value] of formData.entries()) {
         document.getElementById('profileEmail').value = profile.email || '<%= email %>';
 
         // Simple autosave toggle indicator
-        document.getElementById('autosaveStatus').textContent = 'On';
+        // document.getElementById('autosaveStatus').textContent = 'On';
 
         // Make navItem clicks accessible with keyboard previously done; ensure click focuses main content
         navItems.forEach(i => i.addEventListener('click', () => { document.getElementById('contentArea').focus && document.getElementById('contentArea').focus(); }));
