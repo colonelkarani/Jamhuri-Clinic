@@ -153,6 +153,40 @@ appointmentModel.findByIdAndDelete(id).then(()=>{console.log("deleted an appoint
 }
 });
 
+// Posting appointments
+app.post("/user-appointments", checkAuthenticated,async(req,res)=>{
+  try {
+    console.log(req.body)
+    const date = req.body.date; // e.g. "2025-11-04"
+const time = req.body.time; 
+  const dateTimeString = `${date}T${time}:00`; // Append seconds if needed
+
+  // Create Date object from combined string
+  const dateTime = new Date(dateTimeString);
+
+  await transporter.sendMail({
+            from: GOOGLE_EMAIL,
+            to: GOOGLE_EMAIL,
+            subject: 'New Appointment ',
+            text: `Hello Victor. \n You have a new appointment "${req.body.title}" from ${req.user.signupName} on ${date} at ${time} \n Other notes ${req.body.notesOrLocation}`
+        });
+
+    const newAppointment = new appointmentModel({
+      user: req.user._id,
+      name: req.user.signupName,
+      title: req.body.title,
+      drName: req.body.drName,
+      notesOrLocation: req.body.notesOrLocation,
+      date: dateTime
+    })
+    await newAppointment.save()
+    console.log("Appointment saved to database")
+    res.redirect("/user")
+    
+  } catch (error) {
+    console.error("Error saving new appointment: ", error)
+  }
+})
 
 app.get("/", (req,res)=>{
 res.render('home.ejs')
@@ -232,32 +266,7 @@ app.post("/meds", checkAuthenticated,async(req,res)=>{
   }
 })
 
-app.post("/user-appointments", checkAuthenticated,async(req,res)=>{
-  try {
-    console.log(req.body)
-    const date = req.body.date; // e.g. "2025-11-04"
-const time = req.body.time; 
-  const dateTimeString = `${date}T${time}:00`; // Append seconds if needed
 
-  // Create Date object from combined string
-  const dateTime = new Date(dateTimeString);
-
-    const newAppointment = new appointmentModel({
-      user: req.user._id,
-      name: req.user.signupName,
-      title: req.body.title,
-      drName: req.body.drName,
-      notesOrLocation: req.body.notesOrLocation,
-      date: dateTime
-    })
-    await newAppointment.save()
-    console.log("Appointment saved to database")
-    res.redirect("/user")
-    
-  } catch (error) {
-    console.error("Error saving new appointment: ", error)
-  }
-})
 
 app.post("/contact", async (req, res) => {
   let name;
