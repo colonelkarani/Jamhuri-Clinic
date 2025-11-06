@@ -363,15 +363,25 @@
                             </div>
                         </div>
                         <div class="card">
+                            <form method="post" action="/blood-sugar" id="bloodSugarForm">
                             <h3 style="margin-bottom:12px">Quick Log</h3>
                             <div class="form-group">
                                 <label class="form-label" for="quickSugar">Blood Sugar Reading (mmol/L)</label>
-                                <input id="quickSugar" type="number" step="0.1" class="form-input" min="2" max="25" placeholder="e.g., 5.3">
+                                <input id="quickSugar" type="number" name="bloodSugar" step="0.1" class="form-input" min="2" max="25" placeholder="e.g., 5.3">
                             </div>
+                            <div class="form-group">
+                                    <label class="form-label" for="date">Date</label>
+                                    <input id="inpDate" type="date" name="date" class="form-input" required/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="time">Time</label>
+                                    <input id="inpTime" type="time" name="time" class="form-input" required/>
+                                </div>
                             <div style="display:flex; gap:8px;">
                                 <button id="logQuickSugar" class="btn btn-primary">Log Reading</button>
                                 <button id="clearSugarLogs" class="btn btn-secondary">Clear</button>
                             </div>
+                            </form>
                         </div>
                     </div>
                 </section>
@@ -431,22 +441,94 @@
                             <h2 style="margin-bottom:4px"><%= name %></h2>
                             <p class="small">📧 <%= email %></p>
                         </div>
+
                     </div>
 
+
+<form action="/update-profile" method="post">
+
                     <div class="card" style="margin-top:16px;">
+                        
                         <h3 style="margin-bottom:12px">Personal Information</h3>
                         <div class="form-group">
                             <label class="form-label">Full Name</label>
-                            <input id="profileName" type="text" class="form-input" value="<%= name %>">
+                            <input id="profileName" type="text" name="name" class="form-input"  value="<%= name %>">
                         </div>
                         <div class="form-group">
                             <label class="form-label">Email</label>
-                            <input id="profileEmail" type="email" class="form-input" value="<%= email %>">
+                            <input id="profileEmail" type="email" class="form-input" readonly value="<%= email %>">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="profilePhone">Phone Number</label>
+                            <input id="profilePhone" name="phone" type="tel" class="form-input" placeholder="+254 7XX XXX XXX" maxlength="20" value="<%= phone %>">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="profileHeight">Height</label>
+                            <div style="display:flex; gap:8px;">
+                                <input id="profileHeight" name="height" type="number" step="0.1" class="form-input" placeholder="e.g., 175" style="max-width:160px;" aria-label="Height in cm" value="<%= height%>">
+                                <div style="align-self:center; color:var(--text-gray);">cm</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="profileBloodType">Blood Type</label>
+                            <select id="profileBloodType" name="bloodType" class="form-input">
+                                <option value="" selected>Select blood type</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                            </select>
+                            <div class="form-label" style="color: red;" for="profileBloodType"> <%= bloodType|| '' %></div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="profileAllergies">Allergies</label>
+                            <textarea id="profileAllergies" name="allergies" class="form-input" rows="2" placeholder="List any allergies (e.g., penicillin, peanuts)"><%= allergies || '' %></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="profileChronic">Health Conditions</label>
+                            <textarea id="profileChronic" name="chronicConditions" class="form-input" rows="2" placeholder="e.g., asthma, diabetes"><%= chronicConditions || '' %></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="profilePhysician">Primary Physician</label>
+                            <input id="profilePhysician" name="primaryPhysician" type="text" class="form-input" placeholder="Doctor's name / clinic" value="<%= primaryPhysician || '' %>">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="profilePhysicianPhone">Physician Contact</label>
+                            <input id="profilePhysicianPhone" name="physicianPhone" type="tel" class="form-input" placeholder="+254 7XX XXX XXX" value="<%= physicianPhone || '' %>">
+                        </div>
+
+                        <div class="form-group" style="display:grid; grid-template-columns: 1fr 120px; gap:8px; align-items:start;">
+                            <div>
+                                <label class="form-label" for="emergencyName">Emergency Contact Name</label>
+                                <input id="emergencyName" name="emergencyName" type="text" class="form-input" placeholder="Full name" value="<%= emergencyName || '' %>">
+                            </div>
+                            <div>
+                                <label class="form-label" for="emergencyRelation">Relation</label>
+                                <input id="emergencyRelation" name="emergencyRelation" type="text" class="form-input" placeholder="e.g., Spouse" value="<%= emergencyRelation || '' %>">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="emergencyPhone">Emergency Contact Phone</label>
+                            <input id="emergencyPhone" name="emergencyPhone" type="tel" class="form-input" placeholder="+254 7XX XXX XXX" value="<%= emergencyPhone || '' %>">
                         </div>
                         <div style="display:flex; gap:8px;">
                             <button id="saveProfile" class="btn btn-primary">Save Changes</button>
                         </div>
                     </div>
+                    </form>
                 </section>
 
                 <!-- Settings -->
@@ -498,6 +580,7 @@
                         <div style="margin-top:12px; display:flex; gap:8px;">
                             <button id="resetData" class="btn btn-secondary">Reset Local Data</button>
                             <button id="exportAll" class="btn btn-primary">Export All</button>
+                            <button id="deleteAccount" onclick="deleteAccount()" class="btn btn-primary" style="background-color: red;">Delete Account</button>
                         </div>
                     </div>
                 </section>
@@ -551,6 +634,22 @@
     <script>
         // GitHub Copilot
         // Enhanced JS: navigation, persistence, charts, vitals history, appointments, CSV export, accessibility
+let vitals;
+
+async function loadVitalsHistory(userID, limit = 30) {
+  try {
+    const response = await fetch(`/api/vitals-history/${userID}`);
+    if (!response.ok) throw new Error('Network response was not ok');
+     vitals = await response.json();
+    updateSummaryMetrics(vitals.slice(-limit))
+    renderVitalsHistory(vitals.slice(-limit)); // Pass last `limit` entries to rendering function
+  } catch (err) {
+    console.error('Failed to load vitals:', err);
+  }
+}
+
+// Call this function with the logged-in user's ID to populate the vitals table
+loadVitalsHistory('<%=id %>');
 
         // Basic DOM refs
         const sidebar = document.getElementById('sidebar');
@@ -588,22 +687,6 @@
             settings: 'ht_settings_v1',
             profile: 'ht_profile_v1'
         };
-
-        // Default sample data
-        const sampleVitals = [
-            { ts: Date.now() - 1000*60*60*24*28, heart: 82, sugar: 6.5, sys:125, dia:82, weight:82 },
-            { ts: Date.now() - 1000*60*60*24*21, heart: 80, sugar: 6.0, sys:122, dia:80, weight:81.5 },
-            { ts: Date.now() - 1000*60*60*24*14, heart: 78, sugar: 5.7, sys:120, dia:79, weight:80.8 },
-            { ts: Date.now() - 1000*60*60*24*7, heart: 75, sugar: 5.5, sys:119, dia:79, weight:80 },
-            { ts: Date.now() - 1000*60*60*24*2, heart: 72, sugar: 5.3, sys:118, dia:78, weight:79.4 }
-        ];
-
-        const sampleAppointments = [
-            { id: genId(), title: 'Annual Physical Exam', doctor: 'Dr. George Maingi', date: '2025-11-05', time: '10:00', notes: 'Room 305', status: 'confirmed' },
-            { id: genId(), title: 'Blood Work & Lab Tests', doctor: 'Lab Services', date: '2025-11-08', time: '08:00', notes: 'Lab Services', status: 'pending' },
-            { id: genId(), title: 'Cardiology Follow-up', doctor: 'Dr. Michael Chen', date: '2025-11-12', time: '14:30', notes: 'Heart & Vascular Institute', status: 'confirmed' },
-            { id: genId(), title: 'Diabetes Management', doctor: 'Dr. Emily Rodriguez', date: '2025-11-20', time: '11:30', notes: 'Diabetes Care Center', status: 'confirmed' }
-        ];
 
         // Utilities
         function genId(){ return 'id_' + Math.random().toString(36).slice(2,9); }
@@ -673,6 +756,13 @@
             try { history.pushState({page:pageName}, '', '#'+pageName); } catch(e){}
         }
 
+document.querySelectorAll('.metric-card').forEach(card=>{
+    card.addEventListener("click", (e)=>{
+        switchPage("vitals")
+    })
+})
+
+
         // Allow switchPage calls
         window.switchPage = switchPage;
 
@@ -706,20 +796,18 @@
         }
 
         // Initialize persisted state
-        let vitals = load(LS_KEYS.vitals, sampleVitals.slice());
-        let appointments = load(LS_KEYS.appointments, sampleAppointments.slice());
         let settings = load(LS_KEYS.settings, { emailNotif:true, apptReminders:true, dailySummary:false, shareData:true, twoFA:false });
-        let profile = load(LS_KEYS.profile, { name:'<%= name %>', email:'<%= email %>' });
+        let profile =  { name:'<%= name %>', email:'<%= email %>' };
 
         // Update summary metrics shown on dashboard and averages
         function updateSummaryMetrics(vitals){
             if(!vitals || vitals.length === 0) return;
             const last = vitals[vitals.length-1];
-            document.getElementById('metricHeart').innerHTML = `${last.heart}<span class="metric-unit"> bpm</span>`;
-            document.getElementById('metricSugar').innerHTML = `${last.sugar}<span class="metric-unit"> mmol/L</span>`;
-            document.getElementById('metricSys').innerHTML = `${last.sys}<span class="metric-unit"> mmHg</span>`;
-            document.getElementById('metricDia').innerHTML = `${last.dia}<span class="metric-unit"> mmHg</span>`;
-            document.getElementById('metricWeight').innerHTML = `${last.weight}<span class="metric-unit"> kg</span>`;
+            last.heart?  document.getElementById('metricHeart').innerHTML = `${last.heart}<span class="metric-unit"> bpm</span>`:document.getElementById('metricHeart').innerHTML = `Record`
+            last.sugar?document.getElementById('metricSugar').innerHTML = `${last.sugar}<span class="metric-unit"> mmol/L</span>`:document.getElementById('metricSugar').innerHTML = `Record`
+            last.sys?document.getElementById('metricSys').innerHTML = `${last.sys}<span class="metric-unit"> mmHg</span>`:document.getElementById('metricSys').innerHTML = `Record`
+            last.dia?document.getElementById('metricDia').innerHTML = `${last.dia}<span class="metric-unit"> mmHg</span>`:document.getElementById('metricDia').innerHTML = `Record`
+            last.weight?document.getElementById('metricWeight').innerHTML = `${last.weight}<span class="metric-unit"> kg</span>`:document.getElementById('metricWeight').innerHTML = `Record`
             // averages
             const avg = (key) => (vitals.reduce((s,i)=>s + (i[key]||0),0)/vitals.length).toFixed(key === 'weight' ? 1 : 1);
             document.getElementById('metricHeartAvg').textContent = `Avg: ${avg('heart')} bpm`;
@@ -849,7 +937,6 @@ for (const [key, value] of formData.entries()) {
 
       // Remove from local vitals array only after successful backend deletion
       vitals = vitals.filter(x => x.ts !== ts);
-      save(LS_KEYS.vitals, vitals);
       renderVitalsHistory(vitals, 30);
       updateSummaryMetrics(vitals);
       showToast('Deleted vitals entry.');
@@ -863,20 +950,6 @@ for (const [key, value] of formData.entries()) {
         }
 
 
-async function loadVitalsHistory(userID, limit = 30) {
-  try {
-    const response = await fetch(`/api/vitals-history/${userID}`);
-    if (!response.ok) throw new Error('Network response was not ok');
-    const vitals = await response.json();
-    updateSummaryMetrics(vitals.slice(-limit))
-    renderVitalsHistory(vitals.slice(-limit)); // Pass last `limit` entries to rendering function
-  } catch (err) {
-    console.error('Failed to load vitals:', err);
-  }
-}
-
-// Call this function with the logged-in user's ID to populate the vitals table
-loadVitalsHistory('<%=id %>');
 
 
         // Show/hide history
@@ -887,24 +960,20 @@ loadVitalsHistory('<%=id %>');
         });
 
         // Quick sugar logging
-        document.getElementById('logQuickSugar').addEventListener('click', ()=>{
-            const val = Number(document.getElementById('quickSugar').value);
-            if(!val) return showToast('Please enter a value.');
-            const rec = { ts: Date.now(), heart: vitals.length ? vitals[vitals.length-1].heart : 72, sugar: val, sys: vitals.length ? vitals[vitals.length-1].sys : 118, dia: vitals.length ? vitals[vitals.length-1].dia : 78, weight: vitals.length ? vitals[vitals.length-1].weight : 79.4 };
-            vitals.push(rec);
-            save(LS_KEYS.vitals, vitals);
-            updateSummaryMetrics(vitals);
-            showToast('Quick glucose logged');
-            document.getElementById('quickSugar').value = '';
-        });
+        // document.getElementById('logQuickSugar').addEventListener('click', ()=>{
+        //     const val = Number(document.getElementById('quickSugar').value);
+        //     if(!val) return showToast('Please enter a value.');
+        //     const rec = { ts: Date.now(), heart: vitals.length ? vitals[vitals.length-1].heart : 72, sugar: val, sys: vitals.length ? vitals[vitals.length-1].sys : 118, dia: vitals.length ? vitals[vitals.length-1].dia : 78, weight: vitals.length ? vitals[vitals.length-1].weight : 79.4 };
+        //     vitals.push(rec);
+        //     save(LS_KEYS.vitals, vitals);
+        //     updateSummaryMetrics(vitals);
+        //     showToast('Quick glucose logged');
+        //     document.getElementById('quickSugar').value = '';
+        // });
 
         document.getElementById('clearSugarLogs').addEventListener('click', ()=>{
-            if(!confirm('Clear all vitals history? This cannot be undone.')) return;
-            vitals = [];
-            save(LS_KEYS.vitals, vitals);
-            renderVitalsHistory();
-            updateSummaryMetrics(vitals);
-            showToast('Vitals cleared.');
+            document.getElementById("bloodSugarForm").reset()
+            showToast('Form cleared.');
         });
 
         // Appointment modal
@@ -1042,7 +1111,6 @@ loadAppointments('<%=id %>');
     const response = await fetch(`/api/appointments/${userID}`);
     if (!response.ok) throw new Error('Network response was not ok');
     const appointments = await response.json();
-    console.log(appointments)
         renderAppointments(appointments);
     
 } catch (err) {
@@ -1081,22 +1149,22 @@ loadAppointments('<%=id %>');
         // });
 
         // Clear all appointments
-        document.getElementById('clearAppts').addEventListener('click', ()=>{
-            if(confirm('Clear all appointments?')) {
-                appointments = [];
-                save(LS_KEYS.appointments, appointments);
-                renderAppointments();
-                showToast('All appointments removed');
-            }
-        });
+        // document.getElementById('clearAppts').addEventListener('click', ()=>{
+        //     if(confirm('Clear all appointments?')) {
+        //         appointments = [];
+        //         save(LS_KEYS.appointments, appointments);
+        //         renderAppointments();
+        //         showToast('All appointments removed');
+        //     }
+        // });
 
         // Profile save
-        document.getElementById('saveProfile').addEventListener('click', ()=>{
-            profile.name = document.getElementById('profileName').value.trim();
-            profile.email = document.getElementById('profileEmail').value.trim();
-            save(LS_KEYS.profile, profile);
-            showToast('Profile updated');
-        });
+        // document.getElementById('saveProfile').addEventListener('click', ()=>{
+        //     profile.name = document.getElementById('profileName').value.trim();
+        //     profile.email = document.getElementById('profileEmail').value.trim();
+        //     save(LS_KEYS.profile, profile);
+        //     showToast('Profile updated');
+        // });
 
         // Settings toggles
         function bindToggle(id, key){
@@ -1168,19 +1236,19 @@ loadAppointments('<%=id %>');
       
 
         // Global search quick filter: search appointments & vitals
-        document.getElementById('globalSearch').addEventListener('keydown', (e)=>{
-            if(e.key === 'Enter'){
-                const term = e.target.value.trim().toLowerCase();
-                if(term){
-                    // switch to appointments and filter
-                    switchPage('appointments');
-                    setTimeout(()=> {
-                        document.getElementById('apptSearch').value = term;
-                        renderAppointments(term);
-                    }, 120);
-                }
-            }
-        });
+        // document.getElementById('globalSearch').addEventListener('keydown', (e)=>{
+        //     if(e.key === 'Enter'){
+        //         const term = e.target.value.trim().toLowerCase();
+        //         if(term){
+        //             // switch to appointments and filter
+        //             switchPage('appointments');
+        //             setTimeout(()=> {
+        //                 document.getElementById('apptSearch').value = term;
+        //                 renderAppointments(appointments,term);
+        //             }, 120);
+        //         }
+        //     }
+        // });
 
         // Keyboard shortcut for notifications (Alt+T)
         document.addEventListener('keydown', (e) => {
@@ -1303,9 +1371,7 @@ loadAppointments('<%=id %>');
         document.getElementById('closeModal').addEventListener('click', () => { delete appointmentForm.dataset.editId; appointmentForm.reset(); });
         document.getElementById('cancelAppt').addEventListener('click', () => { delete appointmentForm.dataset.editId; appointmentForm.reset(); });
 
-        // Populate profile fields from storage
-        document.getElementById('profileName').value = profile.name || '<%= name %>';
-        document.getElementById('profileEmail').value = profile.email || '<%= email %>';
+   
 
         // Simple autosave toggle indicator
         // document.getElementById('autosaveStatus').textContent = 'On';
@@ -1315,9 +1381,25 @@ loadAppointments('<%=id %>');
 
         // Small protection to ensure charts always created after DOM ready
         window.addEventListener('load', ()=>{
-            // when user switches to trends later, initCharts will be called
+            // when user switches to trends later, initChaerts will be called
             // but pre-init weight chart data for preview if needed
         });
+
+      async  function deleteAccount() {
+        if (!confirm("Are you sure you want to delete your account?\nThis action is irreversible")) {
+            return
+        }
+             try {
+        const response = await fetch(`/api/accounts/<%= id%>`, { method: 'DELETE' });
+        if (!response.ok) throw new Error('Delete failed');      
+        if(response.ok){window.location.reload();}  
+      } catch (error) {
+        showToast('Failed to delete account.');
+        console.error('Error deleting appointment:', error);
+      }
+            
+        }
+
     </script>
     
 </body>

@@ -19,6 +19,7 @@ const {
   heartRateModel,
   weightModel,
   medicationModel,
+  profileInfoModel,
   bloodSugarModel,
   appointmentModel
 } = require('./models/healthTracker_model.js'); // replace './models' with your actual file path if different
@@ -72,14 +73,22 @@ app.get('/user', checkAuthenticated, async (req, res) => {
 
   try {
     const userAppointments = await appointmentModel.find({user: req.user._id})
-    const userMedications = await medicationModel.find({user: req.user._id})
-    res.render('index.ejs', { name: req.user.signupName, id:req.user._id,appointments: userAppointments, medications: userMedications, email: req.user.signupEmail })
+    const profileInfo = await profileInfoModel.find({user: req.user._id})
+   const {phone, height, bloodType, chronicConditions, allergies, primaryPhysician, physicianPhone, emergencyRelation, emergencyName, emergencyPhone} = profileInfo[0]
+    res.render('index.ejs', { 
+      name: req.user.signupName, 
+      id:req.user._id,
+      appointments: userAppointments, 
+      email: req.user.signupEmail,
+      height: profileInfo.height
+      , bloodType, chronicConditions, allergies, phone,primaryPhysician, physicianPhone, emergencyRelation, emergencyName, emergencyPhone
+     })
   } catch (error) {
     console.error("Error fetching data", error)
   }
 })
 
-//Vitals api
+//Getting Vitals api
 app.get('/api/vitals-history/:userID', async (req, res) => {
   const userID = req.params.userID;
   try {
@@ -103,7 +112,6 @@ app.get('/api/vitals-history/:userID', async (req, res) => {
 });
 
 // Delete vitals api
-// Assuming you have imported Vital model
 app.delete('/api/vitals/:ts', async (req, res) => {
   const ts = Number(req.params.ts);
   if (!ts) return res.status(400).send('Invalid timestamp');
@@ -127,6 +135,41 @@ try {
 });
 
 
+// Delete Accounts API
+app.delete('/api/accounts/:id', async (req, res) => {
+  const id = req.params.id;
+  try {
+    const deletedUser = await userModel.findByIdAndDelete(id);
+    if (!deletedUser) {
+      return res.status(404).json({ message: 'Account not found' });
+    }
+    // Log out user if needed here, but generally logout is client side action after deletion
+    res.status(200).json({ message: 'Deleted the Account' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Error deleting the account' });
+  }
+});
+
+
+// Updatting profile
+
+app.post('/update-profile', checkAuthenticated,async (req, res) => {
+  const userId = req.user._id; // For example, get the logged-in user's ID
+  const updateData = req.body; // Data sent from the form
+  try {
+
+const updatedProfile = await profileInfoModel.findOneAndUpdate({user: userId}, updateData, {new: true})
+
+console.log("Profile updated")
+    res.redirect('/user'); // Redirect back to profile or confirmation page
+  } catch (err) {
+    console.error("Error updating profile:", err)
+    res.status(500).send('Error updating profile');
+  }
+});
+
+
 // Appointments APi
 app.get('/api/appointments/:userID', async (req, res) => {
   const userID = req.params.userID;
@@ -137,6 +180,7 @@ app.get('/api/appointments/:userID', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
 
 // Delete Appointments api
 app.delete('/api/appointments/:id', async (req, res) => {
@@ -318,16 +362,22 @@ app.post("/blood-sugar", checkAuthenticated,async (req,res)=>{
 try {
 
   const bloodSugar = req.body.bloodSugar
-  const measurementTime = req.body.measurementTime
-  const date = req.body.date
+
   const notes = req.body.notes
+
+      const date = req.body.date; // e.g. "2025-11-04"
+const time = req.body.time; 
+  const dateTimeString = `${date}T${time}:00`; // Append seconds if needed
+
+  // Create Date object from combined string
+  const dateTime = new Date(dateTimeString);
+
 
   const newBloodSugar= new bloodSugarModel({
     user: req.user._id,
     bloodSugar: parseFloat(bloodSugar),
-    measurementTime: measurementTime,
     notes: notes,
-    date: date
+    date: dateTime
   })
  
   await newBloodSugar.save()
@@ -438,8 +488,12 @@ app.post('/signup', checkNotAuthenticated, async (req, res) => {
       otp: otp,
       otpExpiry: otpExpiry
     });
+    const newProfile = new profileInfoModel({
+      user: newUser._id
+    })
 
     await newUser.save();
+    await newProfile.save()
      await transporter.sendMail({
             from: GOOGLE_EMAIL,
             to: req.body.signupEmail,

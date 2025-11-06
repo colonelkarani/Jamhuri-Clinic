@@ -14,7 +14,21 @@ const heartRateSchema = new mongoose.Schema(
   date: { type: Date, default: Date.now }
 }
 )
-
+const profileInfoSchema = new mongoose.Schema(
+{
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  height : Number,
+  phone: String,
+  bloodType : String,
+  chronicConditions : String,
+  allergies : String,
+  primaryPhysician : String,
+  physicianPhone : String,
+  emergencyRelation : String,
+  emergencyName : String,
+  emergencyPhone : String,
+}
+)
 
 const weightSchema = new mongoose.Schema(
 {
@@ -36,7 +50,6 @@ const bloodSugarSchema = new mongoose.Schema(
 {
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     bloodSugar : Number,
-    measurementTime : String,
     notes: String,
   date: { type: Date, default: Date.now }
 }
@@ -65,6 +78,7 @@ const appointmentSchema = new mongoose.Schema(
 
 const BPReadingModel = mongoose.model('BPReading', BPReadingSchema);
 const heartRateModel = mongoose.model('heartRate', heartRateSchema);
+const profileInfoModel = mongoose.model('profileInfo', profileInfoSchema);
 const weightModel = mongoose.model('weight', weightSchema);
 const medicationModel = mongoose.model('medication', medicationSchema);
 const bloodSugarModel = mongoose.model('bloodSugar', bloodSugarSchema);
@@ -74,6 +88,7 @@ const oxygenSaturationModel = mongoose.model('oxygenSaturation', oxygenSaturatio
 module.exports = {
   BPReadingModel,
   weightModel,
+  profileInfoModel,
   heartRateModel, 
   medicationModel,
   oxygenSaturationModel,
