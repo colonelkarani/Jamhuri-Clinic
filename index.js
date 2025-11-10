@@ -200,7 +200,6 @@ appointmentModel.findByIdAndDelete(id).then(()=>{console.log("deleted an appoint
 // Posting appointments
 app.post("/user-appointments", checkAuthenticated,async(req,res)=>{
   try {
-    console.log(req.body)
     const date = req.body.date; // e.g. "2025-11-04"
 const time = req.body.time; 
   const dateTimeString = `${date}T${time}:00`; // Append seconds if needed
@@ -441,7 +440,6 @@ if (systolicBp && diastolicBp) {
     await newWeight.save();
     console.log("Weight saved to MongoDB");
     }
-console.log(req.body)
 
     res.redirect("/user")
   } catch (error) {
