@@ -37,7 +37,7 @@
             /* Added a background image to demonstrate the navbar transparency */
             background: linear-gradient(rgba(26, 38, 57, 0.7), rgba(26, 38, 57, 0.4)), url('/api/placeholder/1920/1080') center/cover;
             background-attachment: fixed;
-            height: 200vh; /* Making the page scrollable for demo */
+            height: 100vh;
         }
         
         /* Navbar Styles */
@@ -315,6 +315,7 @@
             }
         }
 
+       
         /* Demo content to show scrolling effect */
         .demo-content {
             height: 150vh;
@@ -373,10 +374,14 @@
 
         .hero-title {
             font-family: 'Playfair Display', serif;
-            font-size: 4rem;
+            font-size: 2.5rem;
             font-weight: 700;
             margin-bottom: 1rem;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+          /* Responsive */
+        @media(max-width:768px){
+            .hero-title{font-size:2rem}
         }
 
         .hero-subtitle {
@@ -781,11 +786,11 @@
                 <!-- Doctor 1 -->
                 <div class="doctor-card bg-white dark:bg-gray-900 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:shadow-xl">
                     <div class="relative h-64 bg-gray-100 dark:bg-gray-700 overflow-hidden">
-                        <img src="https://placehold.co/600x600" alt="Dr. Sarah Chen, orthopaedic surgeon with short brown hair wearing a white coat and smiling" class="absolute inset-0 w-full h-full object-cover">
+                        <img src="images/DrMaingi.jpg" alt="Dr. George Maingi, orthopaedic surgeon with short hair wearing a white coat and smiling" class="absolute inset-0 w-full h-full object-cover">
                         <div class="absolute inset-0 bg-gradient-to-t from-gray-900/70 to-transparent"></div>
                         <div class="absolute bottom-4 left-4 text-white">
                             <h3 class="text-xl font-heading font-semibold">Dr. George Maingi</h3>
-                            <p class="text-sm opacity-90">Orthopaedic Surgeon</p>
+                            <p class="text-sm opacity-90">Chief Orthopaedist</p>
                         </div>
                         <div class="absolute top-4 right-4">
                             <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary-light/90 text-white">
@@ -800,20 +805,20 @@
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
+                                <i class="fas fa-star"></i>
                             </div>
-                            <span class="text-sm text-gray-500 dark:text-gray-400">127 reviews</span>
+                            <!-- <span class="text-sm text-gray-500 dark:text-gray-400">127 reviews</span> -->
                         </div>
                         <p class="text-gray-600 dark:text-gray-300 mb-4">
-                            Specializes in minimally invasive joint replacement and sports injuries. Board certified with 15+ years of experience.
+                            Specializes in trauma,fracture care, sports injuries and primary care. Board certified with 15+ years of experience.
                         </p>
                         <div class="flex justify-between items-center">
-                            <button onclick="bookWithDoctor('Dr. Sarah Chen')" class="text-primary-light dark:text-primary-dark font-medium hover:underline">
+                            <button onclick="bookWithDoctor('Dr. George Maingi')" class="text-primary-light dark:text-primary-dark font-medium hover:underline">
                                 Book with Dr. Maingi
                             </button>
                             <div class="flex space-x-2">
                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200">
-                                    <i class="fas fa-calendar-check mr-1"></i> Next: Tomorrow
+                                    <i class="fas fa-calendar-check mr-1"></i> Available
                                 </span>
                             </div>
                         </div>
@@ -826,7 +831,7 @@
                         <img src="https://placehold.co/600x600" alt="Dr. Michael Rodriguez, experienced orthopaedic specialist with glasses and a confident expression" class="absolute inset-0 w-full h-full object-cover">
                         <div class="absolute inset-0 bg-gradient-to-t from-gray-900/70 to-transparent"></div>
                         <div class="absolute bottom-4 left-4 text-white">
-                            <h3 class="text-xl font-heading font-semibold">Dr. James Mwangi</h3>
+                            <h3 class="text-xl font-heading font-semibold">Dr. Johnson Kiburu</h3>
                             <p class="text-sm opacity-90">Paediatrics</p>
                         </div>
                         <div class="absolute top-4 right-4">
@@ -847,15 +852,15 @@
                             <span class="text-sm text-gray-500 dark:text-gray-400">94 reviews</span>
                         </div>
                         <p class="text-gray-600 dark:text-gray-300 mb-4">
-                            Expert in spinal disorders, degenerative conditions, and innovative non-surgical treatments.
+                            Expert in pediatric, physiotherapy, and innovative treatments.
                         </p>
                         <div class="flex justify-between items-center">
                             <button onclick="bookWithDoctor('Dr. Michael Rodriguez')" class="text-primary-light dark:text-primary-dark font-medium hover:underline">
-                                Book with Dr. Mwangi
+                                Book with Dr. Kiburu
                             </button>
                             <div class="flex space-x-2">
                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200">
-                                    <i class="fas fa-calendar-check mr-1"></i> Next: Today
+                                    <i class="fas fa-calendar-check mr-1"></i> Available
                                 </span>
                             </div>
                         </div>
@@ -863,7 +868,7 @@
                 </div>
                 
                 <!-- Doctor 3 -->
-                <div class="doctor-card bg-white dark:bg-gray-900 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:shadow-xl">
+                <!-- <div class="doctor-card bg-white dark:bg-gray-900 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:shadow-xl">
                     <div class="relative h-64 bg-gray-100 dark:bg-gray-700 overflow-hidden">
                         <img src="https://placehold.co/600x600" alt="Dr. Aisha Johnson, young talented orthopaedic surgeon with curly hair and warm smile" class="absolute inset-0 w-full h-full object-cover">
                         <div class="absolute inset-0 bg-gradient-to-t from-gray-900/70 to-transparent"></div>
@@ -902,7 +907,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </section>
@@ -936,7 +941,7 @@
                             <i class="fas fa-user-md text-2xl text-primary-light dark:text-primary-dark"></i>
                         </div>
                     </div>
-                    <h3 class="text-xl font-heading font-semibold mb-2">Expert Surgeons</h3>
+                    <h3 class="text-xl font-heading font-semibold mb-2">Expert Personell</h3>
                     <p class="text-gray-600 dark:text-gray-400">
                         Board-certified specialists with fellowship training in orthopaedic subspecialties.
                     </p>
@@ -950,7 +955,7 @@
                     </div>
                     <h3 class="text-xl font-heading font-semibold mb-2">Minimally Invasive</h3>
                     <p class="text-gray-600 dark:text-gray-400">
-                        Smaller incisions, less pain, and faster recovery times with robotic-assisted techniques.
+                        Smaller incisions, less pain, and faster recovery times with world-class techniques.
                     </p>
                 </div>
                 

@@ -304,14 +304,25 @@
 
         /* Responsive */
         @media (max-width: 768px) {
-            .conditions-grid {
+            /* .conditions-grid {
                 grid-template-columns: 1fr;
-                gap: 1.5rem;
+                gap: .5rem;
             }
 
             .condition-card {
-                margin: 0 1rem;
-            }
+                margin: 0 auto;
+            } */
+
+  .conditions-grid {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  .condition-card {
+    width: 100%;
+    /* Add margin for spacing between stacked cards */
+    margin-bottom: 15px; 
+  }
 
             .progress-tracker {
                 display: none;
@@ -710,6 +721,10 @@
             margin-bottom: 1rem;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
+         /* Responsive */
+        @media(max-width:768px){
+            .hero-title{font-size:2rem}
+        }
 
         .hero-subtitle {
             font-size: 1.5rem;
@@ -847,7 +862,7 @@
                         <div class="demo-tabs">
                             <button class="demo-tab active" data-demo="exercises">5-Min Exercises</button>
                             <button class="demo-tab" data-demo="diet">Anti-Inflammatory Diet</button>
-                            <button class="demo-tab" data-demo="aids">Free Aids & Apps</button>
+                            <!-- <button class="demo-tab" data-demo="aids">Free Aids & Apps</button> -->
                         </div>
                         <div class="demo-content active" id="osteo-exercises">
                             <strong>Chair Stand:</strong> Sit-to-stand 10 reps, 2×/day. Builds quad strength without stressing cartilage.<br>
@@ -907,7 +922,7 @@
                         <div class="demo-tabs">
                             <button class="demo-tab active" data-demo="relief">90-Second Relief</button>
                             <button class="demo-tab" data-demo="sleep">Sleep Positions</button>
-                            <button class="demo-tab" data-demo="desk">Desk Ergonomics</button>
+                            <!-- <button class="demo-tab" data-demo="desk">Desk Ergonomics</button> -->
                         </div>
                         <div class="demo-content active" id="back-relief">
                             <strong>Cat-Camel:</strong> 10 slow reps on all-fours resets facet joints.<br>
@@ -967,7 +982,7 @@
                         <div class="demo-tabs">
                             <button class="demo-tab active" data-demo="band">Free Resistance Band Routine</button>
                             <button class="demo-tab" data-demo="posture">Posture Hacks</button>
-                            <button class="demo-tab" data-demo="ice">Ice vs Heat Guide</button>
+                            <!-- <button class="demo-tab" data-demo="ice">Ice vs Heat Guide</button> -->
                         </div>
                         <div class="demo-content active" id="shoulder-band">
                             <strong>External rotation at 90°:</strong> Use bicycle-tube or 1-litre water bottle. 3×15 reps daily.
@@ -975,9 +990,9 @@
                         <div class="demo-content" id="shoulder-posture">
                             <strong>90-second reset:</strong> Roll shoulders back & down, tuck chin, hold 30 s. Repeat every hour.
                         </div>
-                        <div class="demo-content" id="shoulder-ice">
+                        <!-- <div class="demo-content" id="shoulder-ice">
                             <strong>Free cold pack:</strong> Frozen peas 15 min. Heat later if > 5 days old injury.
-                        </div>
+                        </div> -->
                     </div>
 
                     <div class="resources-grid">
@@ -1026,7 +1041,7 @@
                         <div class="demo-tabs">
                             <button class="demo-tab active" data-demo="stretch">60-Second Stretch</button>
                             <button class="demo-tab" data-demo="shoe">Shoe Test at Home</button>
-                            <button class="demo-tab" data-demo="roll">Roll-Massage Guide</button>
+                            <!-- <button class="demo-tab" data-demo="roll">Roll-Massage Guide</button> -->
                         </div>
                         <div class="demo-content active" id="foot-stretch">
                             <strong>Towel stretch:</strong> Loop towel around ball of foot, pull toes toward you 30 s before standing up.
@@ -1085,7 +1100,7 @@
                         <div class="demo-tabs">
                             <button class="demo-tab active" data-demo="nerve">Nerve-Glider Routine</button>
                             <button class="demo-tab" data-demo="desk">Ergonomic Hacks</button>
-                            <button class="demo-tab" data-demo="splint">DIY Night Splint</button>
+                            <!-- <button class="demo-tab" data-demo="splint">DIY Night Splint</button> -->
                         </div>
                         <div class="demo-content active" id="wrist-nerve">
                             <strong>Median nerve glide:</strong> Make “stop” sign, then slowly open fingers & extend wrist 10 reps each hour.

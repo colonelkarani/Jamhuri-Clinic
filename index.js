@@ -243,22 +243,22 @@ app.get("/services", (req,res)=>{
   res.render('services.ejs')
   })
 
-  
+    app.get("/admin", (req,res)=>{
+    res.render('admin.ejs')
+    })
+
 app.get("/contact", (req,res)=>{
   res.render('contact.ejs')
   })
 
-  
 app.get("/resources", (req,res)=>{
   res.render('resources.ejs')
   })
 
-  
 app.get("/team", (req,res)=>{
   res.render('team.ejs')
   })
 
-  
 app.get("/appointments", (req,res)=>{
   res.render('appointments.ejs')
   })
@@ -277,7 +277,7 @@ app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
   failureFlash: true
 }))
 
-
+ 
 app.post("/feedback", async (req, res) => {
   try {
     const { feedback } = req.body;

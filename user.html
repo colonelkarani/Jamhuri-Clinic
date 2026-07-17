@@ -1,47 +1,659 @@
-<!-- HEALTH DASHBOARD – QUICK START & USER GUIDE -->
-<!-- Drop this entire block into any HTML page or component -->
-<section id="health-help" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; background:#f7f9fc; border:1px solid #e1e4e8; border-radius:8px; padding:24px; max-width:960px; margin:0 auto;">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jamhuri Health Tracker - Transform Your Health Management</title>
+    <style>
+        /* Base Styles */
+        :root {
+            --primary: #2E7D32;
+            --primary-light: #4CAF50;
+            --primary-dark: #1B5E20;
+            --secondary: #1565C0;
+            --text-dark: #212121;
+            --text-light: #757575;
+            --background: #F5F5F5;
+            --white: #FFFFFF;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--background);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        section {
+            padding: 80px 0;
+        }
+        
+        h1, h2, h3 {
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+        }
+        
+        h2 {
+            font-size: 2rem;
+            color: var(--primary-dark);
+        }
+        
+        p {
+            margin-bottom: 20px;
+            color: var(--text-light);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--primary);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #0D47A1;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .logo span {
+            color: var(--secondary);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 30px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        nav ul li a:hover {
+            color: var(--primary);
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+            color: var(--white);
+            text-align: center;
+            padding: 150px 0 100px;
+            margin-top: 60px;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .hero-image {
+            max-width: 800px;
+            margin: 50px auto 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .hero-image img {
+            width: 100%;
+            display: block;
+        }
+        
+        /* Features Section */
+        .features {
+            background-color: var(--white);
+        }
+        
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 60px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background-color: rgba(46, 125, 50, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+        
+        /* Benefits Section */
+        .benefits {
+            background-color: var(--background);
+        }
+        
+        .benefits-content {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+        
+        .benefits-text {
+            flex: 1;
+        }
+        
+        .benefits-image {
+            flex: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        
+        .benefits-image img {
+            width: 100%;
+            display: block;
+        }
+        
+        .benefit-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 25px;
+        }
+        
+        .benefit-icon {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(46, 125, 50, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: var(--primary);
+            flex-shrink: 0;
+        }
+        
+        /* Testimonials Section */
+        .testimonials {
+            background-color: var(--white);
+        }
+        
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .testimonial-card {
+            background-color: var(--background);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: bold;
+        }
+        
+        /* CTA Section */
+        .cta {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--white);
+            text-align: center;
+            padding: 80px 0;
+        }
+        
+        .cta h2 {
+            color: var(--white);
+            margin-bottom: 20px;
+        }
+        
+        .cta p {
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--text-dark);
+            color: var(--white);
+            padding: 50px 0 20px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            color: var(--white);
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer-column ul li a:hover {
+            color: var(--white);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.7rem;
+            }
+            
+            .hero {
+                padding: 120px 0 80px;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .benefits-content {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="#" class="logo">Jamhuri <span>Health</span></a>
+            <nav>
+                <ul>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#benefits">Benefits</a></li>
+                    <li><a href="#testimonials">Testimonials</a></li>
+                    <li><a href="#cta" class="btn">Get Started</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
 
-  <!-- 1. INTRO / OVERVIEW -->
-  <header style="margin-bottom:24px;">
-    <h2 style="margin:0 0 8px; color:#0d47a1;">Welcome to your Health Tracker Dashboard</h2>
-    <p style="margin:0; font-size:16px; color:#424242;">
-      Your personal, centralized place to monitor and manage all your health information—quickly, securely, and in one glance.
-    </p>
-  </header>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Transform Your Health Management</h1>
+            <p>Take control of your wellness journey with the Jamhuri Health Tracker. Our intuitive dashboard puts all your vital health information at your fingertips, from heart rate and blood sugar to appointments and personalized trends.</p>
+            <div class="hero-buttons">
+                <a href="#cta" class="btn">Start Your Journey</a>
+                <a href="#features" class="btn btn-secondary">Learn More</a>
+            </div>
+            <div class="hero-image">
+                <!-- Placeholder for dashboard image -->
+                <div style="background: linear-gradient(135deg, #4CAF50 0%, #2196F3 100%); height: 400px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem;">
+                    Dashboard Preview
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <!-- 2. HOW TO USE -->
-  <h3 style="margin:0 0 12px; color:#1976d2;">How to Use the Dashboard</h3>
-  <ol style="margin:0 0 24px 20px; padding:0; line-height:1.6;">
-    <li><strong>Add / update data:</strong> click the blue “＋” button on any card (Vitals, Weight, BP, etc.) and save.</li>
-    <li><strong>Track trends:</strong> open the “Trends” tab to see auto-generated charts (7 d, 30 d, 90 d views).</li>
-    <li><strong>Appointments:</strong> hit “Schedule” to add a new entry; toggle calendar view for upcoming visits.</li>
-    <li><strong>Export records:</strong> choose “Download” (CSV or PDF) in the Export card—data is anonymized locally.</li>
-  </ol>
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Designed for Your Everyday Wellness</h2>
+                <p>Whether you're monitoring conditions or optimizing overall well-being, our dashboard offers an easy, centralized way to view and update your data—anytime, anywhere.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Track Health Metrics</h3>
+                    <p>Seamlessly track your health metrics over time, from blood pressure to activity levels, all in one place.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📅</div>
+                    <h3>Manage Appointments</h3>
+                    <p>Schedule and manage medical appointments with reminders and easy rescheduling options.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <h3>Spot Health Trends</h3>
+                    <p>Instantly identify patterns in your health vitals with clear visualizations and trend analysis.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Secure & Private</h3>
+                    <p>Your health data is encrypted and protected with enterprise-grade security measures.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Access Anywhere</h3>
+                    <p>Use our responsive dashboard on any device - desktop, tablet, or smartphone.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Set & Achieve Goals</h3>
+                    <p>Create personalized health goals and track your progress with actionable insights.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <!-- 3. SECTION-BY-SECTION EXPLANATION -->
-  <h3 style="margin:0 0 12px; color:#1976d2;">Dashboard Sections at a Glance</h3>
-  <ul style="list-style:none; padding:0; margin:0 0 24px;">
-    <li style="margin-bottom:12px;"><strong>Vitals:</strong> latest readings (weight, BP, heart rate, temperature).</li>
-    <li style="margin-bottom:12px;"><strong>Trends / History:</strong> interactive graphs showing changes over time.</li>
-    <li style="margin-bottom:12px;"><strong>Appointments:</strong> upcoming & past visits with provider details.</li>
-    <li style="margin-bottom:12px;"><strong>Export:</strong> one-click download of your entire record.</li>
-    <li style="margin-bottom:12px;"><strong>Alerts:</strong> color-coded reminders (e.g., overdue BP check).</li>
-  </ul>
+    <!-- Benefits Section -->
+    <section class="benefits" id="benefits">
+        <div class="container">
+            <div class="benefits-content">
+                <div class="benefits-text">
+                    <h2>Stay Organized & Empowered</h2>
+                    <p>Experience peace of mind knowing your most important health information is organized, secure, and always within reach.</p>
+                    
+                    <div class="benefit-item">
+                        <div class="benefit-icon">✓</div>
+                        <div>
+                            <h3>Export Reports with One Click</h3>
+                            <p>Share your health progress with healthcare providers effortlessly.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="benefit-item">
+                        <div class="benefit-icon">✓</div>
+                        <div>
+                            <h3>Personalized Health Insights</h3>
+                            <p>Receive tailored recommendations based on your unique health data.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="benefit-item">
+                        <div class="benefit-icon">✓</div>
+                        <div>
+                            <h3>Medication Tracking</h3>
+                            <p>Never miss a dose with our intuitive medication reminder system.</p>
+                        </div>
+                    </div>
+                    
+                    <a href="#cta" class="btn">Experience the Benefits</a>
+                </div>
+                <div class="benefits-image">
+                    <!-- Placeholder for benefits image -->
+                    <div style="background: linear-gradient(135deg, #2196F3 0%, #673AB7 100%); height: 400px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem;">
+                        Health Insights Preview
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <!-- 5. SUPPORT -->
-  <h3 style="margin:0 0 12px; color:#1976d2;">Need Help?</h3>
-  <p style="margin:0 0 24px;">
-    Email support at <a href="mailto:support@myhealth.app" style="color:#1565c0;">support@myhealth.app</a> or use the in-app “Report Issue” link at the bottom of the sidebar.
-  </p>
+    <!-- Testimonials Section -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2>What Our Users Say</h2>
+                <p>Discover how the Jamhuri Health Tracker has transformed health management for people like you.</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"The Jamhuri Health Tracker has completely changed how I manage my diabetes. I can easily track my blood sugar levels and share reports with my doctor."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">MJ</div>
+                        <div>
+                            <h4>Maria Johnson</h4>
+                            <p>Diabetes Patient</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"As a busy professional, I needed a simple way to track my health metrics. This dashboard makes it so easy to stay on top of my wellness goals."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">DR</div>
+                        <div>
+                            <h4>David Rodriguez</h4>
+                            <p>Fitness Enthusiast</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"The medication reminders have been a lifesaver for managing my elderly mother's prescriptions. It gives our whole family peace of mind."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">SC</div>
+                        <div>
+                            <h4>Sarah Chen</h4>
+                            <p>Family Caregiver</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <!-- 6. TIPS & BEST PRACTICES -->
-  <h3 style="margin:0 0 12px; color:#1976d2;">Tips for Best Results</h3>
-  <ul style="margin:0 0 0 20px; line-height:1.6;">
-    <li>Update vitals at least <strong>once a week</strong>—consistent data powers accurate trends.</li>
-    <li>Log measurements at the <strong>same time of day</strong> to reduce natural variation.</li>
-    <li>Review trend graphs <strong>monthly</strong> to spot gradual changes early.</li>
-    <li>Enable browser notifications so you never miss an appointment or alert.</li>
-  </ul>
-</section>
-<!-- /END HEALTH DASHBOARD USER GUIDE -->
+    <!-- CTA Section -->
+    <section class="cta" id="cta">
+        <div class="container">
+            <h2>Your Health, Simplified</h2>
+            <p>Join thousands of users who have transformed their health management with the Jamhuri Health Tracker Dashboard.</p>
+            <a href="#" class="btn">Get Started Today</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Jamhuri Health</h3>
+                    <p>Transforming health management through intuitive technology and personalized insights.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Product</h3>
+                    <ul>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#benefits">Benefits</a></li>
+                        <li><a href="#">Pricing</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Company</h3>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Security</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 Jamhuri Health. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Header background change on scroll
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+                header.style.backdropFilter = 'blur(5px)';
+            } else {
+                header.style.backgroundColor = 'var(--white)';
+                header.style.backdropFilter = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

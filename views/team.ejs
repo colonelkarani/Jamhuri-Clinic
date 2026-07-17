@@ -722,6 +722,9 @@
             margin-bottom: 1rem;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
+           @media(max-width:768px){
+            .hero-title{font-size:2rem}
+        }
 
         .hero-subtitle {
             font-size: 1.5rem;
@@ -831,7 +834,10 @@
         <div class="team-grid">
             <div class="team-card">
                 <div class="card-header">
-                    <div class="avatar">GM</div>
+                    <div class="avatar">
+
+                        <img style="  width: 100%; height: auto; object-fit: cover; border-radius: 8px;" src="images/closeUpDrMaingi.png" alt="A closeup picture of Dr Maingi in the office">
+                    </div>
                     <h3 class="name">Dr. George Maingi</h3>
                     <p class="role">Chief Orthopaedist</p>
                 </div>
@@ -841,8 +847,8 @@
                         <span class="specialty-tag">Joint Replacement</span>
                         <span class="specialty-tag">Pediatric Orthopaedics</span>
                         <span class="specialty-tag">Sports Medicine</span>
-                        <span class="specialty-tag">Trauma Surgery</span>
-                        <span class="specialty-tag">Arthroscopy</span>
+                        <span class="specialty-tag">Primary Care</span>
+                        <span class="specialty-tag">Trauma and Fracture Care</span>
                     </div>
                 </div>
                 <div class="contact-info">
@@ -852,16 +858,16 @@
                     </div>
                     <div class="contact-item">
                         <div class="contact-icon">📞</div>
-                        <span>0712345678</span>
+                        <span>0722314884</span>
                     </div>
                 </div>
             </div>
 
             <div class="team-card">
                 <div class="card-header">
-                    <div class="avatar">MM</div>
-                    <h3 class="name">Dr. Michael Mungai</h3>
-                    <p class="role">Pediatrician</p>
+                    <div class="avatar">JK</div>
+                    <h3 class="name">Dr. Johnson Kiburu</h3>
+                    <p class="role">Pediatrics</p>
                 </div>
                 <div class="specialties">
                     <h4 class="specialty-title">Specializations</h4>
@@ -869,13 +875,14 @@
                         <span class="specialty-tag">Child Development</span>
                         <span class="specialty-tag">Immunizations</span>
                         <span class="specialty-tag">Adolescent Medicine</span>
+                        <span class="specialty-tag">Physiotherapy</span>
                         <span class="specialty-tag">Behavioral Health</span>
                     </div>
                 </div>
                 <div class="contact-info">
                     <div class="contact-item">
                         <div class="contact-icon">📧</div>
-                        <span>michael@gmail.com</span>
+                        <span>johnson@gmail.com</span>
                     </div>
                     <div class="contact-item">
                         <div class="contact-icon">📞</div>
@@ -884,7 +891,7 @@
                 </div>
             </div>
 
-            <div class="team-card">
+            <!-- <div class="team-card">
                 <div class="card-header">
                     <div class="avatar">JW</div>
                     <h3 class="name">Jennifer Wangui</h3>
@@ -909,12 +916,12 @@
                         <span>+1 (555) 345-6789</span>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <div class="team-card">
                 <div class="card-header">
                     <div class="avatar">SM</div>
-                    <h3 class="name">Shannon Muriuki</h3>
+                    <h3 class="name">Shalom Mukiri</h3>
                     <p class="role">Medical Secretary</p>
                 </div>
                 <div class="specialties">
@@ -929,7 +936,7 @@
                 <div class="contact-info">
                     <div class="contact-item">
                         <div class="contact-icon">📧</div>
-                        <span>sharon@healthcenter.com</span>
+                        <span>shalom@healthcenter.com</span>
                     </div>
                     <div class="contact-item">
                         <div class="contact-icon">📞</div>
@@ -938,7 +945,7 @@
                 </div>
             </div>
 
-            <div class="team-card">
+            <!-- <div class="team-card">
                 <div class="card-header">
                     <div class="avatar">EM</div>
                     <h3 class="name">Dr. Emily Musyoka</h3>
@@ -963,7 +970,7 @@
                         <span>+254356346743</span>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </section>
 
@@ -1085,29 +1092,29 @@
 
         statsObserver.observe(statsSection);
 
-        // Add dynamic cursor effect
-        document.addEventListener('mousemove', (e) => {
-            const cursor = document.querySelector('.cursor');
-            if (!cursor) {
-                const newCursor = document.createElement('div');
-                newCursor.className = 'cursor';
-                newCursor.style.cssText = `
-                    position: fixed;
-                    width: 20px;
-                    height: 20px;
-                    background: rgba(102, 126, 234, 0.5);
-                    border-radius: 50%;
-                    pointer-events: none;
-                    z-index: 9999;
-                    transition: transform 0.1s ease;
-                `;
-                document.body.appendChild(newCursor);
-            }
+        // // Add dynamic cursor effect
+        // document.addEventListener('mousemove', (e) => {
+        //     const cursor = document.querySelector('.cursor');
+        //     if (!cursor) {
+        //         const newCursor = document.createElement('div');
+        //         newCursor.className = 'cursor';
+        //         newCursor.style.cssText = `
+        //             position: fixed;
+        //             width: 20px;
+        //             height: 20px;
+        //             background: rgba(102, 126, 234, 0.5);
+        //             border-radius: 50%;
+        //             pointer-events: none;
+        //             z-index: 9999;
+        //             transition: transform 0.1s ease;
+        //         `;
+        //         document.body.appendChild(newCursor);
+        //     }
             
-            const cursor_elem = document.querySelector('.cursor');
-            cursor_elem.style.left = e.clientX - 10 + 'px';
-            cursor_elem.style.top = e.clientY - 10 + 'px';
-        });
+        //     const cursor_elem = document.querySelector('.cursor');
+        //     cursor_elem.style.left = e.clientX - 10 + 'px';
+        //     cursor_elem.style.top = e.clientY - 10 + 'px';
+        // });
 
         // Interactive hover effects for specialty tags
         const specialtyTags = document.querySelectorAll('.specialty-tag');
