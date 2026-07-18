@@ -43,7 +43,7 @@ const contactModel = require("./models/contact_model.js")
 const appointmentMdl = require("./models/appointment_model.js")
 
 
-const port = 3000
+const port = 4000
 
 const initializePassport = require('./passport_config')
 // const { name } = require('ejs')
@@ -576,4 +576,4 @@ function checkNotAuthenticated(req, res, next) {
   next()
 }
 
-app.listen(port, ()=> console.log(`app is listening at http://localhost:${port}`))
+app.listen(port, ()=> console.log(`App is listening at http://localhost:${port}`))
