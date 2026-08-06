@@ -14,8 +14,8 @@ const path = require('path');
 const nodemailer = require("nodemailer")
 const crypto = require("crypto")
 // FIX: added for basic security headers (helmet) and login/signup rate limiting
-const helmet = require('helmet')
-const rateLimit = require('express-rate-limit')
+//const helmet = require('helmet')
+//const rateLimit = require('express-rate-limit')
 
 const {
   BPReadingModel,
@@ -63,18 +63,38 @@ app.set('trust proxy', 1)
 // CHANGED: helmet's default CSP blocks inline <script> tags, inline onclick=""
 // attributes, and third-party script CDNs. Configuring it explicitly instead
 // of using the (overly strict) defaults, since index.ejs relies on both.
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"], // ADDED: allow inline <script> + Chart.js CDN
-      scriptSrcAttr: ["'unsafe-inline'"], // ADDED: allow onclick="" attributes (toggleSection, deleteAccount, etc.)
-      styleSrc: ["'self'", "'unsafe-inline'", "https://cdnjs.cloudflare.com"], // ADDED: font-awesome CSS + inline style=""
-      fontSrc: ["'self'", "https://cdnjs.cloudflare.com"], // ADDED: font-awesome fonts
-      imgSrc: ["'self'", "data:"],
-    }
-  }
-}))
+// app.use(
+//   helmet({
+//     contentSecurityPolicy: {
+//       directives: {
+//         defaultSrc: ["'self'"],
+//         scriptSrc: [
+//           "'self'", 
+//           "'unsafe-inline'", 
+//           "https://cdn.tailwindcss.com", 
+//           "https://cdnjs.cloudflare.com"
+//         ],
+//         styleSrc: [
+//           "'self'", 
+//           "'unsafe-inline'", 
+//           "https://cdnjs.cloudflare.com", 
+//           "https://fonts.googleapis.com"
+//         ],
+//         fontSrc: [
+//           "'self'", 
+//           "https://gstatic.com",
+//           "https://googleapis.com",
+//           "data:"
+//         ],
+//         imgSrc: [
+//           "'self'", 
+//           "data:", 
+//           "https://placehold.co"
+//         ],
+//       },
+//     },
+//   })
+// );
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: false }))
@@ -99,13 +119,13 @@ app.use(passport.session())
 app.use(methodOverride('_method'))
 
 // FIX: rate limit auth endpoints to slow down brute forcing of passwords / OTPs
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 20,                  // 20 attempts per IP per window
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: { message: 'Too many attempts, please try again later.' }
-})
+// const authLimiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, // 15 minutes
+//   max: 20,                  // 20 attempts per IP per window
+//   standardHeaders: true,
+//   legacyHeaders: false,
+//   message: { message: 'Too many attempts, please try again later.' }
+// })
 
 // ---------------------------------------------------------------------------
 // USER / PROFILE
@@ -507,11 +527,11 @@ app.get('/login', checkNotAuthenticated, (req, res) => {
 })
 
 // FIX: rate limited to slow down credential-stuffing / brute force attempts
-app.post('/login', authLimiter, checkNotAuthenticated, passport.authenticate('local', {
-  successRedirect: '/user',
-  failureRedirect: '/login',
-  failureFlash: true
-}))
+// app.post('/login', authLimiter, checkNotAuthenticated, passport.authenticate('local', {
+//   successRedirect: '/user',
+//   failureRedirect: '/login',
+//   failureFlash: true
+// }))
 
 app.delete('/logout', (req, res, next) => {
   req.logout(function (err) {
@@ -543,78 +563,78 @@ const generateOTP = () => crypto.randomInt(100000, 999999).toString();
 // FIX: rate limited, passwords are now hashed with bcrypt before saving, and
 // the "email already registered" message is now generic to avoid leaking
 // which emails already have accounts (email enumeration).
-app.post('/signup', authLimiter, checkNotAuthenticated, async (req, res) => {
-  try {
-    const existingUser = await userModel.findOne({ signupEmail: req.body.signupEmail });
-    if (existingUser) {
-      // FIX: generic message instead of confirming the email exists
-      req.flash('error', 'Unable to sign up with the provided details');
-      return res.render('signup.ejs', { message: "Unable to sign up with the provided details. Please check your information or try logging in.", status: "error" });
-    }
+// app.post('/signup', authLimiter, checkNotAuthenticated, async (req, res) => {
+//   try {
+//     const existingUser = await userModel.findOne({ signupEmail: req.body.signupEmail });
+//     if (existingUser) {
+//       // FIX: generic message instead of confirming the email exists
+//       req.flash('error', 'Unable to sign up with the provided details');
+//       return res.render('signup.ejs', { message: "Unable to sign up with the provided details. Please check your information or try logging in.", status: "error" });
+//     }
 
-    const otp = generateOTP();
-    const otpExpiry = new Date(Date.now() + 10 * 60 * 1000);
+//     const otp = generateOTP();
+//     const otpExpiry = new Date(Date.now() + 10 * 60 * 1000);
 
-    // FIX: hash the password before storing it. Never store plaintext passwords.
-    const hashedPassword = await bcrypt.hash(req.body.signupPassword, 12);
+//     // FIX: hash the password before storing it. Never store plaintext passwords.
+//     const hashedPassword = await bcrypt.hash(req.body.signupPassword, 12);
 
-    const newUser = new userModel({
-      signupName: req.body.signupName,
-      signupEmail: req.body.signupEmail,
-      signupPassword: hashedPassword, // FIX: was storing req.body.signupPassword in plaintext
-      otp: otp,
-      otpExpiry: otpExpiry
-    });
-    const newProfile = new profileInfoModel({
-      user: newUser._id
-    })
+//     const newUser = new userModel({
+//       signupName: req.body.signupName,
+//       signupEmail: req.body.signupEmail,
+//       signupPassword: hashedPassword, // FIX: was storing req.body.signupPassword in plaintext
+//       otp: otp,
+//       otpExpiry: otpExpiry
+//     });
+//     const newProfile = new profileInfoModel({
+//       user: newUser._id
+//     })
 
-    await newUser.save();
-    await newProfile.save()
-    await transporter.sendMail({
-      from: GOOGLE_EMAIL,
-      to: req.body.signupEmail,
-      subject: 'OTP Verification',
-      text: `${otp} is your verification code for Jamhuri Afya Health Tracker.\n Please enter it within 10 minutes to verify your account.\n Thank you for choosing us`
-    });
+//     await newUser.save();
+//     await newProfile.save()
+//     await transporter.sendMail({
+//       from: GOOGLE_EMAIL,
+//       to: req.body.signupEmail,
+//       subject: 'OTP Verification',
+//       text: `${otp} is your verification code for Jamhuri Afya Health Tracker.\n Please enter it within 10 minutes to verify your account.\n Thank you for choosing us`
+//     });
 
-    console.log('User registered. Please verify OTP sent to email');
-    res.render("verifyOtp.ejs", { message: undefined, email: req.body.signupEmail })
-  } catch (err) {
-    console.error('Error signing up user:', err);
-    res.render('signup.ejs', { message: "Error Signing up user", status: "error" });
-  }
-});
+//     console.log('User registered. Please verify OTP sent to email');
+//     res.render("verifyOtp.ejs", { message: undefined, email: req.body.signupEmail })
+//   } catch (err) {
+//     console.error('Error signing up user:', err);
+//     res.render('signup.ejs', { message: "Error Signing up user", status: "error" });
+//   }
+// });
 
 // FIX: rate limited to slow brute forcing of the 6-digit OTP.
 // NOTE: this still deletes the pending user record on a wrong OTP, which lets
 // a stranger who knows/guesses someone's signup email grief their signup by
 // submitting one bad code. Consider tracking failed attempts instead of an
 // instant delete, e.g. only delete after N failures or once otpExpiry passes.
-app.post("/verifyOtp", authLimiter, async (req, res) => {
-  try {
-    const { email, otp } = req.body;
-    const user = await userModel.findOne({ signupEmail: email });
+// app.post("/verifyOtp", authLimiter, async (req, res) => {
+//   try {
+//     const { email, otp } = req.body;
+//     const user = await userModel.findOne({ signupEmail: email });
 
-    if (!user) return res.render('signup.ejs', { message: "User not found", status: "error" });
-    if (user.isVerified) return res.render('signup.ejs', { message: "User already verified", status: "error" });
+//     if (!user) return res.render('signup.ejs', { message: "User not found", status: "error" });
+//     if (user.isVerified) return res.render('signup.ejs', { message: "User already verified", status: "error" });
 
-    if (user.otp !== otp || user.otpExpiry < new Date()) {
-      await userModel.deleteOne({ signupEmail: email })
-      return res.render('signup.ejs', { message: " Wrong or Expired OTP", status: "error" });
-    }
+//     if (user.otp !== otp || user.otpExpiry < new Date()) {
+//       await userModel.deleteOne({ signupEmail: email })
+//       return res.render('signup.ejs', { message: " Wrong or Expired OTP", status: "error" });
+//     }
 
-    user.isVerified = true;
-    user.otp = undefined;
-    user.otpExpiry = undefined;
-    await user.save();
+//     user.isVerified = true;
+//     user.otp = undefined;
+//     user.otpExpiry = undefined;
+//     await user.save();
 
-    return res.render('login.ejs', { message: "OTP verified you can now log in", status: "success" });
-  } catch (error) {
-    res.render('signup.ejs', { message: "Error verifying OTP", status: "error" });
-    console.error("Error :", error)
-  }
-})
+//     return res.render('login.ejs', { message: "OTP verified you can now log in", status: "success" });
+//   } catch (error) {
+//     res.render('signup.ejs', { message: "Error verifying OTP", status: "error" });
+//     console.error("Error :", error)
+//   }
+// })
 
 app.post("/feedback", async (req, res) => {
   try {

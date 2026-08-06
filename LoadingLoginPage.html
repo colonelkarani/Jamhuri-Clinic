@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Page — Coming Soon</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --fg: #f0ece4;
+      --muted: #6b6560;
+      --accent: #349de8;
+      --accent-dim: rgba(232, 166, 52, 0.15);
+      --card: rgba(255, 255, 255, 0.03);
+      --border: rgba(255, 255, 255, 0.07);
+      --glow: rgba(232, 166, 52, 0.35);
+    }
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html { font-size: 16px; }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    /* Layered background */
+    .bg-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .bg-gradient {
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(232, 166, 52, 0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 90%, rgba(232, 120, 52, 0.04) 0%, transparent 60%),
+        radial-gradient(ellipse 100% 100% at 50% 50%, rgba(20, 18, 15, 1) 0%, var(--bg) 100%);
+    }
+
+    .bg-noise {
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+    }
+
+    /* Grid pattern */
+    .bg-grid {
+      opacity: 0.04;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* Floating orbs */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      z-index: 0;
+      pointer-events: none;
+      animation: orbFloat 12s ease-in-out infinite alternate;
+    }
+
+    .orb--1 {
+      width: 400px;
+      height: 400px;
+      background: rgba(232, 166, 52, 0.08);
+      top: -100px;
+      right: -100px;
+      animation-delay: 0s;
+    }
+
+    .orb--2 {
+      width: 300px;
+      height: 300px;
+      background: rgba(232, 120, 52, 0.06);
+      bottom: -80px;
+      left: -80px;
+      animation-delay: -4s;
+    }
+
+    .orb--3 {
+      width: 200px;
+      height: 200px;
+      background: rgba(232, 166, 52, 0.05);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation-delay: -8s;
+    }
+
+    @keyframes orbFloat {
+      0% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(30px, -20px) scale(1.05); }
+      66% { transform: translate(-20px, 30px) scale(0.95); }
+      100% { transform: translate(15px, 15px) scale(1.02); }
+    }
+
+    /* Canvas for particles */
+    #particleCanvas {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Main content */
+    main {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 2rem;
+      max-width: 680px;
+      width: 100%;
+    }
+
+    /* Top badge */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 20px;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      background: var(--card);
+      backdrop-filter: blur(12px);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: fadeSlideUp 0.8s ease forwards 0.2s;
+    }
+
+    .badge .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 var(--glow); }
+      50% { opacity: 0.6; box-shadow: 0 0 0 6px transparent; }
+    }
+
+    /* Main heading */
+    .title-group {
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeSlideUp 0.9s ease forwards 0.4s;
+    }
+
+    .title-line {
+      display: block;
+      overflow: hidden;
+    }
+
+    .title-line span {
+      display: inline-block;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.5rem, 4.5vw, 3.25rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: var(--fg);
+      transform: translateY(110%);
+      animation: revealLine 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .title-line:nth-child(1) span { animation-delay: 0.5s; }
+    .title-line:nth-child(2) span {
+      animation-delay: 0.7s;
+      color: var(--accent);
+      text-shadow: 0 0 60px var(--glow);
+    }
+
+    @keyframes revealLine {
+      to { transform: translateY(0); }
+    }
+
+    /* Subtitle */
+    .subtitle {
+      font-size: 1.1rem;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 460px;
+      margin: 0 auto 3rem;
+      opacity: 0;
+      animation: fadeSlideUp 0.8s ease forwards 1s;
+    }
+
+    /* Countdown */
+    .countdown {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 3.5rem;
+      opacity: 0;
+      animation: fadeSlideUp 0.8s ease forwards 1.2s;
+    }
+
+    .countdown-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 80px;
+      padding: 20px 12px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--card);
+      backdrop-filter: blur(12px);
+      transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: default;
+    }
+
+    .countdown-item:hover {
+      border-color: rgba(232, 166, 52, 0.25);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3), 0 0 20px var(--accent-dim);
+    }
+
+    .countdown-number {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 2rem;
+      color: var(--fg);
+      line-height: 1;
+      margin-bottom: 6px;
+      transition: color 0.3s ease;
+    }
+
+    .countdown-item:hover .countdown-number {
+      color: var(--accent);
+    }
+
+    .countdown-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    /* Divider */
+    .divider {
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      margin: 0 auto 2.5rem;
+      opacity: 0;
+      animation: fadeSlideUp 0.8s ease forwards 1.4s;
+    }
+
+    /* Email form */
+    .notify-form {
+      display: flex;
+      gap: 10px;
+      max-width: 440px;
+      margin: 0 auto 2rem;
+      opacity: 0;
+      animation: fadeSlideUp 0.8s ease forwards 1.5s;
+    }
+
+    .notify-input {
+      flex: 1;
+      padding: 14px 20px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--fg);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      backdrop-filter: blur(12px);
+    }
+
+    .notify-input::placeholder {
+      color: var(--muted);
+    }
+
+    .notify-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-dim);
+    }
+
+    .notify-btn {
+      padding: 14px 28px;
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      border-radius: 12px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .notify-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .notify-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px var(--glow);
+    }
+
+    .notify-btn:hover::before {
+      opacity: 1;
+    }
+
+    .notify-btn:active {
+      transform: translateY(0) scale(0.97);
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(120px);
+      padding: 14px 28px;
+      background: rgba(30, 28, 25, 0.95);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      backdrop-filter: blur(20px);
+      font-size: 0.9rem;
+      color: var(--fg);
+      z-index: 100;
+      transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.5s ease;
+      opacity: 0;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    .toast .toast-icon {
+      color: var(--accent);
+    }
+
+    /* Social links */
+    .socials {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      opacity: 0;
+      animation: fadeSlideUp 0.8s ease forwards 1.7s;
+    }
+
+    .social-link {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--muted);
+      font-size: 1rem;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      background: var(--card);
+      backdrop-filter: blur(8px);
+    }
+
+    .social-link:hover {
+      color: var(--accent);
+      border-color: rgba(232, 166, 52, 0.3);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    }
+
+    /* Corner decorations */
+    .corner-mark {
+      position: fixed;
+      z-index: 10;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 500;
+      opacity: 0;
+      animation: fadeIn 1s ease forwards 2s;
+    }
+
+    .corner-mark--tl {
+      top: 2rem;
+      left: 2rem;
+    }
+
+    .corner-mark--br {
+      bottom: 2rem;
+      right: 2rem;
+    }
+
+    /* Animated line decoration */
+    .line-deco {
+      position: fixed;
+      z-index: 5;
+      opacity: 0;
+      animation: fadeIn 1.5s ease forwards 1.8s;
+    }
+
+    .line-deco--left {
+      top: 50%;
+      left: 2rem;
+      transform: translateY(-50%);
+      width: 1px;
+      height: 120px;
+      background: linear-gradient(to bottom, transparent, var(--accent), transparent);
+      animation: lineGlow 3s ease-in-out infinite, fadeIn 1.5s ease forwards 1.8s;
+    }
+
+    .line-deco--right {
+      top: 50%;
+      right: 2rem;
+      transform: translateY(-50%);
+      width: 1px;
+      height: 120px;
+      background: linear-gradient(to bottom, transparent, var(--accent), transparent);
+      animation: lineGlow 3s ease-in-out infinite 1.5s, fadeIn 1.5s ease forwards 1.8s;
+    }
+
+    @keyframes lineGlow {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.8; }
+    }
+
+    /* Mouse follower */
+    .cursor-glow {
+      position: fixed;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(232, 166, 52, 0.06) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 2;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.3s ease;
+    }
+
+    /* Keyframes */
+    @keyframes fadeSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .countdown {
+        gap: 8px;
+      }
+      .countdown-item {
+        min-width: 65px;
+        padding: 14px 8px;
+      }
+      .countdown-number {
+        font-size: 1.5rem;
+      }
+      .notify-form {
+        flex-direction: column;
+      }
+      .corner-mark, .line-deco {
+        display: none;
+      }
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background layers -->
+  <div class="bg-layer bg-gradient"></div>
+  <div class="bg-layer bg-noise"></div>
+  <div class="bg-layer bg-grid"></div>
+
+  <!-- Floating orbs -->
+  <div class="orb orb--1"></div>
+  <div class="orb orb--2"></div>
+  <div class="orb orb--3"></div>
+
+  <!-- Particle canvas -->
+  <canvas id="particleCanvas"></canvas>
+
+  <!-- Mouse glow -->
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+  <!-- Line decorations -->
+  <div class="line-deco line-deco--left"></div>
+  <div class="line-deco line-deco--right"></div>
+
+  <!-- Corner marks -->
+  <div class="corner-mark corner-mark--tl">v0.1 Beta</div>
+  <div class="corner-mark corner-mark--br">2025</div>
+
+  <!-- Main content -->
+  <main>
+    <div class="badge">
+      <span class="dot"></span>
+      <span>Under Construction</span>
+    </div>
+
+    <div class="title-group">
+      <span class="title-line"><span>LOGIN PAGE</span></span>
+      <span class="title-line"><span>COMING SOON</span></span>
+    </div>
+
+    <p class="subtitle">
+      We're crafting a seamless authentication experience. 
+      Leave your email and be the first to know when we launch.
+    </p>
+
+    <div class="countdown" id="countdown">
+      <div class="countdown-item">
+        <span class="countdown-number" id="days">00</span>
+        <span class="countdown-label">Days</span>
+      </div>
+      <div class="countdown-item">
+        <span class="countdown-number" id="hours">00</span>
+        <span class="countdown-label">Hours</span>
+      </div>
+      <div class="countdown-item">
+        <span class="countdown-number" id="minutes">00</span>
+        <span class="countdown-label">Minutes</span>
+      </div>
+      <div class="countdown-item">
+        <span class="countdown-number" id="seconds">00</span>
+        <span class="countdown-label">Seconds</span>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <form class="notify-form" id="notifyForm">
+      <input
+        type="email"
+        class="notify-input"
+        id="emailInput"
+        placeholder="your@email.com"
+        aria-label="Email address for notification"
+        required
+      >
+      <button type="submit" class="notify-btn">Notify Me</button>
+    </form>
+
+    <div class="socials">
+      <a href="#" class="social-link" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+      <a href="#" class="social-link" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+      <a href="#" class="social-link" aria-label="Discord"><i class="fa-brands fa-discord"></i></a>
+      <a href="#" class="social-link" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+    </div>
+  </main>
+
+  <!-- Toast notification -->
+  <div class="toast" id="toast">
+    <i class="fa-solid fa-circle-check toast-icon"></i>
+    <span id="toastMsg">You're on the list!</span>
+  </div>
+
+  <script>
+    // --- Countdown Timer ---
+    // Set target to 14 days from now
+    const launchDate = new Date();
+    launchDate.setDate(launchDate.getDate() + 14);
+    launchDate.setHours(0, 0, 0, 0);
+
+    function updateCountdown() {
+      const now = new Date();
+      const diff = Math.max(0, launchDate - now);
+
+      const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const m = Math.floor((diff / (1000 * 60)) % 60);
+      const s = Math.floor((diff / 1000) % 60);
+
+      document.getElementById('days').textContent = String(d).padStart(2, '0');
+      document.getElementById('hours').textContent = String(h).padStart(2, '0');
+      document.getElementById('minutes').textContent = String(m).padStart(2, '0');
+      document.getElementById('seconds').textContent = String(s).padStart(2, '0');
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    // --- Email Form ---
+    const form = document.getElementById('notifyForm');
+    const emailInput = document.getElementById('emailInput');
+    const toast = document.getElementById('toast');
+    const toastMsg = document.getElementById('toastMsg');
+
+    let toastTimeout = null;
+
+    function showToast(message, isError) {
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastMsg.textContent = message;
+      const icon = toast.querySelector('.toast-icon');
+      if (isError) {
+        icon.className = 'fa-solid fa-circle-xmark toast-icon';
+        icon.style.color = '#e85454';
+      } else {
+        icon.className = 'fa-solid fa-circle-check toast-icon';
+        icon.style.color = '';
+      }
+      toast.classList.add('show');
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3500);
+    }
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = emailInput.value.trim();
+
+      // Simple email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        showToast('Please enter a valid email address.', true);
+        return;
+      }
+
+      // Simulate submission
+      const btn = form.querySelector('.notify-btn');
+      btn.textContent = 'Sending...';
+      btn.disabled = true;
+
+      setTimeout(() => {
+        showToast(`You're on the list! We'll notify ${email}`, false);
+        emailInput.value = '';
+        btn.textContent = 'Notify Me';
+        btn.disabled = false;
+      }, 800);
+    });
+
+    // --- Mouse Follower Glow ---
+    const cursorGlow = document.getElementById('cursorGlow');
+    let mouseX = -500, mouseY = -500;
+    let glowX = -500, glowY = -500;
+
+    document.addEventListener('mousemove', function(e) {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    function animateGlow() {
+      // Smooth follow
+      glowX += (mouseX - glowX) * 0.08;
+      glowY += (mouseY - glowY) * 0.08;
+      cursorGlow.style.left = glowX + 'px';
+      cursorGlow.style.top = glowY + 'px';
+      requestAnimationFrame(animateGlow);
+    }
+    animateGlow();
+
+    // --- Particle System ---
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    const PARTICLE_COUNT = 60;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    class Particle {
+      constructor() {
+        this.reset();
+      }
+
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2 + 0.5;
+        this.speedX = (Math.random() - 0.5) * 0.3;
+        this.speedY = (Math.random() - 0.5) * 0.3;
+        this.opacity = Math.random() * 0.5 + 0.1;
+        this.opacitySpeed = (Math.random() - 0.5) * 0.005;
+        // Gold-tinted particles
+        const gold = Math.random();
+        if (gold < 0.3) {
+          this.color = '232, 166, 52';
+        } else if (gold < 0.5) {
+          this.color = '240, 236, 228';
+        } else {
+          this.color = '180, 160, 130';
+        }
+      }
+
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        this.opacity += this.opacitySpeed;
+
+        if (this.opacity <= 0.05 || this.opacity >= 0.6) {
+          this.opacitySpeed *= -1;
+        }
+
+        // Wrap around
+        if (this.x < -10) this.x = canvas.width + 10;
+        if (this.x > canvas.width + 10) this.x = -10;
+        if (this.y < -10) this.y = canvas.height + 10;
+        if (this.y > canvas.height + 10) this.y = -10;
+
+        // Subtle mouse repulsion
+        const dx = this.x - mouseX;
+        const dy = this.y - mouseY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 150) {
+          const force = (150 - dist) / 150 * 0.3;
+          this.x += (dx / dist) * force;
+          this.y += (dy / dist) * force;
+        }
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, Math.max(0.1, this.size), 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${this.color}, ${this.opacity})`;
+        ctx.fill();
+      }
+    }
+
+    // Initialize particles
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      particles.push(new Particle());
+    }
+
+    // Draw connections between nearby particles
+    function drawConnections() {
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < 120) {
+            const opacity = (1 - dist / 120) * 0.08;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(232, 166, 52, ${opacity})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      drawConnections();
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+  </script>
+</body>
+</html>

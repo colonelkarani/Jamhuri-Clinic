@@ -6,6 +6,7 @@
   <title>Our Services | Jamhuri Afya Orthopaedics</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
   <style>
     * {
       margin: 0;
@@ -785,7 +786,7 @@
             }
         }
         .hero-section {
-    background: url("images/background.png");
+    background: url("images/clinicreception.jpg");
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -855,7 +856,7 @@
   <!-- Services Header -->
   <section class="services-header" id="services">
     <div class="services-header-content">
-      <h2>Comprehensive <span>Orthopedic Services</span></h2>
+      <h2>Comprehensive <span>HealthCare Services</span></h2>
       <p>From diagnosis to recovery, we provide expert care tailored to your musculoskeletal health needs. Our team of specialists is dedicated to helping you move better and live pain-free.</p>
     </div>
   </section>
@@ -878,22 +879,22 @@
   </section>
 
   <!-- CTA Section -->
-  <section class="services-cta" id="book">
-    <div class="services-cta-content">
-      <h2>Ready to Start Your Journey to Better Health?</h2>
-      <p>Our expert team is here to provide the care you deserve. Schedule your consultation today and take the first step toward a pain-free life.</p>
-      <div class="services-cta-buttons">
-        <a href="/book" class="cta-btn cta-primary">
-          <span class="material-icons">event</span>
-          Schedule Consultation
-        </a>
-        <a href="tel:+254202555555" class="cta-btn cta-secondary">
-          <span class="material-icons">phone</span>
-          Call Us Now
-        </a>
-      </div>
-    </div>
-  </section>
+    <section class="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-[#0ea5e9] to-[#079171] text-white section">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-heading font-bold mb-6"> Living Without Pain Starts Here</h2>
+            <p class="text-lg opacity-90 max-w-2xl mx-auto mb-8">
+                Don't let pain limit your life. Schedule your consultation today and take the first step toward better mobility.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#book-appointment" class="bg-white/10 hover:bg-white/20 border border-white px-8 py-4 rounded-full font-medium text-lg transition-all duration-300 backdrop-blur-sm">
+                    Book Online Now
+                </a>
+                <a href="tel:+254741480595" class="bg-white/10 hover:bg-white/20 border border-white px-8 py-4 rounded-full font-medium text-lg transition-all duration-300 backdrop-blur-sm">
+                    <i class="fas fa-phone mr-2"></i> Call Us: (254) 0722-31-4884
+                </a>
+            </div>
+        </div>
+    </section>
 <!-- Nav Bar Script -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -1176,5 +1177,6 @@
     // Initial render
     renderServices(services);
   </script>
+  <script src="https://cdn.tailwindcss.com"></script>
 </body>
 </html>
