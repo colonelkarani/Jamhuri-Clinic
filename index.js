@@ -13,6 +13,7 @@ const { connectDB } = require("./db/connectDB.js");
 const path = require('path');
 const nodemailer = require("nodemailer")
 const crypto = require("crypto")
+const axios = require("axios")
 // FIX: added for basic security headers (helmet) and login/signup rate limiting
 //const helmet = require('helmet')
 //const rateLimit = require('express-rate-limit')
@@ -433,6 +434,10 @@ app.post("/appointment", async (req, res) => {
     });
     await newAppointment.save();
     console.log("Appointment saved to DB");
+
+    // --- SEND WHATSAPP MESSAGE ---
+    const waMessage = `📅 *New Public Appointment Request*\n\n*Name:* ${req.body.name}\n*Email:* ${req.body.email}\n*Phone:* ${req.body.phone}\n*Date:* ${req.body.date}\n*Time:* ${req.body.time}\n*Reason:* ${req.body.reason}\n*Notes:* ${req.body.notes || 'None'}`;
+    await sendAdminWhatsApp(waMessage);
     res.redirect("/")
   } catch (error) {
     console.error("Error saving appointment:", error);
@@ -557,6 +562,25 @@ const transporter = nodemailer.createTransport({
   }
 });
 
+// --- WhatsApp Notification Helper ---
+async function sendAdminWhatsApp(message) {
+  try {
+    const adminPhone = process.env.ADMIN_PHONE;
+    const apiKey = process.env.CALLMEBOT_API_KEY;
+    
+    if (!adminPhone || !apiKey) {
+      console.warn("WhatsApp credentials missing in .env");
+      return;
+    }
+    
+    const encodedMessage = encodeURIComponent(message);
+    await axios.get(`https://api.callmebot.com/whatsapp.php?phone=${adminPhone}&text=${encodedMessage}&apikey=${apiKey}`);
+    console.log("✅ WhatsApp notification sent to admin.");
+  } catch (error) {
+    console.error("❌ Failed to send WhatsApp notification:", error.message);
+  }
+}
+
 // Generate OTP
 const generateOTP = () => crypto.randomInt(100000, 999999).toString();
 
@@ -667,6 +691,10 @@ app.post("/contact", async (req, res) => {
     });
     await newContact.save();
     console.log("Contact saved to MongoDB");
+        // --- SEND WHATSAPP MESSAGE ---
+    const waMessage = `🟢 *New Contact Form Submission*\n\n*Name:* ${name}\n*Email:* ${req.body.email}\n*Phone:* ${req.body.phone || 'N/A'}\n*Topic:* ${req.body.service || 'N/A'}\n*Message:* ${req.body.message}`;
+    await sendAdminWhatsApp(waMessage);
+
     res.redirect("/")
   } catch (error) {
     console.error("Error saving contact:", error);
