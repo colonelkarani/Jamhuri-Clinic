@@ -503,13 +503,15 @@
             cursor: pointer;
         }
         
-        .service-card:hover {
-            transform: scale(1.03);
-        }
-        
+        .service-card:hover,
         .service-card.selected {
+            transform: scale(1.03);
             border-color: #3B82F6;
-            background-color: rgba(59, 130, 246, 0.05);
+        }
+
+        .dark .service-card:hover,
+        .dark .service-card.selected {
+            border-color: #1D4ED8;
         }
         
         .appointment-confirm {
@@ -691,50 +693,38 @@
                         <div class="mt-8">
                             <h3 class="text-xl font-heading font-semibold mb-4">Select Services</h3>
                             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                                <!-- Service Card 1 -->
-                                <div class="service-card group p-4 border border-gray-200 dark:border-gray-700 rounded-xl hover:border-primary-light dark:hover:border-primary-dark">
+                                <div class="service-card group p-4 border border-gray-200 dark:border-gray-700 rounded-xl hover:border-primary-light dark:hover:border-primary-dark cursor-pointer" role="button" tabindex="0" aria-pressed="false">
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0 h-10 w-10 rounded-lg bg-primary-light/10 dark:bg-primary-dark/10 flex items-center justify-center">
+                                            <i class="fas fa-stethoscope text-primary-light dark:text-primary-dark"></i>
+                                        </div>
+                                        <div class="ml-4">
+                                            <span class="font-medium text-gray-900 dark:text-white">Primary Care</span>
+                                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">General health consultations and ongoing care</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="service-card group p-4 border border-gray-200 dark:border-gray-700 rounded-xl hover:border-primary-light dark:hover:border-primary-dark cursor-pointer" role="button" tabindex="0" aria-pressed="false">
                                     <div class="flex items-start">
                                         <div class="flex-shrink-0 h-10 w-10 rounded-lg bg-primary-light/10 dark:bg-primary-dark/10 flex items-center justify-center">
                                             <i class="fas fa-bone text-primary-light dark:text-primary-dark"></i>
                                         </div>
                                         <div class="ml-4">
-                                            <label class="block">
-                                                <input type="checkbox" name="service" value="fracture-care" class="sr-only peer">
-                                                <span class="font-medium text-gray-900 dark:text-white">Fracture Care</span>
-                                                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Evaluation and treatment of bone fractures</p>
-                                            </label>
+                                            <span class="font-medium text-gray-900 dark:text-white">Orthopaedics</span>
+                                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Bone, joint, and musculoskeletal treatment</p>
                                         </div>
                                     </div>
                                 </div>
-                                
-                                <!-- Service Card 2 -->
-                                <div class="service-card group p-4 border border-gray-200 dark:border-gray-700 rounded-xl hover:border-primary-light dark:hover:border-primary-dark">
+
+                                <div class="service-card group p-4 border border-gray-200 dark:border-gray-700 rounded-xl hover:border-primary-light dark:hover:border-primary-dark cursor-pointer" role="button" tabindex="0" aria-pressed="false">
                                     <div class="flex items-start">
                                         <div class="flex-shrink-0 h-10 w-10 rounded-lg bg-primary-light/10 dark:bg-primary-dark/10 flex items-center justify-center">
-                                            <i class="fas fa-running text-primary-light dark:text-primary-dark"></i>
+                                            <i class="fas fa-person-walking text-primary-light dark:text-primary-dark"></i>
                                         </div>
                                         <div class="ml-4">
-                                            <label class="block">
-                                                <input type="checkbox" name="service" value="sports-medicine" class="sr-only peer">
-                                                <span class="font-medium text-gray-900 dark:text-white">Sports Medicine</span>
-                                                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Injury prevention and treatment for athletes</p>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- Service Card 3 -->
-                                <div class="service-card group p-4 border border-gray-200 dark:border-gray-700 rounded-xl hover:border-primary-light dark:hover:border-primary-dark">
-                                    <div class="flex items-start">
-                                        <div class="flex-shrink-0 h-10 w-10 rounded-lg bg-primary-light/10 dark:bg-primary-dark/10 flex items-center justify-center">
-                                            <i class="fas fa-wheelchair text-primary-light dark:text-primary-dark"></i>
-                                        </div>
-                                        <div class="ml-4">
-                                            <label class="block">
-                                                <input type="checkbox" name="service" value="joint-replacement" class="sr-only peer">
-                                                <span class="font-medium text-gray-900 dark:text-white">Joint Replacement</span>
-                                                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Hip, knee, and shoulder replacement options</p>
-                                            </label>
+                                            <span class="font-medium text-gray-900 dark:text-white">Physio / Occupational Therapy</span>
+                                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Rehabilitation, mobility, and recovery support</p>
                                         </div>
                                     </div>
                                 </div>
@@ -1323,6 +1313,27 @@
                 observer.observe(section);
             });
             
+            // Service cards — visual selection only, not submitted
+            function clearServiceSelections() {
+                document.querySelectorAll('.service-card.selected').forEach(card => {
+                    card.classList.remove('selected');
+                    card.setAttribute('aria-pressed', 'false');
+                });
+            }
+
+            document.querySelectorAll('.service-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const isSelected = card.classList.toggle('selected');
+                    card.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
+                });
+                card.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        card.click();
+                    }
+                });
+            });
+
             // Form submission
             const form = document.getElementById('appointment-form');
 
@@ -1353,6 +1364,7 @@
                     if (res.ok && data.success !== false) {
                         showFormPopup(data.message || 'Appointment request submitted successfully!', 'success');
                         form.reset();
+                        clearServiceSelections();
                     } else {
                         showFormPopup(data.message || 'Something went wrong. Please try again.', 'error');
                     }
@@ -1366,6 +1378,7 @@
             // New appointment button
             document.getElementById('new-appointment').addEventListener('click', function() {
                 form.reset();
+                clearServiceSelections();
                 form.style.opacity = '1';
                 form.style.pointerEvents = 'auto';
                 document.getElementById('confirmation-message').classList.remove('active');
