@@ -1007,6 +1007,16 @@
         .delay-2 { animation-delay: 0.4s; }
         .delay-3 { animation-delay: 0.6s; }
 
+        .form-popup{
+            position:fixed;top:24px;left:50%;transform:translateX(-50%) translateY(-150%);
+            padding:16px 28px;border-radius:12px;color:#fff;font-weight:600;font-size:1rem;
+            z-index:10000;box-shadow:0 8px 32px rgba(0,0,0,0.25);transition:transform .35s ease;
+            max-width:90vw;text-align:center;
+        }
+        .form-popup.show{transform:translateX(-50%) translateY(0)}
+        .form-popup.success{background:#22c55e}
+        .form-popup.error{background:#ef4444}
+
         
     </style>
     <!-- Footer Styles -->
@@ -1626,6 +1636,8 @@
         </div>
     </section>
 
+    <div id="formPopup" class="form-popup" role="alert" aria-live="polite"></div>
+
   <!--  AWWWARDS-WORTHY FOOTER  -->
   <footer id="site-footer">
     <div class="footer-inner">
@@ -1661,7 +1673,7 @@
         <!-- Column 4: Social / Newsletter -->
         <div class="footer-social">
           <h3>Leave a Feedback</h3>
-          <form class="newsletter" method="post" action="/feedback">
+          <form class="newsletter" id="feedbackForm" method="post" action="/feedback">
             <input type="text" placeholder="Feedback" name="feedback" required/>
             <button type="submit">→</button>
           </form>
@@ -1968,26 +1980,49 @@ gsap.from('.service-card',{
       .to("#btn2",          {duration:.6, y:0, opacity:1, ease:"power2.out"}, "-=.3");
   </script>
     <script>
-        // Form submission handler
-        // document.getElementById('appointmentForm').addEventListener('submit', function(e) {
-        //     //e.preventDefault();
-            
-        //     // Get form values
-        //     const name = document.getElementById('name').value;
-        //     const email = document.getElementById('email').value;
-        //     const phone = document.getElementById('phone').value;
-        //     const service = document.getElementById('service').value;
-        //     const message = document.getElementById('message').value;
-            
-        //     // Here you would typically send this data to a server
-        //     console.log('Appointment Request:', { name, email, phone, service, message });
-            
-        //     // Show confirmation (in a real app, you'd replace this with actual submission logic)
-        //     //alert(`Thank you, ${name}! Your appointment request has been received. We'll contact you shortly to confirm.`);
-            
-        //     // Reset form
-        //     this.reset();
-        // });
+        function showFormPopup(message, type) {
+            const popup = document.getElementById('formPopup');
+            popup.textContent = message;
+            popup.className = 'form-popup show ' + type;
+            clearTimeout(popup._timer);
+            popup._timer = setTimeout(() => popup.classList.remove('show'), 4500);
+        }
+
+        async function submitFormAjax(form, defaultSuccessMsg) {
+            const submitBtn = form.querySelector('[type="submit"]');
+            if (submitBtn) submitBtn.disabled = true;
+            try {
+                const res = await fetch(form.action, {
+                    method: 'POST',
+                    body: new URLSearchParams(new FormData(form)),
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                });
+                const data = await res.json().catch(() => ({}));
+                if (res.ok && data.success !== false) {
+                    showFormPopup(data.message || defaultSuccessMsg, 'success');
+                    form.reset();
+                } else {
+                    showFormPopup(data.message || 'Something went wrong. Please try again.', 'error');
+                }
+            } catch (err) {
+                showFormPopup('Something went wrong. Please try again.', 'error');
+            } finally {
+                if (submitBtn) submitBtn.disabled = false;
+            }
+        }
+
+        document.getElementById('appointmentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            submitFormAjax(this, 'Form submitted successfully!');
+        });
+
+        document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            submitFormAjax(this, 'Feedback submitted successfully!');
+        });
 
         // Simple animation on scroll
         document.addEventListener('DOMContentLoaded', function() {

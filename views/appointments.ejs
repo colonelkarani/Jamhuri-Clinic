@@ -549,6 +549,16 @@
         .dark ::-webkit-calendar-picker-indicator {
             filter: invert(100%);
         }
+
+        .form-popup{
+            position:fixed;top:24px;left:50%;transform:translateX(-50%) translateY(-150%);
+            padding:16px 28px;border-radius:12px;color:#fff;font-weight:600;font-size:1rem;
+            z-index:10000;box-shadow:0 8px 32px rgba(0,0,0,0.25);transition:transform .35s ease;
+            max-width:90vw;text-align:center;
+        }
+        .form-popup.show{transform:translateX(-50%) translateY(0)}
+        .form-popup.success{background:#22c55e}
+        .form-popup.error{background:#ef4444}
     </style>
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 font-sans antialiased">
@@ -1167,6 +1177,9 @@
             </div>
         </div>
     </section>
+
+    <div id="formPopup" class="form-popup" role="alert" aria-live="polite"></div>
+
 <!-- Nav Bar Script -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -1312,22 +1325,43 @@
             
             // Form submission
             const form = document.getElementById('appointment-form');
-            // form.addEventListener('submit', function(e) {
-            //     e.preventDefault();
-            //     form.style.opacity = '0.5';
-            //     form.style.pointerEvents = 'none';
-                
-            //     // Simulate submission
-            //     setTimeout(() => {
-            //         document.getElementById('confirmation-message').classList.add('active');
-            //         window.scrollTo({
-            //             top: document.getElementById('confirmation-message').offsetTop - 100,
-            //             behavior: 'smooth'
-            //         });
-            //     }, 1500);
-            // });
-            
 
+            function showFormPopup(message, type) {
+                const popup = document.getElementById('formPopup');
+                popup.textContent = message;
+                popup.className = 'form-popup show ' + type;
+                clearTimeout(popup._timer);
+                popup._timer = setTimeout(() => popup.classList.remove('show'), 4500);
+            }
+
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const submitBtn = form.querySelector('[type="submit"]');
+                submitBtn.disabled = true;
+
+                try {
+                    const res = await fetch(form.action, {
+                        method: 'POST',
+                        body: new URLSearchParams(new FormData(form)),
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        }
+                    });
+                    const data = await res.json().catch(() => ({}));
+
+                    if (res.ok && data.success !== false) {
+                        showFormPopup(data.message || 'Appointment request submitted successfully!', 'success');
+                        form.reset();
+                    } else {
+                        showFormPopup(data.message || 'Something went wrong. Please try again.', 'error');
+                    }
+                } catch (err) {
+                    showFormPopup('Something went wrong. Please try again.', 'error');
+                } finally {
+                    submitBtn.disabled = false;
+                }
+            });
 
             // New appointment button
             document.getElementById('new-appointment').addEventListener('click', function() {

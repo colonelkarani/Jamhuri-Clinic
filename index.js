@@ -119,6 +119,18 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use(methodOverride('_method'))
 
+function wantsJson(req) {
+  return req.get('Accept')?.includes('application/json')
+}
+
+function formResponse(req, res, { success, message, statusCode = 200 }) {
+  if (wantsJson(req)) {
+    return res.status(statusCode).json({ success, message })
+  }
+  if (success) return res.redirect('/')
+  return res.status(statusCode).send(message)
+}
+
 // FIX: rate limit auth endpoints to slow down brute forcing of passwords / OTPs
 // const authLimiter = rateLimit({
 //   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -438,10 +450,10 @@ app.post("/appointment", async (req, res) => {
     // --- SEND WHATSAPP MESSAGE ---
     const waMessage = `📅 *New Public Appointment Request*\n\n*Name:* ${req.body.name}\n*Email:* ${req.body.email}\n*Phone:* ${req.body.phone}\n*Date:* ${req.body.date}\n*Time:* ${req.body.time}\n*Reason:* ${req.body.reason}\n*Notes:* ${req.body.notes || 'None'}`;
     await sendAdminWhatsApp(waMessage);
-    res.redirect("/")
+    formResponse(req, res, { success: true, message: 'Appointment request submitted successfully!' })
   } catch (error) {
     console.error("Error saving appointment:", error);
-    res.status(500).send('Error saving appointment')
+    formResponse(req, res, { success: false, message: 'Error saving appointment. Please try again.', statusCode: 500 })
   }
 });
 
@@ -666,19 +678,19 @@ app.post("/feedback", async (req, res) => {
     const newFeedback = new feedbackModel({ feedback });
     await newFeedback.save();
     console.log("Feedback saved to MongoDB");
-    res.redirect("/")
+    formResponse(req, res, { success: true, message: 'Feedback submitted successfully!' })
   } catch (error) {
     console.error("Error saving feedback:", error);
-    res.status(500).send('Error saving feedback')
+    formResponse(req, res, { success: false, message: 'Error saving feedback. Please try again.', statusCode: 500 })
   }
 });
 
 app.post("/contact", async (req, res) => {
   let name;
-  if (req.body.firstName && req.body.lastName) {
+  if (req.body?.firstName && req.body?.lastName) {
     name = `${req.body.firstName} ${req.body.lastName}`
   } else {
-    name = req.body.name
+    name = req.body?.name
   }
 
   try {
@@ -695,10 +707,10 @@ app.post("/contact", async (req, res) => {
     const waMessage = `🟢 *New Contact Form Submission*\n\n*Name:* ${name}\n*Email:* ${req.body.email}\n*Phone:* ${req.body.phone || 'N/A'}\n*Topic:* ${req.body.service || 'N/A'}\n*Message:* ${req.body.message}`;
     await sendAdminWhatsApp(waMessage);
 
-    res.redirect("/")
+    formResponse(req, res, { success: true, message: 'Form submitted successfully!' })
   } catch (error) {
     console.error("Error saving contact:", error);
-    res.status(500).send('Error saving contact form')
+    formResponse(req, res, { success: false, message: 'Error submitting form. Please try again.', statusCode: 500 })
   }
 });
 
