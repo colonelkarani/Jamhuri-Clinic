@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include('partials/theme-head') %>
     <title>Jamhuri Afya Health Clinic | Award-Winning Healthcare</title>
     <!-- NavBar Styles -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,7 +19,7 @@
 <style>
 /* -----  CTA BAR  ----- */
 .cta-bar{
-  background: linear-gradient(135deg, #0064c8, #d0d7e3);
+  background: var(--gradient-cta);
   padding: 50px 25px;
   text-align: center;
   color: #fff;
@@ -46,7 +47,7 @@
 }
 .cta-buttons a{
   background: #fff;
-  color: #2979ff;
+  color: var(--primary);
   padding: 14px 28px;
   border-radius: 30px;
   font-weight: 600;
@@ -69,7 +70,7 @@
 .services-intro h3{
   font-size: 1.7rem;
   margin-bottom: 15px;
-  color: #005faf;
+  color: var(--primary-dark);
   text-align: center;
 }
 .services-intro p{
@@ -101,12 +102,12 @@
 .service-card .icon{
   font-size: 2.4rem;
   margin-bottom: 12px;
-  color: #2979ff;
+  color: var(--primary);
 }
 .service-card h4{
   font-size: 1.2rem;
   margin-bottom: 8px;
-  color: #005faf;
+  color: var(--primary-dark);
 }
 .service-card p{
   font-size: .95rem;
@@ -116,15 +117,7 @@
 </style>
 
     <style>
-        :root {
-            --primary: #0E3659;
-            --secondary: #93BFB7;
-            --light: #A9C6D9;
-            --dark: #2D3E40;
-            --accent: #97A6A0;
-        }
-
-        
+        /* Navbar & page styles use theme.css variables */
         * {
             margin: 0;
             padding: 0;
@@ -529,10 +522,6 @@
     <!-- Services -->
     <style>
         :root {
-           
-            --accent: #f6ad55;
-            --light: #f7fafc;
-            --dark: #2d3748;
             --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
@@ -1067,7 +1056,7 @@
   .footer-brand .logo {
     font-size: 32px;
     font-weight: 700;
-    background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+    background: var(--gradient-brand);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -1090,7 +1079,7 @@
     font-size: 14px;
     text-transform: uppercase;
     letter-spacing: 2px;
-    color: #10b981;
+    color: var(--secondary);
     margin: 0 0 24px 0;
     font-weight: 600;
   }
@@ -1121,7 +1110,7 @@
     left: 0;
     width: 0;
     height: 2px;
-    background: linear-gradient(90deg, #10b981, #3b82f6);
+    background: var(--gradient-brand);
     transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
@@ -1148,7 +1137,7 @@
 
   .footer-contact a {
     display: block;
-    color: #10b981;
+    color: var(--secondary);
     text-decoration: none;
     margin-bottom: 10px;
     font-size: 15px;
@@ -1181,7 +1170,7 @@
 
   .newsletter input:focus {
     background: rgba(255, 255, 255, 0.08);
-    border-color: #10b981;
+    border-color: var(--secondary);
     box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
   }
 
@@ -1191,7 +1180,7 @@
 
   .newsletter button {
     padding: 14px 24px;
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    background: var(--gradient-brand-reverse);
     border: none;
     border-radius: 8px;
     color: #fff;
@@ -1263,17 +1252,17 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <style>
     :root{
-      --bg:#f7fafc;
-      --c1:#0066ff;
-      --c2:#00d2ff;
-      --c3:#ff3b30;
-      --c4:#34c759;
-      --dark:#1a1d29;
-      --light:#ffffff;
-      --grey:#8d96a8;
-      --radius:0px;
-      --card-shadow:0 12px 40px rgba(0,0,0,.06);
-      --font:'Inter',sans-serif;
+      --bg: var(--bg-light);
+      --c1: var(--primary);
+      --c2: var(--secondary);
+      --c3: var(--danger);
+      --c4: var(--success);
+      --dark: var(--ja-dark);
+      --light: var(--bg-white);
+      --grey: var(--text-gray);
+      --radius: 0px;
+      --card-shadow: 0 12px 40px rgba(0,0,0,.06);
+      --font: 'Inter', sans-serif;
     }
     *{box-sizing:border-box}
     body{
@@ -1630,7 +1619,7 @@
                         <label for="message" class="form-label">Message</label>
                         <textarea id="message" name="message" class="form-input form-textarea"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary" style="width: 80%;">Request Appointment</button>
+                    <button type="submit" class="btn btn-primary"  style="width: 80%;color: #059669;">Request Appointment</button>
                 </form>
             </div>
         </div>

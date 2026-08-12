@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include('partials/theme-head') %>
     <title>Excellence in Healthcare</title><!-- NavBar Styles -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,15 +14,7 @@
     
         <!-- /* Navbar Styles */ -->
     <style>
-        :root {
-            --primary: #387373;
-            --secondary: #93BFB7;
-            --light: #E4F2E7;
-            --dark: #2D3E40;
-            --accent: #97A6A0;
-        }
-
-        
+        /* Navbar & page styles use theme.css variables */
         * {
             margin: 0;
             padding: 0;
@@ -347,7 +340,7 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--gradient-brand);
             overflow-x: hidden;
             color: #333;
         }
@@ -364,7 +357,7 @@
             font-size: clamp(2.5rem, 5vw, 4rem);
             font-weight: 700;
             margin-bottom: 3rem;
-            background: linear-gradient(45deg, #667eea, #764ba2);
+            background: var(--gradient-brand);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -421,7 +414,7 @@
             margin: 0 auto 1.5rem;
             position: relative;
             overflow: hidden;
-            background: linear-gradient(45deg, #0ea5e9, #079171);
+            background: var(--gradient-section);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -444,7 +437,7 @@
 
         .role {
             font-size: 1.1rem;
-            color: #667eea;
+            color: var(--primary);
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -479,7 +472,7 @@
         }
 
         .specialty-tag:hover {
-            background: linear-gradient(45deg, #667eea, #764ba2);
+            background: var(--gradient-brand);
             color: white;
             transform: translateY(-2px);
         }
@@ -502,7 +495,7 @@
             width: 20px;
             height: 20px;
             margin-right: 1rem;
-            background: linear-gradient(45deg, #0ea5e9, #079171);
+            background: var(--gradient-section);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -534,7 +527,7 @@
         .stat-number {
             font-size: 3.5rem;
             font-weight: 700;
-            background: linear-gradient(45deg,#0ea5e9, #079171);
+            background: var(--gradient-section);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -549,7 +542,7 @@
         }
 
         .cta-section {
-            background: linear-gradient(135deg, #0ea5e9, #079171);
+            background: var(--gradient-section);
             padding: 5rem 2rem;
             text-align: center;
             color: white;
@@ -573,7 +566,7 @@
         .cta-button {
             display: inline-block;
             background: white;
-            color: #667eea;
+            color: var(--primary);
             padding: 1.2rem 3rem;
             border-radius: 50px;
             font-size: 1.1rem;

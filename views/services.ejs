@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <%- include('partials/theme-head') %>
   <title>Our Services | Jamhuri Afya Orthopaedics</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -48,7 +49,7 @@
     }
 
     .services-header h2 span {
-      background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+      background: var(--gradient-brand);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -98,15 +99,15 @@
     }
 
     .filter-btn:hover {
-      border-color: #10b981;
-      color: #10b981;
+      border-color: var(--secondary);
+      color: var(--secondary);
       transform: translateY(-2px);
       box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
     }
 
     .filter-btn.active {
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-      border-color: #10b981;
+      background: var(--gradient-brand-reverse);
+      border-color: var(--secondary);
       color: white;
       box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
     }
@@ -143,7 +144,7 @@
       left: 0;
       right: 0;
       height: 4px;
-      background: linear-gradient(90deg, #10b981, #3b82f6);
+      background: var(--gradient-brand);
       transform: scaleX(0);
       transform-origin: left;
       transition: transform 0.4s ease;
@@ -167,7 +168,7 @@
     .service-icon {
       width: 64px;
       height: 64px;
-      background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+      background: var(--gradient-brand);
       border-radius: 16px;
       display: flex;
       align-items: center;
@@ -194,7 +195,7 @@
       display: inline-block;
       padding: 6px 14px;
       background: #f1f5f9;
-      color: #10b981;
+      color: var(--secondary);
       font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
@@ -386,15 +387,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>    
     <style>
-        :root {
-            --primary: #387373;
-            --secondary: #93BFB7;
-            --light: #E4F2E7;
-            --dark: #2D3E40;
-            --accent: #97A6A0;
-        }
-
-        
+        /* Navbar styles use theme.css variables */
         * {
             margin: 0;
             padding: 0;
@@ -879,7 +872,7 @@
   </section>
 
   <!-- CTA Section -->
-    <section class="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-[#0ea5e9] to-[#079171] text-white section">
+    <section class="py-16 md:py-24 px-4 sm:px-6 lg:px-8 text-white section" style="background: var(--gradient-section);">
         <div class="max-w-4xl mx-auto text-center">
             <h2 class="text-3xl md:text-4xl font-heading font-bold mb-6"> Living Without Pain Starts Here</h2>
             <p class="text-lg opacity-90 max-w-2xl mx-auto mb-8">

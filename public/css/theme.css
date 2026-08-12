@@ -1,0 +1,68 @@
+/**
+ * Jamhuri Afya — site-wide color theme
+ * Change the --ja-* variables below to update every rendered page at once.
+ */
+:root {
+  /* Brand palette */
+  --ja-primary: #0E3659;
+  --ja-primary-dark: #0a2844;
+  --ja-secondary: #93BFB7;
+  --ja-light: #A9C6D9;
+  --ja-dark: #2D3E40;
+  --ja-accent: #97A6A0;
+
+  /* Semantic aliases (used across EJS pages) */
+  --primary: var(--ja-primary);
+  --primary-dark: var(--ja-primary-dark);
+  --primary-800: var(--ja-primary-dark);
+  --primary-900: var(--ja-primary);
+  --primary-light: var(--ja-light);
+  --secondary: var(--ja-secondary);
+  --light: var(--ja-light);
+  --dark: var(--ja-dark);
+  --accent: var(--ja-secondary);
+  --accent-400: var(--ja-light);
+  --accent-bright: var(--ja-light);
+
+  /* Gradients */
+  --gradient-brand: linear-gradient(135deg, var(--ja-primary) 0%, var(--ja-secondary) 100%);
+  --gradient-brand-reverse: linear-gradient(135deg, var(--ja-secondary) 0%, var(--ja-primary) 100%);
+  --gradient-hero: linear-gradient(135deg, var(--ja-primary) 0%, var(--ja-primary-dark) 100%);
+  --gradient-section: linear-gradient(135deg, var(--ja-primary) 0%, var(--ja-accent) 100%);
+  --gradient-cta: linear-gradient(135deg, var(--ja-primary), var(--ja-light));
+
+  /* Status & UI tokens */
+  --success: #10b981;
+  --success-dark: #059669;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --error-400: var(--danger);
+  --success-400: var(--success);
+
+  --bg-light: #f8fafc;
+  --bg-white: #ffffff;
+  --background: var(--bg-light);
+  --surface: var(--bg-white);
+  --neutral-100: #fafafa;
+  --neutral-200: #f5f5f5;
+  --neutral-300: #e5e5e5;
+  --neutral-600: #525252;
+  --neutral-700: #404040;
+  --neutral-800: var(--ja-dark);
+
+  --text-primary: var(--ja-dark);
+  --text-secondary: #64748b;
+  --text-dark: var(--ja-dark);
+  --text-gray: #64748b;
+  --text-muted: #6b7280;
+
+  --border: #e2e8f0;
+  --card-radius: 12px;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --glass: rgba(255, 255, 255, 0.6);
+  --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}

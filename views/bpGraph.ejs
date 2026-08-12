@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include('partials/theme-head') %>
     <title>Blood Pressure Tracker</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
@@ -14,7 +15,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--gradient-brand);
             min-height: 100vh;
             padding: 20px;
         }
@@ -29,7 +30,7 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--gradient-brand);
             color: white;
             padding: 30px;
             text-align: center;
@@ -85,11 +86,11 @@
 
         .input-group input:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: var(--primary);
         }
 
         .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--gradient-brand);
             color: white;
             border: none;
             padding: 14px 30px;
@@ -147,7 +148,7 @@
 
         .reading-date {
             font-weight: 600;
-            color: #667eea;
+            color: var(--primary);
             margin-bottom: 5px;
         }
 
@@ -305,7 +306,7 @@
                     datasets: [{
                         label: 'Systolic',
                         data: sortedReadings.map(r => r.systolic),
-                        borderColor: '#667eea',
+                        borderColor: '#0E3659',
                         backgroundColor: 'rgba(102, 126, 234, 0.1)',
                         tension: 0.4,
                         fill: true

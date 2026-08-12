@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include('partials/theme-head') %>
     <title>Jamhuri Afya | Book Appointment</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -14,15 +15,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>    
     <style>
-        :root {
-            --primary: #387373;
-            --secondary: #93BFB7;
-            --light: #E4F2E7;
-            --dark: #2D3E40;
-            --accent: #97A6A0;
-        }
-
-        
+        /* Navbar styles use theme.css variables */
         * {
             margin: 0;
             padding: 0;
@@ -433,12 +426,12 @@
                 extend: {
                     colors: {
                         primary: {
-                            light: '#3B82F6',
-                            dark: '#1D4ED8'
+                            light: '#93BFB7',
+                            dark: '#0E3659'
                         },
                         secondary: {
-                            light: '#10B981',
-                            dark: '#059669'
+                            light: '#A9C6D9',
+                            dark: '#0a2844'
                         },
                         accent: {
                             light: '#F59E0B',
@@ -471,12 +464,12 @@
         }
         
         .btn-gradient {
-            background: linear-gradient(135deg, #3B82F6 0%, #10B981 100%);
+            background: var(--gradient-brand);
             transition: var(--transition-all);
         }
         
         .btn-gradient:hover {
-            background: linear-gradient(135deg, #1D4ED8 0%, #059669 100%);
+            background: var(--gradient-brand-reverse);
             transform: translateY(-2px);
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
@@ -1151,7 +1144,7 @@
     </section>
 
     <!-- CTA Section -->
-    <section class="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-[#0ea5e9] to-[#079171] text-white section">
+    <section class="py-16 md:py-24 px-4 sm:px-6 lg:px-8 text-white section" style="background: var(--gradient-section);">
         <div class="max-w-4xl mx-auto text-center">
             <h2 class="text-3xl md:text-4xl font-heading font-bold mb-6"> Living Without Pain Starts Here</h2>
             <p class="text-lg opacity-90 max-w-2xl mx-auto mb-8">

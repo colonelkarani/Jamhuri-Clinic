@@ -3,19 +3,12 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <%- include('partials/theme-head') %>
     <title>Health Tracker Dashboard — Improved</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* Basic reset & variables */
+        /* Basic reset */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root{
-            --primary:#0066cc; --primary-dark:#0052a3; --accent:#00d9ff;
-            --success:#10b981; --warning:#f59e0b; --danger:#ef4444;
-            --bg-light:#f8fafc; --bg-white:#ffffff; --text-dark:#1e293b;
-            --text-gray:#64748b; --border:#e2e8f0; --card-radius:12px;
-            --shadow: 0 1px 3px rgba(0,0,0,0.05);
-            --glass: rgba(255,255,255,0.6);
-        }
         body{
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, "Helvetica Neue", Arial;
             background: linear-gradient(180deg, #f4f7fb 0%, var(--bg-light) 100%);
@@ -57,7 +50,7 @@
             color:rgba(255,255,255,0.88); font-size:14px; text-align:left; background:none; border:none; width:100%;
         }
         .nav-item:hover{ background: rgba(255,255,255,0.06); color:#fff; transform:translateX(2px); }
-        .nav-item.active{ background:var(--accent); color:var(--primary); font-weight:600; box-shadow: 0 6px 14px rgba(0,102,204,0.12); }
+        .nav-item.active{ background:var(--accent); color:var(--primary); font-weight:600; box-shadow: 0 6px 14px rgba(14,54,89,0.12); }
         .nav-icon{ font-size:18px; min-width:24px; flex-shrink:0; text-align:center; }
         .nav-label{ flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
         .sidebar.collapsed .nav-label{ display:none; }
@@ -72,7 +65,7 @@
         .header-time{ font-size:13px; color:var(--text-gray); }
         .header-actions{ display:flex; gap:10px; align-items:center; }
         .search-input{ padding:8px 12px; border-radius:10px; border:1px solid var(--border); background:var(--bg-light); min-width:220px;}
-        .search-input:focus{ outline:none; box-shadow:0 0 0 3px rgba(0,102,204,0.08); border-color:var(--primary); }
+        .search-input:focus{ outline:none; box-shadow:0 0 0 3px rgba(14,54,89,0.08); border-color:var(--primary); }
 
         .content{ flex:1; overflow:auto; padding:26px; }
 
@@ -107,10 +100,10 @@
         .form-group{ margin-bottom:10px; }
         .form-label{ display:block; font-weight:600; margin-bottom:6px; font-size:13px; color:var(--text-dark); }
         .form-input{ width:100%; padding:10px; border-radius:8px; border:1px solid var(--border); font-size:14px; }
-        .form-input:focus{ outline:none; box-shadow:0 0 0 3px rgba(0,102,204,0.06); border-color:var(--primary); }
+        .form-input:focus{ outline:none; box-shadow:0 0 0 3px rgba(14,54,89,0.06); border-color:var(--primary); }
 
         /* Appointment list */
-        .appointment-item{ padding:16px; border-left:4px solid var(--primary); margin-bottom:14px; background:linear-gradient(to right, rgba(0,102,204,0.03), transparent); border-radius:6px; transition:all .18s ease; }
+        .appointment-item{ padding:16px; border-left:4px solid var(--primary); margin-bottom:14px; background:linear-gradient(to right, rgba(14,54,89,0.03), transparent); border-radius:6px; transition:all .18s ease; }
         .appointment-item:hover{ box-shadow:0 8px 30px rgba(0,0,0,0.06); transform:translateY(-2px); }
         .appointment-title{ font-weight:700; font-size:15px; margin-bottom:6px; }
         .appointment-doctor{ color:var(--text-gray); font-size:13px; margin-bottom:8px; }
@@ -127,7 +120,7 @@
 
         /* Buttons */
         .btn{ padding:10px 14px; border-radius:10px; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:8px; font-weight:700; font-size:13px; }
-        .btn-primary{ background:var(--primary); color:#fff; box-shadow:0 6px 18px rgba(0,102,204,0.14); }
+        .btn-primary{ background:var(--primary); color:#fff; box-shadow:0 6px 18px rgba(14,54,89,0.14); }
         .btn-primary:hover{ background:var(--primary-dark); }
         .btn-secondary{ background:var(--bg-light); border:1px solid var(--border); color:var(--text-dark); }
 
@@ -172,7 +165,7 @@
         /* Simplified color scheme - removed gradients, using professional teal/blue theme */
         .guide-container { max-width: 1000px; margin: 0 auto; background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);  overflow: hidden;  }
 
-        .guide-header { background:linear-gradient(180deg,#0f766d0f 0%,#115e591d 100%);color:rgb(12,2,2);padding:48px 40px;text-align:center;margin-top:1rem;border-bottom:1px solid rgba(255,255,255,0.1);     }
+        .guide-header { background:linear-gradient(180deg, rgba(14,54,89,0.06) 0%, rgba(14,54,89,0.11) 100%);color:rgb(12,2,2);padding:48px 40px;text-align:center;margin-top:1rem;border-bottom:1px solid rgba(255,255,255,0.1);     }
 
         .guide-header h1 {
             font-size: 2rem;
@@ -210,7 +203,7 @@
         }
 
         .section-header:hover {
-            border-bottom-color: #0f766e;
+            border-bottom-color: var(--primary);
         }
 
         .section-icon {
@@ -263,12 +256,12 @@
             background: #f0fdf9;
             padding: 20px;
             border-radius: 6px;
-            border-left: 3px solid #0f766e;
+            border-left: 3px solid var(--primary);
             margin-bottom: 20px;
         }
 
         .intro-highlight strong {
-            color: #0f766e;
+            color: var(--primary);
         }
 
         .step-list {
@@ -291,7 +284,7 @@
             position: absolute;
             left: 0;
             top: 2px;
-            background: #0f766e;
+            background: var(--primary);
             color: white;
             width: 28px;
             height: 28px;
@@ -314,7 +307,7 @@
             background: #f9fafb;
             padding: 20px;
             border-radius: 6px;
-            border-left: 3px solid #0f766e;
+            border-left: 3px solid var(--primary);
             transition: all 0.2s ease;
         }
 
@@ -324,7 +317,7 @@
 
         .card-title {
             font-weight: 600;
-            color: #0f766e;
+            color: var(--primary);
             margin-bottom: 8px;
             font-size: 1rem;
         }
@@ -356,7 +349,7 @@
 
         .tip-label {
             font-weight: 600;
-            color: #0f766e;
+            color: var(--primary);
             margin-bottom: 8px;
             font-size: 0.95rem;
         }
@@ -386,7 +379,7 @@
 
         .contact-label {
             font-weight: 600;
-            color: #0f766e;
+            color: var(--primary);
             font-size: 0.95rem;
         }
 
@@ -414,7 +407,7 @@
         }
 
         .benefit-item:hover {
-            border-color: #0f766e;
+            border-color: var(--primary);
             background: #f0fdf9;
         }
 
@@ -711,7 +704,7 @@
                         </div>
                         <div class="contact-item">
                             <div class="contact-label">FAQ</div>
-                            <div class="contact-value">Visit our <a href="#" style="color: #0f766e; text-decoration: none; font-weight: 500;">FAQ page</a> for quick answers</div>
+                            <div class="contact-value">Visit our <a href="#" style="color: var(--primary); text-decoration: none; font-weight: 500;">FAQ page</a> for quick answers</div>
                         </div>
                     </div>
                 </div>
@@ -724,7 +717,7 @@
                             <div class="metric-value" id="metricHeart">72<span class="metric-unit"> bpm</span></div>
                             <div class="metric-avg small" id="metricHeartAvg">Avg: —</div>
                         </div>
-                        <div class="metric-card" id="metricSugarCard" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                        <div class="metric-card" id="metricSugarCard" style="background: linear-gradient(135deg, var(--success) 0%, var(--success-dark) 100%);">
                             <div class="metric-label">Blood Sugar</div>
                             <div class="metric-value" id="metricSugar">5.3<span class="metric-unit"> mmol/L</span></div>
                             <div class="metric-avg small" id="metricSugarAvg">Avg: —</div>
