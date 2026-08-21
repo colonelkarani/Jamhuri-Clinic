@@ -1,5 +1,5 @@
 <%
-  const _title = typeof seoTitle !== 'undefined' ? seoTitle : siteName;
+  const _title = typeof seoTitle !== 'undefined' ? seoTitle : (typeof siteName !== 'undefined' ? siteName : 'Jamhuri Afya & Orthopaedics');
   const _desc = typeof seoDescription !== 'undefined' ? seoDescription : '';
   const _path = typeof seoPath !== 'undefined' ? seoPath : '/';
   const _noindex = typeof seoNoindex !== 'undefined' ? seoNoindex : false;
