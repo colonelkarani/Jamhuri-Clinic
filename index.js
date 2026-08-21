@@ -46,7 +46,7 @@ const contactModel = require("./models/contact_model.js")
 const appointmentMdl = require("./models/appointment_model.js")
 
 // FIX: read port from env so you can actually change it per-environment
-const port = process.env.PORT || 4000
+const port = process.env.PORT || 3000
 
 const initializePassport = require('./passport_config')
 initializePassport(
