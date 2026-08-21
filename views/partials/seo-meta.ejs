@@ -1,0 +1,80 @@
+<%
+  const _title = typeof seoTitle !== 'undefined' ? seoTitle : siteName;
+  const _desc = typeof seoDescription !== 'undefined' ? seoDescription : '';
+  const _path = typeof seoPath !== 'undefined' ? seoPath : '/';
+  const _noindex = typeof seoNoindex !== 'undefined' ? seoNoindex : false;
+  const _schema = typeof seoSchema !== 'undefined' ? seoSchema : false;
+  const _imagePath = typeof seoImage !== 'undefined' ? seoImage : defaultOgImage;
+  const canonicalUrl = siteUrl + (_path === '/' ? '' : _path);
+  const ogImageUrl = _imagePath.startsWith('http') ? _imagePath : siteUrl + _imagePath;
+%>
+<title><%= _title %></title>
+<% if (_desc) { %>
+<meta name="description" content="<%= _desc %>">
+<% } %>
+<link rel="canonical" href="<%= canonicalUrl %>">
+<% if (_noindex) { %>
+<meta name="robots" content="noindex, nofollow">
+<% } else { %>
+<meta name="robots" content="index, follow">
+<% } %>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="<%= siteName %>">
+<meta property="og:title" content="<%= _title %>">
+<% if (_desc) { %>
+<meta property="og:description" content="<%= _desc %>">
+<% } %>
+<meta property="og:url" content="<%= canonicalUrl %>">
+<meta property="og:image" content="<%= ogImageUrl %>">
+<meta property="og:locale" content="en_KE">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="<%= _title %>">
+<% if (_desc) { %>
+<meta name="twitter:description" content="<%= _desc %>">
+<% } %>
+<meta name="twitter:image" content="<%= ogImageUrl %>">
+<% if (_schema) { %>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MedicalClinic",
+  "name": "<%= siteName %>",
+  "image": "<%= siteUrl %><%= defaultOgImage %>",
+  "url": "<%= siteUrl %>",
+  "telephone": "+254722314884",
+  "email": "jamhuriafya@gmail.com",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Jomoko, Garissa Road, Opposite Cravers Hotel",
+    "addressLocality": "Thika",
+    "addressRegion": "Kiambu",
+    "addressCountry": "KE"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": -1.038403,
+    "longitude": 37.076948
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      "opens": "08:00",
+      "closes": "18:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": "Saturday",
+      "opens": "09:00",
+      "closes": "16:00"
+    }
+  ],
+  "medicalSpecialty": ["Orthopaedic", "PrimaryCare"],
+  "areaServed": {
+    "@type": "City",
+    "name": "Thika"
+  },
+  "sameAs": []
+}
+</script>
+<% } %>

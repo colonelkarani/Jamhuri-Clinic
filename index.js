@@ -11,6 +11,7 @@ const methodOverride = require('method-override')
 const mongoose = require("mongoose")
 const { connectDB } = require("./db/connectDB.js");
 const path = require('path');
+const { SITE_URL, SITE_NAME, DEFAULT_OG_IMAGE, pages: seoPages } = require('./config/seo.js');
 const nodemailer = require("nodemailer")
 const crypto = require("crypto")
 const axios = require("axios")
@@ -55,6 +56,10 @@ initializePassport(
 );
 
 app.set('view engine', 'ejs')
+
+app.locals.siteUrl = SITE_URL
+app.locals.siteName = SITE_NAME
+app.locals.defaultOgImage = DEFAULT_OG_IMAGE
 
 // FIX: trust the first proxy hop. Required in production behind Heroku/Render/nginx/etc,
 // otherwise secure cookies (see session config below) silently never get set.
@@ -150,6 +155,7 @@ app.get('/user', checkAuthenticated, async (req, res) => {
     const profileInfo = await profileInfoModel.find({ user: req.user._id })
     const { phone, height, bloodType, chronicConditions, allergies, primaryPhysician, physicianPhone, emergencyRelation, emergencyName, emergencyPhone } = profileInfo[0]
     res.render('index.ejs', {
+      ...seoPages.user,
       name: req.user.signupName,
       id: req.user._id,
       appointments: userAppointments,
@@ -483,15 +489,15 @@ app.post("/meds", checkAuthenticated, async (req, res) => {
 // ---------------------------------------------------------------------------
 
 app.get("/", (req, res) => {
-  res.render('home.ejs')
+  res.render('home.ejs', seoPages.home)
 })
 
 app.get("/home", (req, res) => {
-  res.render('home.ejs')
+  res.redirect(301, '/')
 })
 
 app.get("/services", (req, res) => {
-  res.render('services.ejs')
+  res.render('services.ejs', seoPages.services)
 })
 
 // FIX: /admin was completely unauthenticated before — anyone who found the URL
@@ -506,27 +512,27 @@ function checkAdmin(req, res, next) {
 }
 
 app.get("/admin", checkAuthenticated, checkAdmin, (req, res) => {
-  res.render('admin.ejs')
+  res.render('admin.ejs', seoPages.admin)
 })
 
 app.get("/contact", (req, res) => {
-  res.render('contact.ejs')
+  res.render('contact.ejs', seoPages.contact)
 })
 
 app.get("/resources", (req, res) => {
-  res.render('resources.ejs')
+  res.render('resources.ejs', seoPages.resources)
 })
 
 app.get("/team", (req, res) => {
-  res.render('team.ejs')
+  res.render('team.ejs', seoPages.team)
 })
 
 app.get("/appointments", (req, res) => {
-  res.render('appointments.ejs')
+  res.render('appointments.ejs', seoPages.appointments)
 })
 
 app.get("/bpGraph", (req, res) => {
-  res.render('bpGraph.ejs')
+  res.render('bpGraph.ejs', seoPages.bpGraph)
 })
 
 // ---------------------------------------------------------------------------
@@ -538,6 +544,7 @@ app.get('/login', checkNotAuthenticated, (req, res) => {
   // always rendering undefined
   const errors = req.flash('error')
   res.render('login.ejs', {
+    ...seoPages.login,
     message: errors.length ? errors[0] : undefined,
     status: errors.length ? 'error' : undefined
   })
@@ -562,7 +569,7 @@ app.delete('/logout', (req, res, next) => {
 // ---------------------------------------------------------------------------
 
 app.get('/signup', checkNotAuthenticated, (req, res) => {
-  res.render('signup.ejs', { message: undefined })
+  res.render('signup.ejs', { ...seoPages.signup, message: undefined })
 })
 
 // Email Transporter setup

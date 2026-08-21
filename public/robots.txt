@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+Disallow: /login
+Disallow: /signup
+Disallow: /user
+Disallow: /admin
+Disallow: /bpGraph
+Disallow: /verifyOtp
+Disallow: /auth/
+Disallow: /*.html
+
+Sitemap: https://jamhuriafyaortho.co.ke/sitemap.xml
