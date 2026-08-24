@@ -1,18 +1,28 @@
 <%
-  const _title = typeof seoTitle !== 'undefined' ? seoTitle : (typeof siteName !== 'undefined' ? siteName : 'Jamhuri Afya & Orthopaedics');
+  const _siteName = typeof siteName !== 'undefined' ? siteName : 'Jamhuri Afya & Orthopaedics';
+  const _siteUrl = typeof siteUrl !== 'undefined' ? siteUrl : 'https://jamhuriafya.co.ke';
+  const _defaultOgImage = '/images/clinicreception.jpg'; // Fallback path if none provided
+
+  const _title = typeof seoTitle !== 'undefined' ? seoTitle : _siteName;
   const _desc = typeof seoDescription !== 'undefined' ? seoDescription : '';
   const _path = typeof seoPath !== 'undefined' ? seoPath : '/';
   const _noindex = typeof seoNoindex !== 'undefined' ? seoNoindex : false;
   const _schema = typeof seoSchema !== 'undefined' ? seoSchema : false;
-  const _imagePath = typeof seoImage !== 'undefined' ? seoImage : defaultOgImage;
-  const canonicalUrl = siteUrl + (_path === '/' ? '' : _path);
-  const ogImageUrl = _imagePath.startsWith('http') ? _imagePath : siteUrl + _imagePath;
+  
+  // Safe image path selection
+  const _imagePath = (typeof seoImage !== 'undefined' && seoImage) 
+    ? seoImage 
+    : (typeof defaultOgImage !== 'undefined' ? defaultOgImage : _defaultOgImage);
+
+  const canonicalUrl = _siteUrl + (_path === '/' ? '' : _path);
+  const ogImageUrl = _imagePath.startsWith('http') ? _imagePath : _siteUrl + _imagePath;
+
   const clinicSchema = {
     '@context': 'https://schema.org',
     '@type': 'MedicalClinic',
-    name: siteName,
+    name: _siteName,
     image: ogImageUrl,
-    url: siteUrl,
+    url: _siteUrl,
     telephone: '+254722314884',
     email: 'jamhuriafya@gmail.com',
     address: {
@@ -47,7 +57,7 @@
 <meta name="robots" content="index, follow">
 <% } %>
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="<%= siteName %>">
+<meta property="og:site_name" content="<%= _siteName %>">
 <meta property="og:title" content="<%= _title %>">
 <% if (_desc) { %>
 <meta property="og:description" content="<%= _desc %>">
