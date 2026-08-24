@@ -1470,10 +1470,93 @@
     </div>
 </section>
 
-    <!-- Services Section -->
+        <!-- Services Section -->
  <div class="services" id="services">
-    <!-- cards are injected by JS -->
-  </div>
+        <article class="service-card" data-service-index="0">
+            <div class="service-icon"><span class="material-icons">medical_services</span></div>
+            <h3>Orthopedic Consultations &amp; Diagnosis</h3>
+            <p>Comprehensive musculoskeletal evaluation using physical exams and advanced diagnostics for a tailored treatment plan.</p>
+            <span class="tag">Consult</span>
+        </article>
+        <article class="service-card" data-service-index="1">
+            <div class="service-icon"><span class="material-icons">healing</span></div>
+            <h3>Fracture Care</h3>
+            <p>Full-spectrum fracture management including reduction, fixation, immobilization, and follow-up imaging.</p>
+            <span class="tag">Acute</span>
+        </article>
+        <article class="service-card" data-service-index="2">
+            <div class="service-icon"><span class="material-icons">medication</span></div>
+            <h3>Health Tracking</h3>
+            <p>Individualized programs to record and monitor your health statistics.</p>
+            <span class="tag">Track</span>
+        </article>
+        <article class="service-card" data-service-index="3">
+            <div class="service-icon"><span class="material-icons">medication</span></div>
+            <h3>Pain Management</h3>
+            <p>Non-surgical pain relief with medications, viscosupplementation, steroid injections, and nerve blocks.</p>
+            <span class="tag">Relief</span>
+        </article>
+        <article class="service-card" data-service-index="4">
+            <div class="service-icon"><span class="material-icons">child_care</span></div>
+            <h3>Pediatric Orthopedics</h3>
+            <p>Specialized care for growth-related issues, congenital deformities, and sports injuries in children.</p>
+            <span class="tag">Children</span>
+        </article>
+        <article class="service-card" data-service-index="5">
+            <div class="service-icon"><span class="material-icons">accessibility_new</span></div>
+            <h3>Non-Operative Treatments</h3>
+            <p>Conservative management for arthritis, tendonitis, sprains, strains, and nerve pain through bracing and therapy.</p>
+            <span class="tag">Conservative</span>
+        </article>
+        <article class="service-card" data-service-index="6">
+            <div class="service-icon"><span class="material-icons">sports_kabaddi</span></div>
+            <h3>Physiotherapy</h3>
+            <p>Hands-on manual therapy, electro-modalities, and exercise prescription under expert supervision.</p>
+            <span class="tag">Therapy</span>
+        </article>
+        <article class="service-card" data-service-index="7">
+            <div class="service-icon"><span class="material-icons">work</span></div>
+            <h3>Occupational Therapy</h3>
+            <p>Re-learn daily activities and return-to-work programs tailored for orthopedic and hand conditions.</p>
+            <span class="tag">ADL</span>
+        </article>
+        <article class="service-card" data-service-index="8" data-urgent>
+            <div class="service-icon"><span class="material-icons">local_hospital</span></div>
+            <h3>Urgent Care</h3>
+            <p>Same-day treatment for acute injuries, sprains, suspected fractures, and post-operative complications.</p>
+            <span class="tag">Urgent</span>
+        </article>
+        <article class="service-card" data-service-index="9">
+            <div class="service-icon"><span class="material-icons">health_and_safety</span></div>
+            <h3>Primary Care Services</h3>
+            <p>Annual physicals, laboratory services, vaccinations, chronic-disease management, and minor illness care.</p>
+            <span class="tag">Wellness</span>
+        </article>
+        <article class="service-card" data-service-index="10">
+            <div class="service-icon"><span class="material-icons">analytics</span></div>
+            <h3>Post-Surgical Rehabilitation</h3>
+            <p>Protocol-driven recovery plans after joint replacements, arthroscopy, or spinal surgery.</p>
+            <span class="tag">Post-Op</span>
+        </article>
+        <article class="service-card" data-service-index="11">
+            <div class="service-icon"><span class="material-icons">psychology</span></div>
+            <h3>Pain Clinics</h3>
+            <p>Multidisciplinary chronic-pain programs designed around each patient&#39;s needs.</p>
+            <span class="tag">Chronic</span>
+        </article>
+        <article class="service-card" data-service-index="12">
+            <div class="service-icon"><span class="material-icons">restaurant</span></div>
+            <h3>Nutritional Counseling</h3>
+            <p>Dietary guidance for bone density, inflammation control, and optimal musculoskeletal healing and growth.</p>
+            <span class="tag">Diet</span>
+        </article>
+        <article class="service-card" data-service-index="13">
+            <div class="service-icon"><span class="material-icons">school</span></div>
+            <h3>Patient Education</h3>
+            <p>Interactive workshops and resources on ergonomics, lifestyle modification, and self-care strategies.</p>
+            <span class="tag">Learn</span>
+        </article>
+    </div>
 </div>
 
 <!-- Modal -->
@@ -1936,22 +2019,10 @@ const services = [
   }
 ];
 
-/* inject cards */
 const servicesContainer = document.getElementById('services');
-services.forEach(s=>{
-  const card = document.createElement('div');
-  card.className='service-card';
-  if(s.urgent) card.dataset.urgent=true;
-  card.innerHTML=`
-    <div class="service-icon">
-      <span class="material-icons">${s.icon}</span>
-    </div>
-    <h3>${s.title}</h3>
-    <p>${s.desc}</p>
-    <span class="tag">${s.tag}</span>
-  `;
-  card.addEventListener('click',()=>openModal(s));
-  servicesContainer.appendChild(card);
+servicesContainer.querySelectorAll('.service-card').forEach(card => {
+    const service = services[Number(card.dataset.serviceIndex)];
+    card.addEventListener('click', () => openModal(service));
 });
 
 /* modal logic */
