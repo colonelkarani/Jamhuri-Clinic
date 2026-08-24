@@ -11,34 +11,34 @@ const pages = {
     seoSchema: true,
   },
   services: {
-    seoTitle: `Orthopaedic & Medical Services | ${SITE_NAME}, Thika`,
+    seoTitle: 'Orthopaedic Services in Thika | Jamhuri Afya',
     seoDescription:
       'Comprehensive orthopaedic consultations, fracture care, physiotherapy, pain management, paediatric orthopaedics, and primary healthcare at our Thika clinic.',
     seoPath: '/services',
   },
   team: {
-    seoTitle: `Our Medical Team | ${SITE_NAME}, Thika`,
+    seoTitle: 'Medical Team in Thika | Jamhuri Afya',
     seoDescription:
-      'Meet Dr. George Maingi and the experienced team at Jamuhuri Orthopedic and Afya Services — trusted specialists in Thika, Kenya.',
+      'Meet Dr. George Maingi and the experienced team at Jamhuri Orthopedic and Afya Services, trusted specialists in Thika, Kenya.',
     seoPath: '/team',
   },
   resources: {
-    seoTitle: `Free Health Resources | ${SITE_NAME}`,
+    seoTitle: 'Health Resources | Jamhuri Afya Thika',
     seoDescription:
-      'Trusted orthopaedic and primary health articles, guides, and patient resources from Jamuhuri Orthopedic and Afya Services in Thika, Kenya.',
+      'Trusted orthopaedic and primary health articles, guides, and patient resources from Jamhuri Orthopedic and Afya Services in Thika, Kenya.',
     seoPath: '/resources',
   },
   contact: {
-    seoTitle: `Contact Us | ${SITE_NAME}, Thika`,
+    seoTitle: 'Contact Jamhuri Afya Clinic in Thika',
     seoDescription:
-      'Reach Jamuhuri Orthopedic and Afya Services in Thika — Jomoko, Garissa Road. Call +254 722 314 884 or send a message to book care.',
+      'Reach Jamhuri Orthopedic and Afya Services in Thika, Jomoko, Garissa Road. Call +254 722 314 884 or send a message to book care.',
     seoPath: '/contact',
     seoSchema: true,
   },
   appointments: {
-    seoTitle: `Book an Appointment | ${SITE_NAME}, Thika`,
+    seoTitle: 'Book an Appointment in Thika | Jamhuri Afya',
     seoDescription:
-      'Schedule an orthopaedic or primary care appointment at Jamuhuri Orthopedic and Afya Services, Thika. Same-week availability for new and returning patients.',
+      'Schedule an orthopaedic or primary care appointment at Jamhuri Orthopedic and Afya Services, Thika. Same-week availability for new and returning patients.',
     seoPath: '/appointments',
   },
   login: {

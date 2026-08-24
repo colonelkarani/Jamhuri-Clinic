@@ -15,8 +15,7 @@ const { SITE_URL, SITE_NAME, DEFAULT_OG_IMAGE, pages: seoPages } = require('./co
 const nodemailer = require("nodemailer")
 const crypto = require("crypto")
 const axios = require("axios")
-// FIX: added for basic security headers (helmet) and login/signup rate limiting
-//const helmet = require('helmet')
+const helmet = require('helmet')
 //const rateLimit = require('express-rate-limit')
 
 const {
@@ -67,6 +66,9 @@ app.set('trust proxy', 1)
 
 app.disable('x-powered-by')
 
+// Add security headers while keeping the existing inline scripts and styles working.
+app.use(helmet({ contentSecurityPolicy: false }))
+
 // Keep all production URLs on the canonical HTTPS host to prevent duplicate content.
 app.use((req, res, next) => {
   if (process.env.NODE_ENV !== 'production') return next()
@@ -115,6 +117,10 @@ app.use((req, res, next) => {
 //     },
 //   })
 // );
+
+app.get('/home', (req, res) => {
+  res.redirect(301, '/')
+})
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: false }))
@@ -504,10 +510,6 @@ app.post("/meds", checkAuthenticated, async (req, res) => {
 
 app.get("/", (req, res) => {
   res.render('home.ejs', seoPages.home)
-})
-
-app.get("/home", (req, res) => {
-  res.redirect(301, '/')
 })
 
 app.get("/services", (req, res) => {
