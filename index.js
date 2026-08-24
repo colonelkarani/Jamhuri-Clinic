@@ -81,6 +81,12 @@ app.use((req, res, next) => {
   next()
 })
 
+//Image middleware
+app.use((req, res, next) => {
+  res.locals.defaultOgImage = '/images/clinicreception.jpg'; 
+  next();
+});
+
 // FIX: basic security headers (X-Frame-Options, CSP defaults, etc.)
 // CHANGED: helmet's default CSP blocks inline <script> tags, inline onclick=""
 // attributes, and third-party script CDNs. Configuring it explicitly instead
