@@ -73,12 +73,17 @@ app.disable('x-powered-by')
 app.use(helmet({ contentSecurityPolicy: false }))
 app.use(compression())
 
-// Keep all production URLs on the canonical HTTPS host to prevent duplicate content.
+// Keep the public site on one HTTPS host to prevent duplicate content.
 app.use((req, res, next) => {
-  if (process.env.NODE_ENV !== 'production') return next()
+  const canonicalUrl = new URL(SITE_URL)
+  const canonicalHost = canonicalUrl.hostname
+  const wwwHost = `www.${canonicalHost}`
+  const isCanonicalHost = req.hostname === canonicalHost
+  const isCanonicalProtocol = req.protocol === canonicalUrl.protocol.replace(':', '')
+  const isKnownPublicHost = isCanonicalHost || req.hostname === wwwHost
 
-  const canonicalHost = new URL(SITE_URL).hostname
-  if (req.hostname !== canonicalHost || req.protocol !== 'https') {
+  if (req.hostname === wwwHost || (isCanonicalHost && !isCanonicalProtocol) ||
+      (process.env.NODE_ENV === 'production' && !isKnownPublicHost)) {
     return res.redirect(301, `${SITE_URL}${req.originalUrl}`)
   }
 
