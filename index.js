@@ -16,6 +16,7 @@ const nodemailer = require("nodemailer")
 const crypto = require("crypto")
 const axios = require("axios")
 const helmet = require('helmet')
+const compression = require('compression')
 //const rateLimit = require('express-rate-limit')
 
 const {
@@ -55,6 +56,8 @@ initializePassport(
 );
 
 app.set('view engine', 'ejs')
+app.set('view cache', true)
+
 
 app.locals.siteUrl = SITE_URL
 app.locals.siteName = SITE_NAME
@@ -68,6 +71,14 @@ app.disable('x-powered-by')
 
 // Add security headers while keeping the existing inline scripts and styles working.
 app.use(helmet({ contentSecurityPolicy: false }))
+app.use(compression())
+app.use(express.static(path.join(__dirname, 'public')));
+
+//Caching
+app.use(express.static(path.join(__dirname, 'public'), {
+  maxAge: '7d',
+  etag: true
+}));
 
 
 //Redirecting for SEO
