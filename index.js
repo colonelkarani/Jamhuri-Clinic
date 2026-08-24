@@ -72,27 +72,6 @@ app.disable('x-powered-by')
 // Add security headers while keeping the existing inline scripts and styles working.
 app.use(helmet({ contentSecurityPolicy: false }))
 app.use(compression())
-app.use(express.static(path.join(__dirname, 'public')));
-
-//Caching
-app.use(express.static(path.join(__dirname, 'public'), {
-  maxAge: '7d',
-  etag: true
-}));
-
-
-//Redirecting for SEO
-app.use((req, res, next) => {
-  const host = req.headers.host;
-  
-  // If request starts with 'www.', redirect to non-www with 301
-  if (host && host.startsWith('www.')) {
-    const nonWwwHost = host.replace(/^www\./, '');
-    return res.redirect(301, `${req.protocol}://${nonWwwHost}${req.originalUrl}`);
-  }
-  
-  next();
-});
 
 // Keep all production URLs on the canonical HTTPS host to prevent duplicate content.
 app.use((req, res, next) => {
@@ -106,11 +85,14 @@ app.use((req, res, next) => {
   next()
 })
 
-//Image middleware
-app.use((req, res, next) => {
-  res.locals.defaultOgImage = '/images/clinicreception.jpg'; 
-  next();
-});
+app.get('/home', (req, res) => {
+  res.redirect(301, '/')
+})
+
+app.use(express.static(path.join(__dirname, 'public'), {
+  maxAge: '7d',
+  etag: true
+}))
 
 // FIX: basic security headers (X-Frame-Options, CSP defaults, etc.)
 // CHANGED: helmet's default CSP blocks inline <script> tags, inline onclick=""
@@ -149,11 +131,6 @@ app.use((req, res, next) => {
 //   })
 // );
 
-app.get('/home', (req, res) => {
-  res.redirect(301, '/')
-})
-
-app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 app.use(flash())
