@@ -88,6 +88,13 @@
 .clinic-overview p{
     text-align: left;
 }
+.section-label{
+    font-size: 1.7rem;
+    margin: 30px auto 15px;
+    color: var(--primary-dark);
+    text-align: center;
+    font-weight: 600;
+}
 .service-cards{
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -984,6 +991,32 @@
             transform: translateY(-2px);
         }
 
+        .social-share {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .social-share a {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-share a:hover {
+            background: var(--secondary);
+            color: var(--dark);
+            transform: translateY(-2px);
+        }
+
         .footer-copyright {
             color: #a0aec0;
             font-size: 0.875rem;
@@ -1090,6 +1123,15 @@
     margin: 0 0 24px 0;
     font-weight: 600;
   }
+
+    .footer-heading {
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: var(--secondary);
+        margin: 0 0 24px 0;
+        font-weight: 600;
+    }
 
   .footer-nav ul {
     list-style: none;
@@ -1466,7 +1508,13 @@
             conditions. Contact our team to discuss your symptoms or book an
             appointment at the clinic.
     </p>
-    <h2>Our Services</h2>
+        <p class="section-label">Our Services</p>
+        <p>
+            Learn more about musculoskeletal health from the
+            <a href="https://www.who.int/news-room/fact-sheets/detail/musculoskeletal-conditions" target="_blank" rel="noopener">World Health Organization</a>
+            or read Kenya's national health guidance from the
+            <a href="https://www.health.go.ke/" target="_blank" rel="noopener">Ministry of Health</a>.
+        </p>
     </div>
 </section>
 
@@ -1744,18 +1792,18 @@
 
         <!-- Column 2: Quick Links -->
         <nav class="footer-nav">
-          <h3>Explore</h3>
+                    <p class="footer-heading">Explore</p>
           <ul>
-            <li><a href="/services">Services</a></li>
+                        <li><a href="/services">Explore Our Services</a></li>
             <li><a href="/team">Our Doctors</a></li>
-            <li><a href="/appointments">Book Appointment</a></li>
+                        <li><a href="/appointments">Schedule a Visit</a></li>
             <li><a href="/resources">Health Blog</a></li>
           </ul>
         </nav>
 
         <!-- Column 3: Contact -->
         <address class="footer-contact">
-          <h3>Visit Us</h3>
+          <p class="footer-heading">Visit Us</p>
           <p>
             P.O. Box 7448, Thika 00200<br/>
             Along Thika-Garissa Rd, Opposite Cravers
@@ -1766,11 +1814,16 @@
 
         <!-- Column 4: Social / Newsletter -->
         <div class="footer-social">
-          <h3>Leave a Feedback</h3>
+                    <p class="footer-heading">Leave a Feedback</p>
           <form class="newsletter" id="feedbackForm" method="post" action="/feedback">
             <input type="text" placeholder="Feedback" name="feedback" required/>
             <button type="submit">→</button>
           </form>
+                    <div class="social-share" aria-label="Share Jamhuri Afya">
+                        <a href="https://api.whatsapp.com/send?text=Check%20out%20Jamhuri%20Afya%20Orthopaedics%20in%20Thika%20https%3A%2F%2Fjamhuriafyaortho.co.ke%2F" target="_blank" rel="noopener" aria-label="Share on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fjamhuriafyaortho.co.ke%2F" target="_blank" rel="noopener" aria-label="Share on Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="mailto:?subject=Jamhuri%20Afya%20Orthopaedics&amp;body=https%3A%2F%2Fjamhuriafyaortho.co.ke%2F" aria-label="Share via Email"><i class="fas fa-envelope"></i></a>
+                    </div>
          
         </div>
       </div>
