@@ -65,6 +65,20 @@ app.locals.defaultOgImage = DEFAULT_OG_IMAGE
 // otherwise secure cookies (see session config below) silently never get set.
 app.set('trust proxy', 1)
 
+app.disable('x-powered-by')
+
+// Keep all production URLs on the canonical HTTPS host to prevent duplicate content.
+app.use((req, res, next) => {
+  if (process.env.NODE_ENV !== 'production') return next()
+
+  const canonicalHost = new URL(SITE_URL).hostname
+  if (req.hostname !== canonicalHost || req.protocol !== 'https') {
+    return res.redirect(301, `${SITE_URL}${req.originalUrl}`)
+  }
+
+  next()
+})
+
 // FIX: basic security headers (X-Frame-Options, CSP defaults, etc.)
 // CHANGED: helmet's default CSP blocks inline <script> tags, inline onclick=""
 // attributes, and third-party script CDNs. Configuring it explicitly instead

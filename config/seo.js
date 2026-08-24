@@ -1,12 +1,12 @@
 const SITE_URL = 'https://jamhuriafyaortho.co.ke'
-const SITE_NAME = 'Jamuhuri Orthopedic and Afya Services'
+const SITE_NAME = 'Jamhuri Orthopedic and Afya Services'
 const DEFAULT_OG_IMAGE = '/images/clinicoutside.jpg'
 
 const pages = {
   home: {
-    seoTitle: `${SITE_NAME} | Orthopaedic & Primary Care in Thika, Kenya`,
+    seoTitle: 'Orthopaedic & Primary Care in Thika | Jamhuri Afya',
     seoDescription:
-      'Expert orthopaedic and primary healthcare in Thika — bone & joint care, physiotherapy, chronic disease management, and same-day appointments. Book online today.',
+      'Orthopaedic and primary care in Thika, Kenya. Bone and joint care, physiotherapy, chronic disease support, and easy appointments.',
     seoPath: '/',
     seoSchema: true,
   },

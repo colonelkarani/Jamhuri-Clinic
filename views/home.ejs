@@ -67,7 +67,7 @@
   padding: 0 25px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-.services-intro h3{
+.services-intro h2{
   font-size: 1.7rem;
   margin-bottom: 15px;
   color: var(--primary-dark);
@@ -80,6 +80,13 @@
   text-align: center;
   max-width: 700px;
   margin: 0 auto 30px;
+}
+.clinic-overview{
+    max-width: 780px;
+    margin: 0 auto;
+}
+.clinic-overview p{
+    text-align: left;
 }
 .service-cards{
   display: grid;
@@ -1420,8 +1427,8 @@
 <!-- Hero section -->
      <section class="hero-section">
         <div class="hero-content">
-            <h1 class="hero-title">Your Health, Our Priority</h1>
-            <p class="hero-subtitle">Comprehensive and compassionate care for you and your family.</p>
+            <h1 class="hero-title">Orthopaedic &amp; Primary Care in Thika</h1>
+            <p class="hero-subtitle">Jamhuri Afya provides compassionate orthopaedic and primary care for you and your family.</p>
             <p class="hero-date">Est. 2002</p>
         </div>
         <div class="scroll-indicator">
@@ -1439,13 +1446,28 @@
 </section>
 
 <section class="services-intro">
-  <h3>Our Services</h3>
-  <p>
-    From routine check-ups to chronic-disease management, Jamhuri Afya offers
-    personalised, technology-driven healthcare that fits your life.
-  </p>
-
- 
+    <h2>Orthopaedic and Primary Healthcare Services</h2>
+    <div class="clinic-overview">
+    <p>
+            From routine check-ups to chronic-disease management, Jamhuri Afya offers
+            personalised, technology-driven healthcare that fits your life.
+    </p>
+    <p>
+            Our clinic in Thika supports patients with bone and joint conditions, fractures,
+            sports injuries, physiotherapy needs, and ongoing primary healthcare. Our
+            team listens carefully, explains your options clearly, and builds a practical
+            treatment plan around your health, goals, and daily life.
+    </p>
+    <p>
+            Located in Thika, Kenya, Jamhuri Afya provides accessible care for
+            children, adults, and older patients. We help with orthopaedic
+            consultations, fractures, sports injuries, back and joint pain,
+            physiotherapy, rehabilitation, preventive care, and long-term health
+            conditions. Contact our team to discuss your symptoms or book an
+            appointment at the clinic.
+    </p>
+    <h2>Our Services</h2>
+    </div>
 </section>
 
     <!-- Services Section -->
@@ -1458,7 +1480,7 @@
 <div class="modal" id="modal">
   <div class="modal-inner">
     <span class="material-icons modal-close" id="closeModal">close</span>
-    <h2 id="modalTitle"></h2>
+        <div id="modalTitle" role="heading" aria-level="2"></div>
     <p id="modalBody"></p>
     <button class="btn-s" id="ctaBtn">Book Appointment</button>
   </div>
